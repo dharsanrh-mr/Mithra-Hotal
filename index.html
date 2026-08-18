@@ -413,6 +413,21 @@ button,input,select,textarea{font-family:inherit}
 }
 </style>
 
+
+<style id="foodie-branding-style">
+.settings-section-label{margin:24px 3px 10px;color:#7d8495;font-size:12px;letter-spacing:2px;font-weight:900}
+.settings-backup-actions{margin-top:0}
+.branding-preview{display:flex;align-items:center;gap:13px;padding:14px;margin:4px 0 17px;border-radius:19px;background:linear-gradient(135deg,#eef0ff,#f8f8fc);border:1px solid #e5e7ef}
+.branding-logo-preview{width:58px;height:58px;border-radius:17px;display:grid;place-items:center;overflow:hidden;background:linear-gradient(145deg,#5d48e9,#2b1a93);color:#fff;font-size:32px;font-weight:900;box-shadow:0 8px 18px rgba(56,37,170,.18)}
+.branding-logo-preview img{width:100%;height:100%;object-fit:cover}
+.branding-preview b{display:block;font-size:21px;color:#14213d}.branding-preview small{display:block;margin-top:3px;color:#7b8495;font-weight:700}
+.branding-fields{display:grid;gap:7px}.branding-fields label{font-size:12px;font-weight:900;color:#687286;margin-top:4px}.branding-fields .search{margin:0}
+.branding-logo-row{display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:4px}
+.branding-upload{min-height:52px!important}
+.brand-clear-btn{border:0;border-radius:15px;padding:0 15px;background:#eceef4;color:#17233f;font-weight:900}
+.brand-clear-btn:active{transform:scale(.97)}
+</style>
+
 </head>
 <body>
 <header class="header">
@@ -447,10 +462,20 @@ button,input,select,textarea{font-family:inherit}
 <div class="sales-note">Daily = today's order list · Monthly = date-wise sales list</div>
 <div class="sales-tabs"><button class="stab active" data-period="daily">DAILY SALES</button><button class="stab" data-period="monthly">MONTHLY SALES</button></div>
 <div id="salesSummary" class="sales-summary"></div><div id="history"></div></section>
-<section id="owner" class="panel"><div class="hero"><small>SETTINGS</small><h1>⚙️ Settings</h1><p>App settings and shop options.</p></div><div class="settings-list">
+<section id="owner" class="panel">
+<div class="hero"><small>SETTINGS</small><h1>⚙️ Settings</h1><p>Customize your shop name, logo and data.</p></div>
+<div class="settings-list">
+<div class="setting-card"><span>🏪</span><div><b>Shop Branding</b><small>Change logo, shop name and headline</small></div><button id="brandingOpen">EDIT</button></div>
 <div class="setting-card"><span>🔊</span><div><b>Voice</b><small>Use simple voice guidance</small></div><button id="settingsSpeak">TEST</button></div>
-<div class="setting-card"><span>💾</span><div><b>Backup & Restore</b><small>Keep your shop data safe</small></div><button id="backupOpen">OPEN</button></div>
-</div></section>
+<div class="setting-card"><span>💾</span><div><b>Backup & Restore</b><small>Backup, import and restore shop data</small></div><button id="backupOpen">OPEN</button></div>
+</div>
+<div class="settings-section-label">DATA & BACKUP</div>
+<div class="backup-actions settings-backup-actions">
+<button class="backup-btn" id="quickBackup">⬇️ BACKUP DATA</button>
+<button class="backup-btn import" id="quickImport">⬆️ IMPORT FILE</button>
+</div>
+<div class="backup-note">Your FOODIE data stays in this browser. Use Backup before changing phones or clearing browser data.</div>
+</section>
 
 <section id="menuManager" class="panel">
   <div class="hero"><small>MENU MANAGEMENT</small><h1>🍽️ Menu Items</h1><p>Add, edit, delete and change prices — all in one place.</p></div>
@@ -488,6 +513,24 @@ button,input,select,textarea{font-family:inherit}
       <button class="modal-cancel" id="addItemCancel">CANCEL</button>
     </div>
   </div>
+</div>
+
+
+<div id="brandingModal" class="modal" aria-hidden="true">
+<div class="modal-card">
+<div class="modal-head"><h3>🏪 Shop Branding</h3><button class="close" id="brandingClose">×</button></div>
+<p>Change the logo and names shown throughout the FOODIE app.</p>
+<div class="branding-preview"><div class="branding-logo-preview" id="brandingLogoPreview">M</div><div><b id="brandingPreviewName">FOODIE</b><small id="brandingPreviewTag">Simple Shop POS</small></div></div>
+<div class="branding-fields">
+<label>Shop Logo</label>
+<div class="branding-logo-row"><label class="image-upload branding-upload" for="brandLogoInput"><span>🖼️ Choose Logo</span><input id="brandLogoInput" type="file" accept="image/*" style="display:none"></label><button class="brand-clear-btn" id="brandLogoClear" type="button">RESET</button></div>
+<label>Shop Name</label>
+<input id="brandNameInput" class="search" maxlength="32" placeholder="e.g. FOODIE" autocomplete="off">
+<label>Headline / Subtitle</label>
+<input id="brandTagInput" class="search" maxlength="42" placeholder="e.g. Simple Shop POS" autocomplete="off">
+</div>
+<div class="modal-actions"><button class="modal-ok" id="brandingSave">💾 SAVE BRANDING</button><button class="modal-cancel" id="brandingCancel">CANCEL</button></div>
+</div>
 </div>
 
 <div id="backupModal" class="modal" aria-hidden="true">
@@ -1039,6 +1082,58 @@ if(initialPage && initialPage!=='home') go(initialPage);
     timer=setTimeout(()=>el.classList.remove('show'),2600);
   }
   window.alert=showToast;
+})();
+</script>
+
+
+<script id="foodie-branding-script">
+(function(){
+const modal=document.getElementById('brandingModal'), nameInput=document.getElementById('brandNameInput'), tagInput=document.getElementById('brandTagInput'), logoInput=document.getElementById('brandLogoInput'), logoPreview=document.getElementById('brandingLogoPreview');
+const namePreview=document.getElementById('brandingPreviewName'), tagPreview=document.getElementById('brandingPreviewTag');
+const DEFAULT={name:'FOODIE',tag:'Simple Shop POS',logo:''};
+let brand=read('foodieBrand',DEFAULT), pendingLogo='';
+
+function applyBrand(){
+brand=Object.assign({},DEFAULT,brand||{});
+document.querySelector('.brand b').textContent=brand.name;
+document.querySelector('.brand small').textContent=brand.tag;
+const logo=document.querySelector('.header .logo');
+if(brand.logo){logo.innerHTML='<img src="'+brand.logo+'" alt="Shop logo">';logo.style.overflow='hidden'}
+else logo.textContent=(brand.name.trim().charAt(0)||'F').toUpperCase();
+}
+function preview(){
+namePreview.textContent=nameInput.value.trim()||'FOODIE';
+tagPreview.textContent=tagInput.value.trim()||'Simple Shop POS';
+if(pendingLogo) logoPreview.innerHTML='<img src="'+pendingLogo+'" alt="Logo preview">';
+else if(brand.logo) logoPreview.innerHTML='<img src="'+brand.logo+'" alt="Logo preview">';
+else logoPreview.textContent=(nameInput.value.trim().charAt(0)||'F').toUpperCase();
+}
+function open(){nameInput.value=brand.name;tagInput.value=brand.tag;pendingLogo=brand.logo||'';preview();modal.classList.add('show');modal.setAttribute('aria-hidden','false')}
+function close(){modal.classList.remove('show');modal.setAttribute('aria-hidden','true');logoInput.value='';pendingLogo=''}
+document.getElementById('brandingOpen').addEventListener('click',open);
+document.getElementById('brandingClose').addEventListener('click',close);
+document.getElementById('brandingCancel').addEventListener('click',close);
+modal.addEventListener('click',e=>{if(e.target===modal)close()});
+[nameInput,tagInput].forEach(x=>x.addEventListener('input',preview));
+
+logoInput.addEventListener('change',()=>{
+const file=logoInput.files&&logoInput.files[0]; if(!file)return;
+if(!file.type.startsWith('image/')){alert('Please choose an image file');logoInput.value='';return}
+const r=new FileReader();
+r.onload=()=>{const img=new Image();img.onload=()=>{
+const max=500,scale=Math.min(1,max/Math.max(img.width,img.height)),c=document.createElement('canvas');
+c.width=Math.max(1,Math.round(img.width*scale));c.height=Math.max(1,Math.round(img.height*scale));
+c.getContext('2d').drawImage(img,0,0,c.width,c.height);pendingLogo=c.toDataURL('image/jpeg',.86);preview();
+};img.src=r.result};r.readAsDataURL(file);
+});
+document.getElementById('brandLogoClear').addEventListener('click',()=>{pendingLogo='';logoInput.value='';preview()});
+document.getElementById('brandingSave').addEventListener('click',()=>{
+brand={name:nameInput.value.trim()||DEFAULT.name,tag:tagInput.value.trim()||DEFAULT.tag,logo:pendingLogo};
+write('foodieBrand',brand);applyBrand();close();alert('Shop branding saved successfully');
+});
+document.getElementById('quickBackup').addEventListener('click',makeBackup);
+document.getElementById('quickImport').addEventListener('click',()=>document.getElementById('backupFile').click());
+applyBrand();
 })();
 </script>
 
