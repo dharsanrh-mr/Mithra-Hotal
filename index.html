@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#101827">
-<title>Mithra Hotel POS</title>
+<title>Mithra Hotel POS - Shop Mode</title>
 <style>
 :root{
   --bg:#f5f7fb;--card:#fff;--ink:#101827;--muted:#7b8496;--line:#e6eaf0;
@@ -25,7 +25,7 @@ button,input,select{font:inherit}button{border:0;cursor:pointer}
 .section-head,.page-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:22px 0 12px}.section-head h3,.page-title h2{margin:0}.page-title h2{font-size:24px;letter-spacing:-1px}.text-btn{background:transparent;color:var(--purple);font-weight:900;font-size:11px}
 .search{display:flex;align-items:center;background:#fff;border:1px solid var(--line);border-radius:17px;padding:0 13px;box-shadow:0 5px 18px #11182708}.search span{font-size:22px;color:#8c95a6}.search input{border:0;outline:0;background:transparent;width:100%;padding:13px 8px;font-size:12px}
 .chips{display:flex;gap:8px;overflow:auto;scrollbar-width:none;padding:2px 1px 7px}.chips::-webkit-scrollbar{display:none}.chip{white-space:nowrap;padding:10px 15px;border-radius:999px;background:#fff;border:1px solid var(--line);color:#687286;font-size:11px;font-weight:900;box-shadow:0 4px 13px #11182708}.chip.active{background:linear-gradient(135deg,var(--purple),#7c3aed);color:#fff;border-color:transparent}
-.food-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.food-card{background:#fff;border:1px solid #e7eaf0;border-radius:21px;overflow:hidden;box-shadow:var(--shadow)}.food-img{display:block;width:100%;aspect-ratio:1.12;object-fit:cover}.food-info{padding:10px 11px 12px}.food-info strong{display:block;font-size:14px}.price{font-size:17px;font-weight:950;margin-top:4px}.meta{font-size:9px;color:var(--muted);margin-top:2px}.food-actions{display:flex;justify-content:flex-end;align-items:center;gap:7px;margin-top:8px}.add-btn{width:42px;height:42px;border-radius:14px;color:#fff;background:linear-gradient(135deg,#101827,#34405f);font-size:23px;font-weight:900;box-shadow:0 8px 18px #11182725}.edit-btn{padding:8px 10px;border-radius:11px;background:#eef0ff;color:#5145cd;font-size:10px;font-weight:900}
+.food-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.food-card{background:#fff;border:1px solid #e7eaf0;border-radius:21px;overflow:hidden;box-shadow:var(--shadow)}.food-img{display:block;width:100%;aspect-ratio:1.12;object-fit:cover}.food-info{padding:10px 11px 12px}.food-info strong{display:block;font-size:14px}.price{font-size:17px;font-weight:950;margin-top:4px}.meta{font-size:9px;color:var(--muted);margin-top:2px}.food-actions{display:flex;justify-content:flex-end;align-items:center;gap:7px;margin-top:8px}.add-btn{width:42px;height:42px;border-radius:14px;color:#fff;background:linear-gradient(135deg,#101827,#34405f);font-size:23px;font-weight:900;box-shadow:0 8px 18px #11182725}.edit-btn{padding:8px 10px;border-radius:11px;background:#eef0ff;color:#5145cd;font-size:10px;font-weight:900}.main-qty{display:flex;align-items:center;gap:5px;background:#f7f8fb;border-radius:15px;padding:3px;border:1px solid #e2e6ee}.main-qty button{width:40px;height:40px;cursor:pointer;display:flex;align-items:center;justify-content:center;border:0;border-radius:13px;font-size:22px;font-weight:950}.main-qty .minus{background:#fee2e2;color:#b91c1c}.main-qty .plus{background:linear-gradient(135deg,#101827,#34405f);color:#fff;box-shadow:0 8px 18px #11182725}.main-qty b{min-width:24px;text-align:center;font-size:15px}
 .touch-card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:14px;box-shadow:var(--shadow);margin-top:12px}.touch-card h3{margin:0 0 8px;font-size:14px}.touch-row{display:grid;grid-template-columns:1fr 1fr;gap:9px}.big-action{min-height:72px;border-radius:17px;font-size:16px;font-weight:950;display:flex;align-items:center;justify-content:center;gap:8px}.cash{background:#dcfce7;color:#166534}.upi{background:#dbeafe;color:#1d4ed8}.yellow{background:#fef3c7;color:#92400e}.red{background:#fee2e2;color:#b91c1c}
 .bill-box{background:#fff;border:1px solid var(--line);border-radius:22px;padding:15px;box-shadow:var(--shadow)}.bill-line{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #edf0f4;font-size:13px}.bill-line:last-child{border-bottom:0}.bill-total{display:flex;justify-content:space-between;align-items:center;padding:16px 0 5px}.bill-total strong{font-size:27px}
 .qty{display:flex;align-items:center;gap:7px}.qty button{width:31px;height:31px;border-radius:10px;background:#eef1f6;font-weight:900}.small-btn{padding:8px 10px;border-radius:10px;font-size:10px;font-weight:900;background:#eef1f6}
@@ -52,18 +52,18 @@ button,input,select{font:inherit}button{border:0;cursor:pointer}
   <div class="hero">
     <span class="eyebrow">SHOP MODE</span>
     <h2>Touch → Bill → Paid</h2>
-    <p>Food button-ஐ touch பண்ணுங்க. Quantity automatic-ஆ சேரும்.</p>
-    <div class="big-sale"><span>இன்றைய விற்பனை</span><strong id="todaySales">₹0</strong></div>
+    <p>Tap a food button. Quantity is added automatically.</p>
+    <div class="big-sale"><span>Today Sales</span><strong id="todaySales">₹0</strong></div>
   </div>
 
-  <div class="section-head"><h3>🍽️ Food</h3><button class="text-btn" id="speakFoodBtn">🔊 சொல்லு</button></div>
-  <div class="search"><span>⌕</span><input id="search" placeholder="Food தேட..."></div>
+  <div class="section-head"><h3>🍽️ Food</h3><button class="text-btn" id="speakFoodBtn">🔊 Speak</button></div>
+  <div class="search"><span>⌕</span><input id="search" placeholder="Search food..."></div>
   <div id="chips" class="chips" style="margin-top:8px"></div>
   <div id="foodGrid" class="food-grid"></div>
 
   <div class="touch-card">
     <h3>🧾 Bill</h3>
-    <div id="quickBill">Bill காலி</div>
+    <div id="quickBill">Bill is empty</div>
     <div class="touch-row" style="margin-top:10px">
       <button class="big-action yellow" id="openBillBtn">🧾 BILL</button>
       <button class="big-action cash" id="quickCashBtn">💵 CASH</button>
@@ -88,7 +88,7 @@ button,input,select{font:inherit}button{border:0;cursor:pointer}
 </section>
 
 <section id="salesPage" class="page">
-  <div class="page-title"><div><span class="eyebrow">TODAY</span><h2>Sales</h2></div><button class="text-btn" id="speakSalesBtn">🔊 சொல்லு</button></div>
+  <div class="page-title"><div><span class="eyebrow">TODAY</span><h2>Sales</h2></div><button class="text-btn" id="speakSalesBtn">🔊 Speak</button></div>
   <div class="stats">
     <div class="stat"><span>Today</span><strong id="sToday">₹0</strong></div>
     <div class="stat"><span>Bills</span><strong id="sBills">0</strong></div>
@@ -125,13 +125,13 @@ button,input,select{font:inherit}button{border:0;cursor:pointer}
     </div>
     <div class="list-card">
       <h3>💾 Backup</h3>
-      <p class="muted">Current data-க்கு backup எடுத்து பிறகு restore செய்யலாம்.</p>
+      <p class="muted">Backup your current data and restore it anytime.</p>
       <div class="two"><button class="secondary" id="backupBtn">📤 Backup</button><button class="secondary" id="restoreBtn">📥 Restore</button></div>
       <input id="restoreFile" type="file" accept=".json,application/json" hidden>
     </div>
     <div class="list-card">
       <h3>🔊 Voice</h3>
-      <p class="muted">Food name, quantity, total ஆகியவற்றை phone voice-ஆ சொல்லும்.</p>
+      <p class="muted">Phone voice can announce food name, quantity and total.</p>
       <button class="secondary full" id="testVoice">🔊 Test Voice</button>
     </div>
     <div class="list-card">
@@ -168,7 +168,7 @@ button,input,select{font:inherit}button{border:0;cursor:pointer}
 
 <div class="modal-bg" id="pinModal"><div class="modal">
   <div class="modal-head"><h3>🔐 Owner PIN</h3><button class="close" data-close="pinModal">×</button></div>
-  <p class="muted">Default PIN: 1234. Owner mode-ல் மாற்றலாம்.</p>
+  <p class="muted">Default PIN: 1234. You can change it in Owner Mode.</p>
   <input id="pinInput" type="password" inputmode="numeric" maxlength="8" placeholder="PIN">
   <button class="primary full" id="pinSubmit">OPEN OWNER</button>
 </div></div>
@@ -236,9 +236,10 @@ function renderFoods(){
   <article class="food-card">
     <img class="food-img" src="${x.image}" alt="${escape(x.name)}">
     <div class="food-info"><strong>${escape(x.name)}</strong><div class="price">${money(x.price)}</div><div class="meta">${escape(x.category)}</div>
-    <div class="food-actions"><button class="add-btn" data-add="${x.id}">+</button></div></div>
-  </article>`).join("")||`<div class="touch-card" style="grid-column:1/-1">Food இல்லை</div>`;
+    <div class="food-actions">${(()=>{const q=(state.cart.find(c=>c.itemId===x.id)||{}).qty||0; return `<div class="main-qty"><button class="minus" aria-label="Remove one" data-main-q="${x.id}" data-d="-1">−</button><b>${q}</b><button class="plus" aria-label="Add one" data-main-q="${x.id}" data-d="1">+</button></div>`})()}</div></div>
+  </article>`).join("")||`<div class="touch-card" style="grid-column:1/-1">No food found</div>`;
   $("foodGrid").querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>add(b.dataset.add));
+  $("foodGrid").querySelectorAll("[data-main-q]").forEach(b=>b.onclick=()=>change(b.dataset.mainQ,Number(b.dataset.d)));
 }
 function add(id){
   const i=state.items.find(x=>x.id===id);if(!i)return;
@@ -248,7 +249,7 @@ function add(id){
 function total(){return state.cart.reduce((a,x)=>a+x.price*x.qty,0)}
 function renderQuickBill(){
   const e=$("quickBill");
-  e.innerHTML=state.cart.length?state.cart.map(x=>`<div class="bill-line"><span>${escape(x.name)} × ${x.qty}</span><strong>${money(x.price*x.qty)}</strong></div>`).join("")+`<div class="bill-total"><span>Total</span><strong>${money(total())}</strong></div>`:`<p class="muted">Bill காலி — food touch பண்ணுங்க.</p>`;
+  e.innerHTML=state.cart.length?state.cart.map(x=>`<div class="bill-line"><span>${escape(x.name)} × ${x.qty}</span><strong>${money(x.price*x.qty)}</strong></div>`).join("")+`<div class="bill-total"><span>Total</span><strong>${money(total())}</strong></div>`:`<p class="muted">Bill is empty — tap a food item.</p>`;
 }
 function renderBill(){
   renderQuickBill();
@@ -263,10 +264,10 @@ function change(id,d){
 }
 function clearCart(){
   if(!state.cart.length)return;
-  if(confirm("Current bill clear பண்ணலாமா?")){state.cart=[];save();render();toast("Bill cleared")}
+  if(confirm("Clear current bill?")){state.cart=[];save();render();toast("Bill cleared")}
 }
 function pay(method){
-  if(!state.cart.length){toast("முதலில் food add பண்ணுங்க");return}
+  if(!state.cart.length){toast("Add food first.");return}
   const now=new Date();
   const sale={id:uid(),billNo:"B"+Date.now().toString().slice(-6),createdAt:now.toISOString(),date:today(),payment:method,total:total(),items:state.cart.map(x=>({...x}))};
   state.sales.push(sale);state.cart=[];save();render();
@@ -278,7 +279,7 @@ function renderSales(){
   const d=today(), td=state.sales.filter(s=>s.date===d);
   const sum=k=>td.filter(s=>s.payment===k).reduce((a,s)=>a+s.total,0);
   $("sToday").textContent=money(td.reduce((a,s)=>a+s.total,0));$("sBills").textContent=td.length;$("sCash").textContent=money(sum("Cash"));$("sUpi").textContent=money(sum("UPI"));
-  $("recentSales").innerHTML=td.slice(-8).reverse().map(s=>`<div class="list-row"><span><strong>${escape(s.billNo)}</strong><br><small>${s.items.map(i=>escape(i.name)+" × "+i.qty).join(", ")}</small></span><strong>${money(s.total)}</strong></div>`).join("")||`<p class="muted">இன்று sales இல்லை.</p>`;
+  $("recentSales").innerHTML=td.slice(-8).reverse().map(s=>`<div class="list-row"><span><strong>${escape(s.billNo)}</strong><br><small>${s.items.map(i=>escape(i.name)+" × "+i.qty).join(", ")}</small></span><strong>${money(s.total)}</strong></div>`).join("")||`<p class="muted">No sales today.</p>`;
   renderHistory();
 }
 function renderHistory(){
@@ -335,7 +336,7 @@ $("restoreFile").onchange=e=>{
 };
 function unlock(){openModal("pinModal");setTimeout(()=>$("pinInput").focus(),100)}
 function doUnlock(){if($("pinInput").value===state.ownerPin){owner=true;closeModal("pinModal");render();toast("Owner mode open")}else{toast("Wrong PIN");$("pinInput").value=""}}
-function clearAll(){if(confirm("ALL data delete பண்ணலாமா?")){if(confirm("Final confirmation")){localStorage.removeItem(KEY);location.reload()}}}
+function clearAll(){if(confirm("Delete ALL data?")){if(confirm("Final confirmation")){localStorage.removeItem(KEY);location.reload()}}}
 document.querySelectorAll(".nav-btn").forEach(b=>b.onclick=()=>openPage(b.dataset.page));
 $("search").oninput=renderFoods;$("cartBtn").onclick=()=>openPage("billPage");$("openBillBtn").onclick=()=>openPage("billPage");$("clearCartBtn").onclick=clearCart;
 $("quickCashBtn").onclick=()=>pay("Cash");$("cashBtn").onclick=()=>pay("Cash");$("upiBtn").onclick=()=>pay("UPI");$("otherBtn").onclick=()=>pay("Other");
