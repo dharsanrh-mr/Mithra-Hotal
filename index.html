@@ -428,6 +428,14 @@ button,input,select,textarea{font-family:inherit}
 .brand-clear-btn:active{transform:scale(.97)}
 </style>
 
+
+<style id="branding-touch-fix">
+.branding-setting-card{cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.branding-setting-card:active{transform:scale(.99);background:#fafaff}
+.branding-setting-card button{position:relative;z-index:2}
+body.modal-open{overflow:hidden}
+</style>
+
 </head>
 <body>
 <header class="header">
@@ -465,7 +473,7 @@ button,input,select,textarea{font-family:inherit}
 <section id="owner" class="panel">
 <div class="hero"><small>SETTINGS</small><h1>⚙️ Settings</h1><p>Customize your shop name, logo and data.</p></div>
 <div class="settings-list">
-<div class="setting-card"><span>🏪</span><div><b>Shop Branding</b><small>Change logo, shop name and headline</small></div><button id="brandingOpen">EDIT</button></div>
+<div class="setting-card branding-setting-card" id="brandingCard" role="button" tabindex="0"><span>🏪</span><div><b>Shop Branding</b><small>Change logo, shop name and headline</small></div><button id="brandingOpen" type="button">EDIT</button></div>
 <div class="setting-card"><span>🔊</span><div><b>Voice</b><small>Use simple voice guidance</small></div><button id="settingsSpeak">TEST</button></div>
 <div class="setting-card"><span>💾</span><div><b>Backup & Restore</b><small>Backup, import and restore shop data</small></div><button id="backupOpen">OPEN</button></div>
 </div>
@@ -1088,52 +1096,127 @@ if(initialPage && initialPage!=='home') go(initialPage);
 
 <script id="foodie-branding-script">
 (function(){
-const modal=document.getElementById('brandingModal'), nameInput=document.getElementById('brandNameInput'), tagInput=document.getElementById('brandTagInput'), logoInput=document.getElementById('brandLogoInput'), logoPreview=document.getElementById('brandingLogoPreview');
-const namePreview=document.getElementById('brandingPreviewName'), tagPreview=document.getElementById('brandingPreviewTag');
-const DEFAULT={name:'FOODIE',tag:'Simple Shop POS',logo:''};
-let brand=read('foodieBrand',DEFAULT), pendingLogo='';
+  function initBranding(){
+    const modal=document.getElementById('brandingModal');
+    const card=document.getElementById('brandingCard');
+    const openBtn=document.getElementById('brandingOpen');
+    const nameInput=document.getElementById('brandNameInput');
+    const tagInput=document.getElementById('brandTagInput');
+    const logoInput=document.getElementById('brandLogoInput');
+    const logoPreview=document.getElementById('brandingLogoPreview');
+    const namePreview=document.getElementById('brandingPreviewName');
+    const tagPreview=document.getElementById('brandingPreviewTag');
+    if(!modal||!card||!openBtn||!nameInput||!tagInput)return;
 
-function applyBrand(){
-brand=Object.assign({},DEFAULT,brand||{});
-document.querySelector('.brand b').textContent=brand.name;
-document.querySelector('.brand small').textContent=brand.tag;
-const logo=document.querySelector('.header .logo');
-if(brand.logo){logo.innerHTML='<img src="'+brand.logo+'" alt="Shop logo">';logo.style.overflow='hidden'}
-else logo.textContent=(brand.name.trim().charAt(0)||'F').toUpperCase();
-}
-function preview(){
-namePreview.textContent=nameInput.value.trim()||'FOODIE';
-tagPreview.textContent=tagInput.value.trim()||'Simple Shop POS';
-if(pendingLogo) logoPreview.innerHTML='<img src="'+pendingLogo+'" alt="Logo preview">';
-else if(brand.logo) logoPreview.innerHTML='<img src="'+brand.logo+'" alt="Logo preview">';
-else logoPreview.textContent=(nameInput.value.trim().charAt(0)||'F').toUpperCase();
-}
-function open(){nameInput.value=brand.name;tagInput.value=brand.tag;pendingLogo=brand.logo||'';preview();modal.classList.add('show');modal.setAttribute('aria-hidden','false')}
-function close(){modal.classList.remove('show');modal.setAttribute('aria-hidden','true');logoInput.value='';pendingLogo=''}
-document.getElementById('brandingOpen').addEventListener('click',open);
-document.getElementById('brandingClose').addEventListener('click',close);
-document.getElementById('brandingCancel').addEventListener('click',close);
-modal.addEventListener('click',e=>{if(e.target===modal)close()});
-[nameInput,tagInput].forEach(x=>x.addEventListener('input',preview));
+    const DEFAULT={name:'FOODIE',tag:'Simple Shop POS',logo:''};
+    let brand=typeof read==='function'?read('foodieBrand',DEFAULT):DEFAULT;
+    let pendingLogo=brand.logo||'';
 
-logoInput.addEventListener('change',()=>{
-const file=logoInput.files&&logoInput.files[0]; if(!file)return;
-if(!file.type.startsWith('image/')){alert('Please choose an image file');logoInput.value='';return}
-const r=new FileReader();
-r.onload=()=>{const img=new Image();img.onload=()=>{
-const max=500,scale=Math.min(1,max/Math.max(img.width,img.height)),c=document.createElement('canvas');
-c.width=Math.max(1,Math.round(img.width*scale));c.height=Math.max(1,Math.round(img.height*scale));
-c.getContext('2d').drawImage(img,0,0,c.width,c.height);pendingLogo=c.toDataURL('image/jpeg',.86);preview();
-};img.src=r.result};r.readAsDataURL(file);
-});
-document.getElementById('brandLogoClear').addEventListener('click',()=>{pendingLogo='';logoInput.value='';preview()});
-document.getElementById('brandingSave').addEventListener('click',()=>{
-brand={name:nameInput.value.trim()||DEFAULT.name,tag:tagInput.value.trim()||DEFAULT.tag,logo:pendingLogo};
-write('foodieBrand',brand);applyBrand();close();alert('Shop branding saved successfully');
-});
-document.getElementById('quickBackup').addEventListener('click',makeBackup);
-document.getElementById('quickImport').addEventListener('click',()=>document.getElementById('backupFile').click());
-applyBrand();
+    function applyBrand(){
+      brand=Object.assign({},DEFAULT,brand||{});
+      const b=document.querySelector('.brand b'), s=document.querySelector('.brand small'), logo=document.querySelector('.header .logo');
+      if(b)b.textContent=brand.name;
+      if(s)s.textContent=brand.tag;
+      if(logo){
+        if(brand.logo){
+          logo.innerHTML='<img src="'+brand.logo+'" alt="Shop logo">';
+          logo.style.overflow='hidden';
+        }else{
+          logo.innerHTML='';
+          logo.textContent=(brand.name.trim().charAt(0)||'F').toUpperCase();
+        }
+      }
+    }
+
+    function preview(){
+      namePreview.textContent=nameInput.value.trim()||'FOODIE';
+      tagPreview.textContent=tagInput.value.trim()||'Simple Shop POS';
+      if(pendingLogo) logoPreview.innerHTML='<img src="'+pendingLogo+'" alt="Logo preview">';
+      else if(brand.logo) logoPreview.innerHTML='<img src="'+brand.logo+'" alt="Logo preview">';
+      else logoPreview.textContent=(nameInput.value.trim().charAt(0)||'F').toUpperCase();
+    }
+
+    function openBranding(e){
+      if(e)e.preventDefault();
+      nameInput.value=brand.name||DEFAULT.name;
+      tagInput.value=brand.tag||DEFAULT.tag;
+      pendingLogo=brand.logo||'';
+      preview();
+      modal.classList.add('show');
+      modal.setAttribute('aria-hidden','false');
+      document.body.classList.add('modal-open');
+    }
+
+    function closeBranding(){
+      modal.classList.remove('show');
+      modal.setAttribute('aria-hidden','true');
+      document.body.classList.remove('modal-open');
+      if(logoInput)logoInput.value='';
+    }
+
+    openBtn.addEventListener('click',openBranding);
+    card.addEventListener('click',function(e){
+      if(e.target.closest('button'))return;
+      openBranding(e);
+    });
+    card.addEventListener('keydown',function(e){
+      if(e.key==='Enter'||e.key===' '){e.preventDefault();openBranding(e)}
+    });
+    document.getElementById('brandingClose').addEventListener('click',closeBranding);
+    document.getElementById('brandingCancel').addEventListener('click',closeBranding);
+    modal.addEventListener('click',e=>{if(e.target===modal)closeBranding()});
+
+    [nameInput,tagInput].forEach(x=>x.addEventListener('input',preview));
+
+    logoInput.addEventListener('change',()=>{
+      const file=logoInput.files&&logoInput.files[0];
+      if(!file)return;
+      if(!file.type.startsWith('image/')){alert('Please choose an image file');logoInput.value='';return}
+      const r=new FileReader();
+      r.onload=()=>{
+        const img=new Image();
+        img.onload=()=>{
+          const max=500,scale=Math.min(1,max/Math.max(img.width,img.height));
+          const c=document.createElement('canvas');
+          c.width=Math.max(1,Math.round(img.width*scale));
+          c.height=Math.max(1,Math.round(img.height*scale));
+          c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+          pendingLogo=c.toDataURL('image/jpeg',.86);
+          preview();
+        };
+        img.src=r.result;
+      };
+      r.readAsDataURL(file);
+    });
+
+    document.getElementById('brandLogoClear').addEventListener('click',()=>{
+      pendingLogo='';logoInput.value='';preview();
+    });
+
+    document.getElementById('brandingSave').addEventListener('click',()=>{
+      brand={
+        name:nameInput.value.trim()||DEFAULT.name,
+        tag:tagInput.value.trim()||DEFAULT.tag,
+        logo:pendingLogo
+      };
+      if(typeof write==='function')write('foodieBrand',brand);
+      applyBrand();
+      closeBranding();
+      alert('Shop branding saved successfully');
+    });
+
+    document.getElementById('quickBackup').addEventListener('click',()=>window.makeBackup&&makeBackup());
+    document.getElementById('quickImport').addEventListener('click',()=>document.getElementById('backupFile').click());
+
+    // Prevent accidental Android text selection on the action card.
+    card.style.webkitUserSelect='none';
+    card.style.userSelect='none';
+    card.style.touchAction='manipulation';
+    applyBrand();
+  }
+
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initBranding);
+  else initBranding();
 })();
 </script>
 
