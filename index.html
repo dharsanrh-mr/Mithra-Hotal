@@ -3,85 +3,268 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#17213b">
+<meta name="theme-color" content="#14213d">
 <title>FOODIE - Simple Shop POS</title>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f6f7fb;color:#182033}
-.header{background:linear-gradient(120deg,#14213d,#34227e);color:#fff;padding:18px 24px;display:flex;align-items:center;justify-content:space-between}
-.brand{display:flex;gap:14px;align-items:center}.logo{width:58px;height:58px;border-radius:17px;background:linear-gradient(145deg,#6675ff,#3020a0);display:grid;place-items:center;font-size:34px;font-weight:900}.brand b{font-size:24px}.brand small{display:block;opacity:.75;margin-top:4px}.topbill{font-size:30px;font-weight:900;background:#ffffff18;padding:12px 18px;border-radius:18px}
-.wrap{max-width:900px;margin:auto;padding:28px 22px 110px}.hero{background:linear-gradient(120deg,#1c2a47,#5031dd);color:white;border-radius:32px;padding:30px;margin-bottom:30px;box-shadow:0 16px 40px #202b5a22}.hero small{letter-spacing:3px;font-weight:800;opacity:.8}.hero h1{font-size:38px;margin:16px 0 8px}.hero p{font-size:18px;margin:0 0 24px}.today{background:#ffffff18;border:1px solid #ffffff25;border-radius:20px;padding:18px;font-size:17px}.today b{float:right;font-size:30px}
-.section-title{display:flex;justify-content:space-between;align-items:center;margin:18px 0 12px}.section-title h2{margin:0;font-size:28px}.speak{border:0;background:none;color:#5b43d6;font-weight:800;font-size:16px}
-.search{width:100%;border:0;background:white;border-radius:25px;padding:17px 22px;font-size:17px;box-shadow:0 5px 20px #18203310;margin-bottom:15px}.cats{display:flex;gap:10px;overflow:auto;padding-bottom:8px}.cat{border:1px solid #e5e6ec;background:#fff;border-radius:24px;padding:13px 21px;white-space:nowrap;font-weight:700;color:#687083}.cat.active{background:#6842ee;color:white;border-color:#6842ee}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.card{background:#fff;border-radius:26px;overflow:hidden;border:1px solid #e6e7ed;box-shadow:0 8px 25px #1820330b}.foodimg{height:190px;background:#24334c;display:grid;place-items:center;overflow:hidden}.foodimg img{width:100%;height:100%;object-fit:cover}.foodimg .emoji{font-size:75px}.info{padding:15px}.info h3{margin:0 0 7px;font-size:21px}.price{font-size:21px;font-weight:900}.sub{color:#8a90a0;font-size:14px;margin-top:5px}.qty{display:flex;align-items:center;justify-content:flex-end;gap:10px;margin-top:12px}.qbtn{width:45px;height:45px;border:0;border-radius:14px;background:#192541;color:#fff;font-size:27px;font-weight:900}.qnum{min-width:28px;text-align:center;font-size:21px;font-weight:900}.zero .minus{opacity:.35}
-.bottom{position:fixed;bottom:0;left:0;right:0;background:#ffffffee;backdrop-filter:blur(12px);border-top:1px solid #ddd;display:flex;justify-content:center;gap:45px;padding:12px 10px calc(12px + env(safe-area-inset-bottom));z-index:20}.nav{border:0;background:none;color:#8990a0;font-weight:800}.nav.active{color:#17213b}.nav span{display:block;font-size:25px;margin-bottom:3px}
-.billbar{position:fixed;left:50%;transform:translateX(-50%);bottom:82px;z-index:21;background:#17213b;color:white;border-radius:18px;padding:14px 22px;font-weight:900;box-shadow:0 10px 30px #0003;display:none}.billbar.show{display:block}
-.panel{display:none}.panel.active{display:block}.billrow{background:#fff;border-radius:18px;padding:15px;margin:10px 0;display:flex;justify-content:space-between;align-items:center}.pay{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}.pay button{border:0;border-radius:18px;padding:18px;font-size:19px;font-weight:900}.cash{background:#1b8b59;color:#fff}.upi{background:#5134d6;color:#fff}.empty{text-align:center;padding:40px;color:#888}
-@media(max-width:600px){.header{padding:15px 18px}.logo{width:52px;height:52px}.brand b{font-size:21px}.topbill{font-size:23px}.wrap{padding:22px 22px 115px}.hero h1{font-size:34px}.grid{gap:14px}.foodimg{height:180px}.bottom{gap:28px}.nav{font-size:12px}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:Arial,sans-serif;background:#f6f7fb;color:#182033}
+button{font:inherit;cursor:pointer;touch-action:manipulation}
+.header{background:linear-gradient(120deg,#14213d,#34227e);color:#fff;padding:15px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:30}
+.brand{display:flex;gap:14px;align-items:center}.logo{width:58px;height:58px;border-radius:17px;background:linear-gradient(145deg,#6675ff,#3020a0);display:grid;place-items:center;font-size:34px;font-weight:900}.brand b{font-size:24px}.brand small{display:block;opacity:.75;margin-top:4px}
+.topbill{font-size:25px;font-weight:900;background:#ffffff18;padding:12px 17px;border-radius:18px;min-width:74px;text-align:center}
+.wrap{max-width:900px;margin:auto;padding:20px 22px 125px}
+.panel{display:none}.panel.active{display:block}
+.hero{background:linear-gradient(120deg,#1c2a47,#5031dd);color:white;border-radius:30px;padding:27px;margin-bottom:25px;box-shadow:0 16px 40px #202b5a22}.hero small{letter-spacing:3px;font-weight:800;opacity:.8}.hero h1{font-size:36px;margin:14px 0 8px}.hero p{font-size:17px;margin:0 0 20px}.today{background:#ffffff18;border:1px solid #ffffff25;border-radius:20px;padding:16px;font-size:17px}.today b{float:right;font-size:28px}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin:15px 0 12px}.section-title h2{margin:0;font-size:28px}.speak{border:0;background:none;color:#5b43d6;font-weight:800}
+.search{width:100%;border:0;background:white;border-radius:25px;padding:17px 22px;font-size:17px;box-shadow:0 5px 20px #18203310;margin-bottom:14px;outline:none}
+.cats{display:flex;gap:10px;overflow:auto;padding-bottom:10px}.cat{border:1px solid #e5e6ec;background:#fff;border-radius:24px;padding:13px 21px;white-space:nowrap;font-weight:700;color:#687083}.cat.active{background:#6842ee;color:#fff;border-color:#6842ee}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.card{background:#fff;border-radius:26px;overflow:hidden;border:1px solid #e6e7ed;box-shadow:0 8px 25px #1820330b}
+.foodimg{height:190px;background:linear-gradient(145deg,#31415b,#182033);display:grid;place-items:center;overflow:hidden}.foodimg .emoji{font-size:78px;filter:drop-shadow(0 8px 8px #0005)}
+.info{padding:15px}.info h3{margin:0 0 6px;font-size:21px}.price{font-size:21px;font-weight:900}.sub{color:#8a90a0;font-size:14px;margin-top:5px}
+.qty{display:flex;align-items:center;justify-content:flex-end;gap:10px;margin-top:12px}.qbtn{width:54px;height:54px;border:0;border-radius:16px;background:#192541;color:#fff;font-size:30px;font-weight:900;box-shadow:0 5px 12px #18203322}.qbtn.minus{background:#ffe2e2;color:#c71935}.qnum{min-width:30px;text-align:center;font-size:22px;font-weight:900}.qbtn:active{transform:scale(.93)}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:#fffffff2;backdrop-filter:blur(12px);border-top:1px solid #ddd;display:flex;justify-content:space-around;padding:10px 8px calc(10px + env(safe-area-inset-bottom));z-index:40}
+.nav{border:0;background:none;color:#8990a0;font-weight:800;min-width:65px}.nav.active{color:#17213b}.nav span{display:block;font-size:25px;margin-bottom:3px}
+.billbar{position:fixed;left:50%;transform:translateX(-50%);bottom:83px;z-index:45;background:#17213b;color:white;border:0;border-radius:18px;padding:15px 24px;font-weight:900;box-shadow:0 10px 30px #0004;display:none;white-space:nowrap}.billbar.show{display:block}
+.billrow{background:#fff;border-radius:18px;padding:15px;margin:10px 0;display:flex;justify-content:space-between;align-items:center}.pay{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}.pay button{border:0;border-radius:18px;padding:18px;font-size:18px;font-weight:900}.cash{background:#1b8b59;color:#fff}.upi{background:#5134d6;color:#fff}.empty{text-align:center;padding:40px;color:#888}
+@media(max-width:600px){.header{padding:13px 18px}.logo{width:52px;height:52px}.brand b{font-size:21px}.topbill{font-size:22px}.wrap{padding:20px 22px 125px}.hero h1{font-size:33px}.grid{gap:14px}.foodimg{height:180px}.qbtn{width:52px;height:52px}.billbar{bottom:84px}}
 </style>
 </head>
 <body>
-<header class="header"><div class="brand"><div class="logo">M</div><div><b>FOODIE</b><small>Simple Shop POS</small></div></div><div class="topbill">🧾 <span id="headCount">0</span></div></header>
+<header class="header">
+  <div class="brand"><div class="logo">M</div><div><b>FOODIE</b><small>Simple Shop POS</small></div></div>
+  <div class="topbill">🧾 <span id="headCount">0</span></div>
+</header>
 
 <main class="wrap">
 <section id="home" class="panel active">
-<div class="hero"><small>SHOP MODE</small><h1>Touch → Bill → Paid</h1><p>Tap food to add. Use + or − to change quantity.</p><div class="today">Today's Sales <b id="todayTotal">₹0</b></div></div>
-<div class="section-title"><h2>🍽️ Food</h2><button class="speak" onclick="speak('Food menu')">🔊 Speak</button></div>
-<input id="search" class="search" placeholder="🔎 Search food..." oninput="render()">
-<div class="cats" id="cats"></div><div id="grid" class="grid"></div>
+  <div class="hero"><small>SHOP MODE</small><h1>Touch → Bill → Paid</h1><p>Tap + to add. Tap − to reduce quantity.</p><div class="today">Today's Sales <b id="todayTotal">₹0</b></div></div>
+  <div class="section-title"><h2>🍽️ Food</h2><button class="speak" id="speakBtn">🔊 Speak</button></div>
+  <input id="search" class="search" placeholder="🔎 Search food..." autocomplete="off">
+  <div class="cats" id="cats"></div>
+  <div id="grid" class="grid"></div>
 </section>
 
-<section id="bill" class="panel"><div class="section-title"><h2>🧾 Bill</h2></div><div id="billList"></div><div id="billTotal" class="hero" style="padding:20px;margin-top:15px"><div class="today">Total <b>₹0</b></div></div><div class="pay"><button class="cash" onclick="pay('Cash')">💵 CASH</button><button class="upi" onclick="pay('UPI')">📱 UPI</button></div></section>
+<section id="bill" class="panel">
+  <div class="section-title"><h2>🧾 Bill</h2></div>
+  <div id="billList"></div>
+  <div id="billTotal" class="hero" style="padding:20px;margin-top:15px"><div class="today">Total <b>₹0</b></div></div>
+  <div class="pay"><button class="cash" id="cashBtn">💵 CASH — PAID</button><button class="upi" id="upiBtn">📱 UPI — PAID</button></div>
+</section>
 
-<section id="sales" class="panel"><div class="section-title"><h2>📊 Sales</h2></div><div class="hero"><div class="today">Today <b id="salesToday">₹0</b></div></div><div id="history"></div></section>
-<section id="owner" class="panel"><div class="hero"><small>OWNER</small><h1>Owner Settings</h1><p>Menu and settings can be managed here. Normal selling never asks for a PIN.</p></div></section>
+<section id="sales" class="panel">
+  <div class="section-title"><h2>📊 Sales</h2></div>
+  <div class="hero"><div class="today">Today <b id="salesToday">₹0</b></div></div>
+  <div id="history"></div>
+</section>
+
+<section id="owner" class="panel">
+  <div class="hero"><small>OWNER</small><h1>Owner Settings</h1><p>Normal selling does not ask for a PIN.</p></div>
+</section>
 </main>
 
-<div id="billbar" class="billbar" onclick="go('bill')">VIEW BILL · ₹<span id="barTotal">0</span></div>
-<nav class="bottom"><button class="nav active" onclick="go('home')"><span>🏠</span>HOME</button><button class="nav" onclick="go('bill')"><span>🧾</span>BILL</button><button class="nav" onclick="go('sales')"><span>📊</span>SALES</button><button class="nav" onclick="go('owner')"><span>🔑</span>OWNER</button></nav>
+<button id="billbar" class="billbar">VIEW BILL · ₹<span id="barTotal">0</span></button>
+
+<nav class="bottom">
+<button class="nav active" data-page="home"><span>🏠</span>HOME</button>
+<button class="nav" data-page="bill"><span>🧾</span>BILL</button>
+<button class="nav" data-page="sales"><span>📊</span>SALES</button>
+<button class="nav" data-page="owner"><span>🔑</span>OWNER</button>
+</nav>
 
 <script>
-const defaultFoods=[
+(function(){
+'use strict';
+
+const DEFAULT_FOODS=[
 {id:1,name:'Idly',price:5,cat:'Tiffin',emoji:'🍚'},
 {id:2,name:'Dosa',price:20,cat:'Dosa',emoji:'🥞'},
 {id:3,name:'Vada',price:10,cat:'Vada',emoji:'🍩'},
 {id:4,name:'Poori',price:25,cat:'Poori',emoji:'🫓'},
 {id:5,name:'Masala Dosa',price:35,cat:'Dosa',emoji:'🥞'},
 {id:6,name:'Tea',price:10,cat:'Drinks',emoji:'☕'},
-{id:7,name:'Coffee',price:15,cat:'Drinks',emoji:'☕'}];
-let foods=JSON.parse(localStorage.getItem('foodieFoods')||'null')||defaultFoods;
-let cart=JSON.parse(localStorage.getItem('foodieCart')||'{}');
-let sales=JSON.parse(localStorage.getItem('foodieSales')||'[]');
+{id:7,name:'Coffee',price:15,cat:'Drinks',emoji:'☕'}
+];
+
+function read(key,fallback){
+  try{
+    const raw=localStorage.getItem(key);
+    return raw===null?fallback:JSON.parse(raw);
+  }catch(e){return fallback}
+}
+function write(key,value){
+  try{localStorage.setItem(key,JSON.stringify(value));}catch(e){}
+}
+
+let foods=read('foodieFoods',DEFAULT_FOODS);
+let cart=read('foodieCart',{});
+let sales=read('foodieSales',[]);
 let category='All';
 
-function save(){localStorage.setItem('foodieFoods',JSON.stringify(foods));localStorage.setItem('foodieCart',JSON.stringify(cart));localStorage.setItem('foodieSales',JSON.stringify(sales))}
-function qty(id){return cart[id]||0}
-function change(id,delta){cart[id]=Math.max(0,qty(id)+delta);if(!cart[id])delete cart[id];save();render();renderBill()}
-function renderCats(){document.getElementById('cats').innerHTML=['All','Tiffin','Dosa','Vada','Poori','Drinks'].map(c=>`<button class="cat ${category===c?'active':''}" onclick="category='${c}';render()">${c}</button>`).join('')}
+function saveAll(){
+  write('foodieFoods',foods);
+  write('foodieCart',cart);
+  write('foodieSales',sales);
+}
+
+function getQty(id){return Number(cart[id]||0)}
+
+function changeQty(id,delta){
+  const n=Math.max(0,getQty(id)+Number(delta));
+  if(n===0) delete cart[id];
+  else cart[id]=n;
+  saveAll();
+  render();
+  renderBill();
+}
+
+function totalAndCount(){
+  let total=0,count=0;
+  foods.forEach(f=>{const q=getQty(f.id);count+=q;total+=q*Number(f.price||0)});
+  return {total,count};
+}
+
+function todaySales(){
+  const d=new Date().toLocaleDateString('en-CA');
+  return sales.filter(s=>s.date===d).reduce((a,s)=>a+Number(s.total||0),0);
+}
+
+function renderCats(){
+  const cats=document.getElementById('cats');
+  cats.innerHTML=['All','Tiffin','Dosa','Vada','Poori','Drinks'].map(c=>
+    '<button class="cat '+(category===c?'active':'')+'" data-cat="'+c+'">'+c+'</button>'
+  ).join('');
+}
+
 function render(){
-renderCats();let q=(document.getElementById('search').value||'').toLowerCase();
-let list=foods.filter(f=>(category==='All'||f.cat===category)&&f.name.toLowerCase().includes(q));
-document.getElementById('grid').innerHTML=list.map(f=>`<article class="card">
-<div class="foodimg"><div class="emoji">${f.emoji}</div></div>
-<div class="info"><h3>${f.name}</h3><div class="price">₹${f.price}</div><div class="sub">${f.cat}</div>
-<div class="qty ${qty(f.id)?'':'zero'}"><button class="qbtn minus" onclick="change(${f.id},-1)">−</button><span class="qnum">${qty(f.id)}</span><button class="qbtn" onclick="change(${f.id},1)">+</button></div></div></article>`).join('');
-updateTotals()
+  renderCats();
+  const q=(document.getElementById('search').value||'').trim().toLowerCase();
+  const list=foods.filter(f=>
+    (category==='All'||f.cat===category) &&
+    String(f.name).toLowerCase().includes(q)
+  );
+  const grid=document.getElementById('grid');
+
+  grid.innerHTML=list.length ? list.map(f=>{
+    const q=getQty(f.id);
+    return '<article class="card">'+
+      '<div class="foodimg"><div class="emoji">'+f.emoji+'</div></div>'+
+      '<div class="info"><h3>'+f.name+'</h3>'+
+      '<div class="price">₹'+f.price+'</div>'+
+      '<div class="sub">'+f.cat+'</div>'+
+      '<div class="qty">'+
+      '<button class="qbtn minus" data-action="minus" data-id="'+f.id+'" aria-label="Decrease '+f.name+'">−</button>'+
+      '<span class="qnum">'+q+'</span>'+
+      '<button class="qbtn" data-action="plus" data-id="'+f.id+'" aria-label="Add '+f.name+'">+</button>'+
+      '</div></div></article>';
+  }).join('') : '<div class="empty">No food found</div>';
+
+  updateTotals();
 }
+
 function updateTotals(){
-let total=0,count=0;foods.forEach(f=>{count+=qty(f.id);total+=qty(f.id)*f.price});
-document.getElementById('headCount').textContent=count;document.getElementById('barTotal').textContent=total;document.getElementById('billbar').classList.toggle('show',count>0);
-document.getElementById('todayTotal').textContent='₹'+todaySales();
+  const x=totalAndCount();
+  document.getElementById('headCount').textContent=x.count;
+  document.getElementById('barTotal').textContent=x.total;
+  document.getElementById('billbar').classList.toggle('show',x.count>0);
+  document.getElementById('todayTotal').textContent='₹'+todaySales();
 }
+
 function renderBill(){
-let rows=foods.filter(f=>qty(f.id));let total=0;
-document.getElementById('billList').innerHTML=rows.length?rows.map(f=>{let t=qty(f.id)*f.price;total+=t;return `<div class="billrow"><b>${f.name} × ${qty(f.id)}</b><strong>₹${t}</strong></div>`}).join(''):'<div class="empty">No items in bill</div>';
-document.querySelector('#billTotal b').textContent='₹'+total;updateTotals()
+  const rows=foods.filter(f=>getQty(f.id)>0);
+  let total=0;
+  document.getElementById('billList').innerHTML=rows.length ? rows.map(f=>{
+    const q=getQty(f.id), t=q*Number(f.price);
+    total+=t;
+    return '<div class="billrow"><b>'+f.name+' × '+q+'</b><strong>₹'+t+'</strong></div>';
+  }).join('') : '<div class="empty">No items in bill</div>';
+  document.querySelector('#billTotal b').textContent='₹'+total;
+  updateTotals();
 }
-function todaySales(){let d=new Date().toISOString().slice(0,10);return sales.filter(s=>s.date===d).reduce((a,s)=>a+s.total,0)}
-function pay(method){let rows=foods.filter(f=>qty(f.id));if(!rows.length)return alert('Bill is empty');let items=rows.map(f=>({name:f.name,qty:qty(f.id),price:f.price}));let total=items.reduce((a,i)=>a+i.qty*i.price,0);sales.unshift({id:Date.now(),date:new Date().toISOString().slice(0,10),time:new Date().toLocaleTimeString(),items,total,method});cart={};save();render();renderBill();renderSales();alert('Payment saved successfully');go('home')}
-function renderSales(){document.getElementById('salesToday').textContent='₹'+todaySales();document.getElementById('history').innerHTML=sales.slice(0,30).map(s=>`<div class="billrow"><div><b>${s.time}</b><br><small>${s.items.map(i=>i.name+' × '+i.qty).join(', ')}</small></div><strong>₹${s.total}<br><small>${s.method}</small></strong></div>`).join('')||'<div class="empty">No sales yet</div>'}
-function go(id){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav').forEach((n,i)=>n.classList.toggle('active',['home','bill','sales','owner'][i]===id));history.replaceState(null,'','#'+id);if(id==='bill')renderBill();if(id==='sales')renderSales()}
-function speak(t){if('speechSynthesis'in window)speechSynthesis.speak(new SpeechSynthesisUtterance(t))}
-window.onpopstate=()=>go(location.hash.slice(1)||'home');
-render();renderBill();renderSales();
+
+function pay(method){
+  const rows=foods.filter(f=>getQty(f.id)>0);
+  if(!rows.length){alert('Bill is empty');return}
+  const items=rows.map(f=>({name:f.name,qty:getQty(f.id),price:Number(f.price)}));
+  const total=items.reduce((a,i)=>a+i.qty*i.price,0);
+  const now=new Date();
+  sales.unshift({
+    id:Date.now(),
+    date:now.toLocaleDateString('en-CA'),
+    time:now.toLocaleTimeString(),
+    items,total,method
+  });
+  cart={};
+  saveAll();
+  render();
+  renderBill();
+  renderSales();
+  alert('Payment saved successfully');
+  go('home');
+}
+
+function renderSales(){
+  document.getElementById('salesToday').textContent='₹'+todaySales();
+  document.getElementById('history').innerHTML=sales.length ? sales.slice(0,50).map(s=>
+    '<div class="billrow"><div><b>'+s.time+'</b><br><small>'+
+    s.items.map(i=>i.name+' × '+i.qty).join(', ')+'</small></div>'+
+    '<strong>₹'+s.total+'<br><small>'+s.method+'</small></strong></div>'
+  ).join('') : '<div class="empty">No sales yet</div>';
+}
+
+function go(id){
+  const valid=['home','bill','sales','owner'];
+  if(valid.indexOf(id)<0) id='home';
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav').forEach(n=>n.classList.toggle('active',n.dataset.page===id));
+  try{localStorage.setItem('foodiePage',id)}catch(e){}
+  if(location.hash!=='#'+id) history.pushState({page:id},'', '#'+id);
+  if(id==='bill')renderBill();
+  if(id==='sales')renderSales();
+}
+
+document.getElementById('grid').addEventListener('click',function(e){
+  const btn=e.target.closest('button[data-action]');
+  if(!btn)return;
+  e.preventDefault();
+  e.stopPropagation();
+  const id=Number(btn.dataset.id);
+  const delta=btn.dataset.action==='plus'?1:-1;
+  changeQty(id,delta);
+});
+
+document.getElementById('cats').addEventListener('click',function(e){
+  const btn=e.target.closest('button[data-cat]');
+  if(!btn)return;
+  category=btn.dataset.cat;
+  render();
+});
+
+document.getElementById('search').addEventListener('input',render);
+document.getElementById('billbar').addEventListener('click',()=>go('bill'));
+document.querySelectorAll('.nav').forEach(n=>n.addEventListener('click',()=>go(n.dataset.page)));
+document.getElementById('cashBtn').addEventListener('click',()=>pay('Cash'));
+document.getElementById('upiBtn').addEventListener('click',()=>pay('UPI'));
+
+document.getElementById('speakBtn').addEventListener('click',()=>{
+  if('speechSynthesis' in window){
+    speechSynthesis.cancel();
+    speechSynthesis.speak(new SpeechSynthesisUtterance('Food menu'));
+  }
+});
+
+window.addEventListener('popstate',()=>{
+  const id=(location.hash||'#home').slice(1);
+  go(id);
+});
+
+const savedPage=read('foodiePage','home');
+const initialPage=location.hash?location.hash.slice(1):savedPage;
+render();
+renderBill();
+renderSales();
+if(initialPage && initialPage!=='home') go(initialPage);
+})();
 </script>
-</body></html>
+</body>
+</html>
