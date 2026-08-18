@@ -43,6 +43,10 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 .image-upload{display:flex;align-items:center;justify-content:center;min-height:52px;padding:10px 14px;border-radius:16px;border:1px dashed rgba(75,82,120,.35);background:rgba(245,246,252,.9);font-weight:700;cursor:pointer;color:#30384f}
 .image-upload:active{transform:scale(.99)}
 </style>
+
+<style>
+.manage-grid{display:grid;gap:12px;margin-top:14px}.manage-item{background:#fff;border-radius:20px;padding:15px;display:flex;align-items:center;gap:12px;box-shadow:0 5px 20px #18203310}.manage-item .mi-img{width:58px;height:58px;border-radius:16px;overflow:hidden;background:linear-gradient(145deg,#31415b,#182033);display:grid;place-items:center;flex:none}.manage-item .mi-img img{width:100%;height:100%;object-fit:cover}.manage-item .mi-main{flex:1;min-width:0}.manage-item .mi-main b{display:block;font-size:17px}.manage-item .mi-main small{display:block;color:#7d8492;margin-top:4px}.manage-item .mi-price{font-weight:900;font-size:18px;margin-top:4px}.mi-actions{display:flex;gap:7px;flex:none}.mi-actions button{border:0;border-radius:12px;padding:10px 11px;font-weight:900}.mi-edit{background:#ece9ff;color:#5b43d6}.mi-delete{background:#ffe4e7;color:#c71935}.manage-note{background:#fff;border-radius:18px;padding:14px;color:#687080;line-height:1.45;box-shadow:0 5px 20px #18203310;margin-top:12px}.edit-image-preview{display:none;width:100%;height:150px;object-fit:cover;border-radius:18px;border:1px solid rgba(0,0,0,.08)}
+</style>
 </head>
 <body>
 <header class="header">
@@ -77,6 +81,7 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 <div class="sales-tabs"><button class="stab active" data-period="daily">DAILY SALES</button><button class="stab" data-period="monthly">MONTHLY SALES</button></div>
 <div id="salesSummary" class="sales-summary"></div><div id="history"></div></section>
 <section id="owner" class="panel"><div class="hero"><small>SETTINGS</small><h1>⚙️ Settings</h1><p>App settings and shop options.</p></div><div class="settings-list"><div class="setting-card"><span>🍽️</span><div><b>Add Item</b><small>Add a new food item to the menu</small></div><button id="addItemOpen">ADD</button></div>
+<div class="setting-card"><span>🛠️</span><div><b>Menu Items</b><small>Add, edit, delete and change item prices</small></div><button id="manageItemsOpen">OPEN</button></div>
 <div class="setting-card"><span>🧾</span><div><b>Sales History</b><small>View daily and monthly sales</small></div><button onclick="go('sales')">OPEN</button></div><div class="setting-card"><span>🔊</span><div><b>Voice</b><small>Use simple voice guidance</small></div><button id="settingsSpeak">TEST</button></div><div class="setting-card"><span>💾</span><div><b>Backup & Restore</b><small>Keep your shop data safe</small></div><button id="backupOpen">OPEN</button></div></div></section>
 </main>
 
@@ -107,6 +112,34 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
       <button class="modal-ok" id="addItemSave">➕ ADD ITEM</button>
       <button class="modal-cancel" id="addItemCancel">CANCEL</button>
     </div>
+  </div>
+</div>
+
+<div id="manageItemsModal" class="modal" aria-hidden="true">
+  <div class="modal-card">
+    <div class="modal-head"><h3>🛠️ Menu Items</h3><button class="close" id="manageItemsClose">×</button></div>
+    <p>Add new items, edit item details or change prices. Deleting an item will not delete old sales history.</p>
+    <button class="modal-ok" id="manageAddItem" style="width:100%;border:0;border-radius:17px;padding:16px;font-weight:900">➕ ADD NEW ITEM</button>
+    <div id="manageItemsList" class="manage-grid"></div>
+    <div class="manage-note">💾 Your changes are saved automatically on this phone.</div>
+  </div>
+</div>
+
+<div id="editItemModal" class="modal" aria-hidden="true">
+  <div class="modal-card">
+    <div class="modal-head"><h3>✏️ Edit Item</h3><button class="close" id="editItemClose">×</button></div>
+    <p>Change the item name, category, image or price.</p>
+    <div style="display:grid;gap:10px">
+      <input id="editItemName" class="search" placeholder="Item name" autocomplete="off">
+      <input id="editItemPrice" class="search" type="number" min="0" step="0.01" placeholder="Price (₹)">
+      <select id="editItemCat" class="search" style="appearance:auto">
+        <option value="Tiffin">Tiffin</option><option value="Dosa">Dosa</option><option value="Vada">Vada</option><option value="Poori">Poori</option><option value="Drinks">Drinks</option><option value="Other">Other</option>
+      </select>
+      <input id="editItemEmoji" class="search" placeholder="Emoji (optional) e.g. 🍛" maxlength="4" autocomplete="off">
+      <label class="image-upload" for="editItemImage"><span>🖼️ Change Food Image</span><input id="editItemImage" type="file" accept="image/*" style="display:none"></label>
+      <img id="editItemImagePreview" class="edit-image-preview" alt="Food preview">
+    </div>
+    <div class="modal-actions"><button class="modal-ok" id="editItemSave">💾 SAVE CHANGES</button><button class="modal-cancel" id="editItemCancel">CANCEL</button></div>
   </div>
 </div>
 
@@ -212,7 +245,7 @@ function render(){
   grid.innerHTML=list.length ? list.map(f=>{
     const q=getQty(f.id);
     return '<article class="card">'+
-      '<div class="foodimg"><div class="emoji">'+f.emoji+'</div></div>'+
+      '<div class="foodimg">'+(f.image?'<img src="'+f.image+'" alt="" style="width:100%;height:100%;object-fit:cover">':'<div class="emoji">'+(f.emoji||'🍽️')+'</div>')+'</div>'+
       '<div class="info"><h3>'+f.name+'</h3>'+
       '<div class="price">₹'+f.price+'</div>'+
       '<div class="sub">'+f.cat+'</div>'+
@@ -371,6 +404,72 @@ document.getElementById('addItemCancel').addEventListener('click',closeAddItem);
 addItemModal.addEventListener('click',e=>{if(e.target===addItemModal)closeAddItem()});
 document.getElementById('addItemSave').addEventListener('click',addNewItem);
 [itemName,itemPrice,itemEmoji].forEach(el=>el.addEventListener('keydown',e=>{if(e.key==='Enter')addNewItem()}));
+
+const manageItemsModal=document.getElementById('manageItemsModal');
+const manageItemsList=document.getElementById('manageItemsList');
+const editItemModal=document.getElementById('editItemModal');
+const editItemName=document.getElementById('editItemName');
+const editItemPrice=document.getElementById('editItemPrice');
+const editItemCat=document.getElementById('editItemCat');
+const editItemEmoji=document.getElementById('editItemEmoji');
+const editItemImage=document.getElementById('editItemImage');
+const editItemImagePreview=document.getElementById('editItemImagePreview');
+let editingItemId=null;
+let editItemImageData=null;
+
+function openManageItems(){
+  renderManageItems();
+  manageItemsModal.classList.add('show');
+  manageItemsModal.setAttribute('aria-hidden','false');
+}
+function closeManageItems(){
+  manageItemsModal.classList.remove('show');
+  manageItemsModal.setAttribute('aria-hidden','true');
+}
+function renderManageItems(){
+  manageItemsList.innerHTML=foods.length?foods.map(f=>{
+    const visual=f.image?'<img src="'+f.image+'" alt="">':'<span style="font-size:30px">'+(f.emoji||'🍽️')+'</span>';
+    return '<div class="manage-item"><div class="mi-img">'+visual+'</div><div class="mi-main"><b>'+f.name+'</b><small>'+f.cat+'</small><div class="mi-price">₹'+Number(f.price||0).toLocaleString('en-IN')+'</div></div><div class="mi-actions"><button class="mi-edit" data-manage="edit" data-id="'+f.id+'">EDIT</button><button class="mi-delete" data-manage="delete" data-id="'+f.id+'">DELETE</button></div></div>';
+  }).join(''):'<div class="empty">No menu items</div>';
+}
+function openEditItem(id){
+  const f=foods.find(x=>Number(x.id)===Number(id));
+  if(!f)return;
+  editingItemId=Number(id); editItemImageData=null;
+  editItemName.value=f.name||''; editItemPrice.value=f.price??''; editItemCat.value=f.cat||'Other'; editItemEmoji.value=f.emoji||'';
+  editItemImage.value='';
+  editItemImagePreview.src=f.image||''; editItemImagePreview.style.display=f.image?'block':'none';
+  editItemModal.classList.add('show'); editItemModal.setAttribute('aria-hidden','false');
+}
+function closeEditItem(){editingItemId=null; editItemImageData=null; editItemModal.classList.remove('show'); editItemModal.setAttribute('aria-hidden','true');}
+function saveEditedItem(){
+  const f=foods.find(x=>Number(x.id)===Number(editingItemId)); if(!f)return;
+  const name=editItemName.value.trim(), price=Number(editItemPrice.value);
+  if(!name){alert('Please enter item name');return}
+  if(!Number.isFinite(price)||price<0){alert('Please enter a valid price');return}
+  const duplicate=foods.some(x=>Number(x.id)!==Number(editingItemId)&&String(x.name).trim().toLowerCase()===name.toLowerCase());
+  if(duplicate){alert('This item already exists');return}
+  f.name=name; f.price=price; f.cat=editItemCat.value; f.emoji=editItemEmoji.value.trim()||'🍽️';
+  if(editItemImageData!==null) f.image=editItemImageData;
+  saveAll(); closeEditItem(); renderManageItems(); render(); renderBill(); alert(name+' updated successfully');
+}
+function deleteItem(id){
+  const f=foods.find(x=>Number(x.id)===Number(id)); if(!f)return;
+  if(!confirm('Delete '+f.name+' from the menu? Old sales history will stay safe.'))return;
+  foods=foods.filter(x=>Number(x.id)!==Number(id)); delete cart[id];
+  saveAll(); renderManageItems(); render(); renderBill();
+}
+
+document.getElementById('manageItemsOpen').addEventListener('click',openManageItems);
+document.getElementById('manageItemsClose').addEventListener('click',closeManageItems);
+document.getElementById('manageAddItem').addEventListener('click',()=>{closeManageItems();openAddItem();});
+manageItemsModal.addEventListener('click',e=>{if(e.target===manageItemsModal)closeManageItems()});
+manageItemsList.addEventListener('click',e=>{const b=e.target.closest('button[data-manage]');if(!b)return;const id=Number(b.dataset.id);if(b.dataset.manage==='edit')openEditItem(id);else deleteItem(id);});
+editItemModal.addEventListener('click',e=>{if(e.target===editItemModal)closeEditItem()});
+document.getElementById('editItemClose').addEventListener('click',closeEditItem);
+document.getElementById('editItemCancel').addEventListener('click',closeEditItem);
+document.getElementById('editItemSave').addEventListener('click',saveEditedItem);
+editItemImage.addEventListener('change',()=>{const file=editItemImage.files&&editItemImage.files[0];if(!file)return;if(!file.type.startsWith('image/')){alert('Please choose an image file');editItemImage.value='';return;}const reader=new FileReader();reader.onload=()=>{editItemImageData=reader.result;editItemImagePreview.src=editItemImageData;editItemImagePreview.style.display='block'};reader.readAsDataURL(file)});
 
 const backupModal=document.getElementById('backupModal');
 const backupFile=document.getElementById('backupFile');
