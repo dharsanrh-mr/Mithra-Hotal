@@ -27,7 +27,7 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 .billbar{position:fixed;left:50%;transform:translateX(-50%);bottom:83px;z-index:45;background:#17213b;color:white;border:0;border-radius:18px;padding:15px 24px;font-weight:900;box-shadow:0 10px 30px #0004;display:none;white-space:nowrap}.billbar.show{display:block}
 .billrow{background:#fff;border-radius:18px;padding:15px;margin:10px 0;display:flex;justify-content:space-between;align-items:center}.pay{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}.pay button{border:0;border-radius:18px;padding:18px;font-size:18px;font-weight:900}.cash{background:#1b8b59;color:#fff}.upi{background:#5134d6;color:#fff}.empty{text-align:center;padding:40px;color:#888}
 @media(max-width:600px){.header{padding:13px 18px}.logo{width:52px;height:52px}.brand b{font-size:21px}.topbill{font-size:22px}.wrap{padding:20px 22px 125px}.hero h1{font-size:33px}.grid{gap:14px}.foodimg{height:180px}.qbtn{width:52px;height:52px}.billbar{bottom:84px}}
-</style>
+.sales-tabs{display:flex;gap:10px;margin:14px 0;position:sticky;top:78px;z-index:5;background:#f6f7fb;padding:4px 0}.stab{flex:1;border:0;border-radius:16px;padding:14px 8px;background:#fff;color:#687080;font-weight:900;box-shadow:0 4px 14px #1820330b}.stab.active{background:#17213b;color:#fff}.sales-summary{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0 16px}.sum-card{background:#fff;border-radius:20px;padding:17px;box-shadow:0 5px 20px #18203310}.sum-card small{display:block;color:#7d8492;font-weight:700;margin-bottom:5px}.sum-card b{font-size:24px}.date-head{margin:18px 0 8px;font-size:18px;font-weight:900}.settings-list{display:grid;gap:12px;margin-top:16px}.setting-card{background:#fff;border-radius:20px;padding:15px;display:flex;align-items:center;gap:12px;box-shadow:0 5px 20px #18203310}.setting-card>span{font-size:28px}.setting-card div{flex:1}.setting-card b,.setting-card small{display:block}.setting-card small{color:#7d8492;margin-top:4px}.setting-card button{border:0;background:#17213b;color:#fff;border-radius:12px;padding:10px 13px;font-weight:900}.backup-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}.backup-btn{border:0;border-radius:18px;padding:17px 12px;font-weight:900;background:#17213b;color:#fff;box-shadow:0 8px 20px #18203318}.backup-btn.import{background:#6842ee}.backup-note{background:#fff;border-radius:18px;padding:15px;color:#697184;font-size:14px;line-height:1.45;box-shadow:0 5px 20px #18203310;margin-top:14px}.modal{position:fixed;inset:0;background:#10182acc;backdrop-filter:blur(8px);display:none;align-items:flex-end;justify-content:center;z-index:100}.modal.show{display:flex}.modal-card{width:min(560px,100%);background:#f7f8fc;border-radius:30px 30px 0 0;padding:22px;box-shadow:0 -15px 50px #0005}.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.modal-head h3{margin:0;font-size:24px}.close{border:0;background:#e9ebf3;border-radius:14px;width:44px;height:44px;font-size:22px}.modal-card p{color:#687080;line-height:1.45}.modal-actions{display:grid;gap:10px;margin-top:16px}.modal-actions button{border:0;border-radius:17px;padding:16px;font-weight:900}.modal-ok{background:#6842ee;color:#fff}.modal-cancel{background:#e9ebf3;color:#17213b}.file-input{display:none}</style>
 </head>
 <body>
 <header class="header">
@@ -52,15 +52,24 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 </section>
 
 <section id="sales" class="panel">
-  <div class="section-title"><h2>📊 Sales</h2></div>
-  <div class="hero"><div class="today">Today <b id="salesToday">₹0</b></div></div>
-  <div id="history"></div>
-</section>
-
-<section id="owner" class="panel">
-  <div class="hero"><small>OWNER</small><h1>Owner Settings</h1><p>Normal selling does not ask for a PIN.</p></div>
-</section>
+<div class="section-title"><h2>📊 Sales History</h2></div>
+<div class="sales-tabs"><button class="stab active" data-period="daily">DAILY SALES</button><button class="stab" data-period="monthly">MONTHLY SALES</button></div>
+<div id="salesSummary" class="sales-summary"></div><div id="history"></div></section>
+<section id="owner" class="panel"><div class="hero"><small>SETTINGS</small><h1>⚙️ Settings</h1><p>App settings and shop options.</p></div><div class="settings-list"><div class="setting-card"><span>🧾</span><div><b>Sales History</b><small>View daily and monthly sales</small></div><button onclick="go('sales')">OPEN</button></div><div class="setting-card"><span>🔊</span><div><b>Voice</b><small>Use simple voice guidance</small></div><button id="settingsSpeak">TEST</button></div><div class="setting-card"><span>💾</span><div><b>Backup & Restore</b><small>Keep your shop data safe</small></div><button id="backupOpen">OPEN</button></div></div></section>
 </main>
+
+<div id="backupModal" class="modal" aria-hidden="true">
+  <div class="modal-card">
+    <div class="modal-head"><h3>💾 Backup & Restore</h3><button class="close" id="backupClose">×</button></div>
+    <p>Backup your <b>foods, cart and sales history</b> into one file. Import uses <b>MERGE</b> mode, so existing sales will not be deleted.</p>
+    <div class="modal-actions">
+      <button class="modal-ok" id="backupDownload">⬇️ BACKUP DATA</button>
+      <button class="modal-ok" id="backupImportBtn">⬆️ IMPORT BACKUP</button>
+      <button class="modal-cancel" id="backupCancel">CANCEL</button>
+    </div>
+    <input id="backupFile" class="file-input" type="file" accept="application/json,.json">
+  </div>
+</div>
 
 <button id="billbar" class="billbar">VIEW BILL · ₹<span id="barTotal">0</span></button>
 
@@ -68,7 +77,7 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 <button class="nav active" data-page="home"><span>🏠</span>HOME</button>
 <button class="nav" data-page="bill"><span>🧾</span>BILL</button>
 <button class="nav" data-page="sales"><span>📊</span>SALES</button>
-<button class="nav" data-page="owner"><span>🔑</span>OWNER</button>
+<button class="nav" data-page="owner"><span>⚙️</span>SETTINGS</button>
 </nav>
 
 <script>
@@ -202,13 +211,17 @@ function pay(method){
   go('home');
 }
 
+function money(n){return '₹'+Number(n||0).toLocaleString('en-IN')}
+let salesPeriod='daily';
 function renderSales(){
-  document.getElementById('salesToday').textContent='₹'+todaySales();
-  document.getElementById('history').innerHTML=sales.length ? sales.slice(0,50).map(s=>
-    '<div class="billrow"><div><b>'+s.time+'</b><br><small>'+
-    s.items.map(i=>i.name+' × '+i.qty).join(', ')+'</small></div>'+
-    '<strong>₹'+s.total+'<br><small>'+s.method+'</small></strong></div>'
-  ).join('') : '<div class="empty">No sales yet</div>';
+ const now=new Date(), todayKey=now.toLocaleDateString('en-CA'), monthKey=todayKey.slice(0,7);
+ const daily=sales.filter(s=>s.date===todayKey), monthly=sales.filter(s=>String(s.date||'').slice(0,7)===monthKey);
+ const active=salesPeriod==='daily'?daily:monthly, total=active.reduce((a,s)=>a+Number(s.total||0),0);
+ document.getElementById('salesSummary').innerHTML='<div class="sum-card"><small>'+(salesPeriod==='daily'?'TODAY SALES':'THIS MONTH SALES')+'</small><b>'+money(total)+'</b></div><div class="sum-card"><small>'+(salesPeriod==='daily'?'TODAY ORDERS':'MONTH ORDERS')+'</small><b>'+active.length+'</b></div>';
+ document.querySelectorAll('.stab').forEach(b=>b.classList.toggle('active',b.dataset.period===salesPeriod));
+ if(!active.length){document.getElementById('history').innerHTML='<div class="empty">No sales for this '+(salesPeriod==='daily'?'day':'month')+'</div>';return}
+ if(salesPeriod==='daily'){document.getElementById('history').innerHTML=active.map(s=>'<div class="billrow"><div><b>'+s.time+'</b><br><small>'+s.items.map(i=>i.name+' × '+i.qty).join(', ')+'</small></div><strong>'+money(s.total)+'<br><small>'+s.method+'</small></strong></div>').join('');}
+ else{const groups={};active.forEach(s=>(groups[s.date]||(groups[s.date]=[])).push(s));document.getElementById('history').innerHTML=Object.keys(groups).sort().reverse().map(d=>{const rows=groups[d],t=rows.reduce((a,s)=>a+Number(s.total||0),0);return '<div class="date-head">📅 '+d+' · '+money(t)+'</div>'+rows.map(s=>'<div class="billrow"><div><b>'+s.time+'</b><br><small>'+s.items.map(i=>i.name+' × '+i.qty).join(', ')+'</small></div><strong>'+money(s.total)+'<br><small>'+s.method+'</small></strong></div>').join('')}).join('');}
 }
 
 function go(id){
@@ -240,9 +253,49 @@ document.getElementById('cats').addEventListener('click',function(e){
   render();
 });
 
+document.querySelectorAll('.stab').forEach(b=>b.addEventListener('click',()=>{salesPeriod=b.dataset.period;renderSales();}));
 document.getElementById('search').addEventListener('input',render);
 document.getElementById('billbar').addEventListener('click',()=>go('bill'));
 document.querySelectorAll('.nav').forEach(n=>n.addEventListener('click',()=>go(n.dataset.page)));
+
+const backupModal=document.getElementById('backupModal');
+const backupFile=document.getElementById('backupFile');
+function openBackup(){backupModal.classList.add('show');backupModal.setAttribute('aria-hidden','false')}
+function closeBackup(){backupModal.classList.remove('show');backupModal.setAttribute('aria-hidden','true');backupFile.value=''}
+function makeBackup(){
+  const data={version:1,app:'FOODIE Simple Shop POS',createdAt:new Date().toISOString(),foods,cart,sales};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download='FOODIE-BACKUP-'+new Date().toISOString().slice(0,10)+'.json';
+  document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  alert('Backup created successfully. Keep this file safe.');
+}
+function mergeBackup(data){
+  if(!data || !Array.isArray(data.sales) || !Array.isArray(data.foods)) throw new Error('Invalid backup file');
+  const salesMap=new Map(sales.map(x=>[String(x.id),x]));
+  data.sales.forEach(x=>{if(x && x.id!=null) salesMap.set(String(x.id),x)});
+  sales=Array.from(salesMap.values()).sort((a,b)=>Number(b.id||0)-Number(a.id||0));
+  const foodMap=new Map(foods.map(x=>[String(x.id),x]));
+  data.foods.forEach(x=>{if(x && x.id!=null) foodMap.set(String(x.id),x)});
+  foods=Array.from(foodMap.values());
+  if(data.cart && typeof data.cart==='object'){Object.keys(data.cart).forEach(id=>{const old=Number(cart[id]||0), incoming=Number(data.cart[id]||0); cart[id]=Math.max(old,incoming)})}
+  saveAll(); render(); renderBill(); renderSales();
+}
+
+document.getElementById('backupOpen').addEventListener('click',openBackup);
+document.getElementById('backupClose').addEventListener('click',closeBackup);
+document.getElementById('backupCancel').addEventListener('click',closeBackup);
+backupModal.addEventListener('click',e=>{if(e.target===backupModal)closeBackup()});
+document.getElementById('backupDownload').addEventListener('click',makeBackup);
+document.getElementById('backupImportBtn').addEventListener('click',()=>backupFile.click());
+backupFile.addEventListener('change',()=>{
+  const file=backupFile.files[0]; if(!file)return;
+  const reader=new FileReader();
+  reader.onload=()=>{try{const data=JSON.parse(reader.result); mergeBackup(data); closeBackup(); alert('Backup imported successfully. Existing data was kept and backup data was merged.');}catch(err){alert('Import failed. Please choose a valid FOODIE backup file.')}};
+  reader.readAsText(file);
+});
+
+document.getElementById('settingsSpeak').addEventListener('click',()=>{if('speechSynthesis' in window){speechSynthesis.cancel();speechSynthesis.speak(new SpeechSynthesisUtterance('Settings is working'));}else alert('Voice is not supported on this phone');});
 document.getElementById('cashBtn').addEventListener('click',()=>pay('Cash'));
 document.getElementById('upiBtn').addEventListener('click',()=>pay('UPI'));
 
