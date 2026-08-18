@@ -1,354 +1,87 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#101827">
-<title>Mithra Hotel POS - Shop Mode</title>
+<meta name="theme-color" content="#17213b">
+<title>FOODIE - Simple Shop POS</title>
 <style>
-:root{
-  --bg:#f5f7fb;--card:#fff;--ink:#101827;--muted:#7b8496;--line:#e6eaf0;
-  --navy:#111827;--purple:#5b4cf0;--green:#16a34a;--red:#dc2626;--yellow:#f59e0b;
-  --shadow:0 10px 30px rgba(15,23,42,.08);--shadow2:0 18px 50px rgba(15,23,42,.14)
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;padding-bottom:92px}
-button,input,select{font:inherit}button{border:0;cursor:pointer}
-.topbar{height:76px;position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:10px 14px;color:#fff;background:linear-gradient(135deg,#101827,#273454 60%,#5140b8);box-shadow:0 8px 28px #11182730}
-.brand{display:flex;align-items:center;gap:10px}.brand img{width:50px;height:50px;border-radius:16px;box-shadow:0 8px 22px #0005}.brand strong{display:block;font-size:17px}.brand small{display:block;color:#d8def0;font-size:10px;margin-top:2px}
-.header-actions{display:flex;gap:7px}.head-btn{position:relative;width:47px;height:47px;border-radius:15px;color:#fff;background:#ffffff16;border:1px solid #ffffff22;font-size:21px}.badge{position:absolute;right:-4px;top:-5px;background:#ef4444;border:2px solid #182238;color:#fff;border-radius:20px;padding:2px 6px;font-size:10px;font-weight:900}
-.page{display:none;max-width:1120px;margin:auto;padding:18px 14px 105px}.page.active{display:block}
-.hero{color:#fff;border-radius:26px;padding:20px;background:linear-gradient(135deg,#151d30,#34405f 58%,#5948d8);box-shadow:var(--shadow2);position:relative;overflow:hidden}
-.hero:after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;right:-70px;top:-75px;background:#ffffff14}.hero>*{position:relative;z-index:1}
-.eyebrow{font-size:9px;letter-spacing:1.7px;font-weight:900;color:#aab5c8}.hero h2{font-size:25px;margin:5px 0;letter-spacing:-1px}.hero p{font-size:12px;color:#dce2ef;margin:0;max-width:450px}
-.big-sale{display:flex;align-items:center;justify-content:space-between;margin-top:17px;padding:13px 15px;border-radius:17px;background:#ffffff12;border:1px solid #ffffff22}.big-sale span{font-size:10px;color:#dce2ef}.big-sale strong{font-size:23px}
-.section-head,.page-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:22px 0 12px}.section-head h3,.page-title h2{margin:0}.page-title h2{font-size:24px;letter-spacing:-1px}.text-btn{background:transparent;color:var(--purple);font-weight:900;font-size:11px}
-.search{display:flex;align-items:center;background:#fff;border:1px solid var(--line);border-radius:17px;padding:0 13px;box-shadow:0 5px 18px #11182708}.search span{font-size:22px;color:#8c95a6}.search input{border:0;outline:0;background:transparent;width:100%;padding:13px 8px;font-size:12px}
-.chips{display:flex;gap:8px;overflow:auto;scrollbar-width:none;padding:2px 1px 7px}.chips::-webkit-scrollbar{display:none}.chip{white-space:nowrap;padding:10px 15px;border-radius:999px;background:#fff;border:1px solid var(--line);color:#687286;font-size:11px;font-weight:900;box-shadow:0 4px 13px #11182708}.chip.active{background:linear-gradient(135deg,var(--purple),#7c3aed);color:#fff;border-color:transparent}
-.food-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.food-card{background:#fff;border:1px solid #e7eaf0;border-radius:21px;overflow:hidden;box-shadow:var(--shadow)}.food-img{display:block;width:100%;aspect-ratio:1.12;object-fit:cover}.food-info{padding:10px 11px 12px}.food-info strong{display:block;font-size:14px}.price{font-size:17px;font-weight:950;margin-top:4px}.meta{font-size:9px;color:var(--muted);margin-top:2px}.food-actions{display:flex;justify-content:flex-end;align-items:center;gap:7px;margin-top:8px}.add-btn{width:42px;height:42px;border-radius:14px;color:#fff;background:linear-gradient(135deg,#101827,#34405f);font-size:23px;font-weight:900;box-shadow:0 8px 18px #11182725}.edit-btn{padding:8px 10px;border-radius:11px;background:#eef0ff;color:#5145cd;font-size:10px;font-weight:900}.main-qty{display:flex;align-items:center;gap:5px;background:#f7f8fb;border-radius:15px;padding:3px;border:1px solid #e2e6ee}.main-qty button{width:40px;height:40px;cursor:pointer;display:flex;align-items:center;justify-content:center;border:0;border-radius:13px;font-size:22px;font-weight:950}.main-qty .minus{background:#fee2e2;color:#b91c1c}.main-qty .plus{background:linear-gradient(135deg,#101827,#34405f);color:#fff;box-shadow:0 8px 18px #11182725}.main-qty b{min-width:24px;text-align:center;font-size:15px}
-.touch-card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:14px;box-shadow:var(--shadow);margin-top:12px}.touch-card h3{margin:0 0 8px;font-size:14px}.touch-row{display:grid;grid-template-columns:1fr 1fr;gap:9px}.big-action{min-height:72px;border-radius:17px;font-size:16px;font-weight:950;display:flex;align-items:center;justify-content:center;gap:8px}.cash{background:#dcfce7;color:#166534}.upi{background:#dbeafe;color:#1d4ed8}.yellow{background:#fef3c7;color:#92400e}.red{background:#fee2e2;color:#b91c1c}
-.bill-box{background:#fff;border:1px solid var(--line);border-radius:22px;padding:15px;box-shadow:var(--shadow)}.bill-line{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #edf0f4;font-size:13px}.bill-line:last-child{border-bottom:0}.bill-total{display:flex;justify-content:space-between;align-items:center;padding:16px 0 5px}.bill-total strong{font-size:27px}
-.qty{display:flex;align-items:center;gap:7px}.qty button{width:31px;height:31px;border-radius:10px;background:#eef1f6;font-weight:900}.small-btn{padding:8px 10px;border-radius:10px;font-size:10px;font-weight:900;background:#eef1f6}
-.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat{background:#fff;border:1px solid var(--line);border-radius:20px;padding:15px;box-shadow:var(--shadow)}.stat span{font-size:10px;color:var(--muted)}.stat strong{display:block;font-size:21px;margin-top:5px}
-.list-card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:14px;margin-top:12px;box-shadow:var(--shadow)}.list-row{display:flex;justify-content:space-between;gap:8px;padding:11px 0;border-bottom:1px solid #edf0f4;font-size:11px}.list-row:last-child{border-bottom:0}
-.primary{background:linear-gradient(135deg,#101827,#34405f);color:#fff;border-radius:14px;padding:12px 14px;font-size:11px;font-weight:950;box-shadow:0 8px 18px #11182718}.secondary{background:#eef1f6;color:#273044;border-radius:14px;padding:12px 14px;font-size:11px;font-weight:900}.danger{background:#fee2e2;color:#b91c1c;border-radius:14px;padding:12px 14px;font-size:11px;font-weight:900}.full{width:100%;margin-top:9px}
-.bottom-nav{position:fixed;left:0;right:0;bottom:0;height:78px;z-index:40;background:#ffffffef;border-top:1px solid var(--line);backdrop-filter:blur(18px);display:grid;grid-template-columns:repeat(4,1fr);padding-bottom:env(safe-area-inset-bottom)}.nav-btn{background:transparent;color:#8a93a4;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:21px}.nav-btn span{font-size:9px;font-weight:900}.nav-btn.active{color:#111827}
-.modal-bg{display:none;position:fixed;inset:0;background:#0f172a99;z-index:80;align-items:flex-end;justify-content:center;padding:10px;backdrop-filter:blur(4px)}.modal-bg.open{display:flex}.modal{width:min(520px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:25px;padding:17px;box-shadow:0 30px 90px #0005}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.modal-head h3{margin:0;font-size:17px}.close{width:35px;height:35px;border-radius:11px;background:#eef1f6;font-size:21px}.modal label{display:block;font-size:10px;font-weight:900;margin-top:12px}.modal input,.modal select{width:100%;margin-top:6px;border:1px solid #dfe4ec;border-radius:12px;padding:11px;outline:0;font-size:12px;background:#fff}.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}.muted{font-size:11px;color:var(--muted);line-height:1.55}.toast{position:fixed;left:50%;bottom:91px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#101827;color:#fff;border-radius:13px;padding:11px 15px;font-size:11px;font-weight:800;z-index:100;transition:.22s}.toast.show{opacity:1;transform:translate(-50%,0)}
-.locked{background:linear-gradient(135deg,#101827,#293552);color:#fff;border-radius:22px;padding:18px;box-shadow:var(--shadow2)}.locked h2{margin:0 0 5px;font-size:20px}.locked p{margin:0;color:#cdd5e3;font-size:11px}.owner-tools{display:none}.owner-tools.unlocked{display:block}
-@media(min-width:700px){.food-grid{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:repeat(4,1fr)}.page{padding-left:24px;padding-right:24px}.modal-bg{align-items:center}.modal{border-radius:25px}.bottom-nav{left:50%;right:auto;transform:translateX(-50%);width:min(620px,100%);border-radius:22px 22px 0 0}}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f6f7fb;color:#182033}
+.header{background:linear-gradient(120deg,#14213d,#34227e);color:#fff;padding:18px 24px;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;gap:14px;align-items:center}.logo{width:58px;height:58px;border-radius:17px;background:linear-gradient(145deg,#6675ff,#3020a0);display:grid;place-items:center;font-size:34px;font-weight:900}.brand b{font-size:24px}.brand small{display:block;opacity:.75;margin-top:4px}.topbill{font-size:30px;font-weight:900;background:#ffffff18;padding:12px 18px;border-radius:18px}
+.wrap{max-width:900px;margin:auto;padding:28px 22px 110px}.hero{background:linear-gradient(120deg,#1c2a47,#5031dd);color:white;border-radius:32px;padding:30px;margin-bottom:30px;box-shadow:0 16px 40px #202b5a22}.hero small{letter-spacing:3px;font-weight:800;opacity:.8}.hero h1{font-size:38px;margin:16px 0 8px}.hero p{font-size:18px;margin:0 0 24px}.today{background:#ffffff18;border:1px solid #ffffff25;border-radius:20px;padding:18px;font-size:17px}.today b{float:right;font-size:30px}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin:18px 0 12px}.section-title h2{margin:0;font-size:28px}.speak{border:0;background:none;color:#5b43d6;font-weight:800;font-size:16px}
+.search{width:100%;border:0;background:white;border-radius:25px;padding:17px 22px;font-size:17px;box-shadow:0 5px 20px #18203310;margin-bottom:15px}.cats{display:flex;gap:10px;overflow:auto;padding-bottom:8px}.cat{border:1px solid #e5e6ec;background:#fff;border-radius:24px;padding:13px 21px;white-space:nowrap;font-weight:700;color:#687083}.cat.active{background:#6842ee;color:white;border-color:#6842ee}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.card{background:#fff;border-radius:26px;overflow:hidden;border:1px solid #e6e7ed;box-shadow:0 8px 25px #1820330b}.foodimg{height:190px;background:#24334c;display:grid;place-items:center;overflow:hidden}.foodimg img{width:100%;height:100%;object-fit:cover}.foodimg .emoji{font-size:75px}.info{padding:15px}.info h3{margin:0 0 7px;font-size:21px}.price{font-size:21px;font-weight:900}.sub{color:#8a90a0;font-size:14px;margin-top:5px}.qty{display:flex;align-items:center;justify-content:flex-end;gap:10px;margin-top:12px}.qbtn{width:45px;height:45px;border:0;border-radius:14px;background:#192541;color:#fff;font-size:27px;font-weight:900}.qnum{min-width:28px;text-align:center;font-size:21px;font-weight:900}.zero .minus{opacity:.35}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:#ffffffee;backdrop-filter:blur(12px);border-top:1px solid #ddd;display:flex;justify-content:center;gap:45px;padding:12px 10px calc(12px + env(safe-area-inset-bottom));z-index:20}.nav{border:0;background:none;color:#8990a0;font-weight:800}.nav.active{color:#17213b}.nav span{display:block;font-size:25px;margin-bottom:3px}
+.billbar{position:fixed;left:50%;transform:translateX(-50%);bottom:82px;z-index:21;background:#17213b;color:white;border-radius:18px;padding:14px 22px;font-weight:900;box-shadow:0 10px 30px #0003;display:none}.billbar.show{display:block}
+.panel{display:none}.panel.active{display:block}.billrow{background:#fff;border-radius:18px;padding:15px;margin:10px 0;display:flex;justify-content:space-between;align-items:center}.pay{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}.pay button{border:0;border-radius:18px;padding:18px;font-size:19px;font-weight:900}.cash{background:#1b8b59;color:#fff}.upi{background:#5134d6;color:#fff}.empty{text-align:center;padding:40px;color:#888}
+@media(max-width:600px){.header{padding:15px 18px}.logo{width:52px;height:52px}.brand b{font-size:21px}.topbill{font-size:23px}.wrap{padding:22px 22px 115px}.hero h1{font-size:34px}.grid{gap:14px}.foodimg{height:180px}.bottom{gap:28px}.nav{font-size:12px}}
 </style>
 </head>
 <body>
-<header class="topbar">
-  <div class="brand"><img id="hotelLogo" alt="Hotel"><div><strong id="hotelName">Mithra Hotel</strong><small>Simple Shop POS</small></div></div>
-  <div class="header-actions">
-    <button class="head-btn" id="voiceBtn" title="Voice">🔊</button>
-    <button class="head-btn" id="cartBtn" title="Bill">🧾<b class="badge" id="cartCount">0</b></button>
-  </div>
-</header>
+<header class="header"><div class="brand"><div class="logo">M</div><div><b>FOODIE</b><small>Simple Shop POS</small></div></div><div class="topbill">🧾 <span id="headCount">0</span></div></header>
 
-<main>
-<section id="homePage" class="page active">
-  <div class="hero">
-    <span class="eyebrow">SHOP MODE</span>
-    <h2>Touch → Bill → Paid</h2>
-    <p>Tap a food button. Quantity is added automatically.</p>
-    <div class="big-sale"><span>Today Sales</span><strong id="todaySales">₹0</strong></div>
-  </div>
-
-  <div class="section-head"><h3>🍽️ Food</h3><button class="text-btn" id="speakFoodBtn">🔊 Speak</button></div>
-  <div class="search"><span>⌕</span><input id="search" placeholder="Search food..."></div>
-  <div id="chips" class="chips" style="margin-top:8px"></div>
-  <div id="foodGrid" class="food-grid"></div>
-
-  <div class="touch-card">
-    <h3>🧾 Bill</h3>
-    <div id="quickBill">Bill is empty</div>
-    <div class="touch-row" style="margin-top:10px">
-      <button class="big-action yellow" id="openBillBtn">🧾 BILL</button>
-      <button class="big-action cash" id="quickCashBtn">💵 CASH</button>
-    </div>
-  </div>
+<main class="wrap">
+<section id="home" class="panel active">
+<div class="hero"><small>SHOP MODE</small><h1>Touch → Bill → Paid</h1><p>Tap food to add. Use + or − to change quantity.</p><div class="today">Today's Sales <b id="todayTotal">₹0</b></div></div>
+<div class="section-title"><h2>🍽️ Food</h2><button class="speak" onclick="speak('Food menu')">🔊 Speak</button></div>
+<input id="search" class="search" placeholder="🔎 Search food..." oninput="render()">
+<div class="cats" id="cats"></div><div id="grid" class="grid"></div>
 </section>
 
-<section id="billPage" class="page">
-  <div class="page-title"><div><span class="eyebrow">BILL</span><h2>Current Bill</h2></div><button class="secondary" id="clearCartBtn">Clear</button></div>
-  <div class="bill-box">
-    <div id="billItems"></div>
-    <div class="bill-total"><span>TOTAL</span><strong id="billTotal">₹0</strong></div>
-  </div>
-  <div class="touch-card">
-    <h3>Payment</h3>
-    <div class="touch-row">
-      <button class="big-action cash" id="cashBtn">💵 CASH</button>
-      <button class="big-action upi" id="upiBtn">📱 UPI</button>
-    </div>
-    <button class="big-action yellow" style="width:100%;margin-top:9px" id="otherBtn">💳 OTHER</button>
-  </div>
-</section>
+<section id="bill" class="panel"><div class="section-title"><h2>🧾 Bill</h2></div><div id="billList"></div><div id="billTotal" class="hero" style="padding:20px;margin-top:15px"><div class="today">Total <b>₹0</b></div></div><div class="pay"><button class="cash" onclick="pay('Cash')">💵 CASH</button><button class="upi" onclick="pay('UPI')">📱 UPI</button></div></section>
 
-<section id="salesPage" class="page">
-  <div class="page-title"><div><span class="eyebrow">TODAY</span><h2>Sales</h2></div><button class="text-btn" id="speakSalesBtn">🔊 Speak</button></div>
-  <div class="stats">
-    <div class="stat"><span>Today</span><strong id="sToday">₹0</strong></div>
-    <div class="stat"><span>Bills</span><strong id="sBills">0</strong></div>
-    <div class="stat"><span>Cash</span><strong id="sCash">₹0</strong></div>
-    <div class="stat"><span>UPI</span><strong id="sUpi">₹0</strong></div>
-  </div>
-  <div class="list-card"><div class="section-head" style="margin:0 0 5px"><h3>Recent Bills</h3><button class="text-btn" id="ownerUnlockFromSales">Owner</button></div><div id="recentSales"></div></div>
-  <div id="ownerSalesTools" class="owner-tools">
-    <div class="list-card">
-      <h3>Sales History</h3>
-      <input id="historyDate" type="date" style="width:100%;padding:10px;border:1px solid var(--line);border-radius:11px;margin:7px 0">
-      <input id="historySearch" placeholder="Bill / food search" style="width:100%;padding:10px;border:1px solid var(--line);border-radius:11px">
-      <div id="history"></div>
-    </div>
-  </div>
-</section>
-
-<section id="ownerPage" class="page">
-  <div id="ownerLock" class="locked">
-    <h2>🔐 Owner Mode</h2><p>Price, menu, backup and settings are protected.</p>
-    <button class="big-action yellow" style="width:100%;margin-top:12px" id="unlockBtn">🔑 OPEN OWNER</button>
-  </div>
-  <div id="ownerPanel" class="owner-tools">
-    <div class="page-title"><div><span class="eyebrow">OWNER</span><h2>Management</h2></div><button class="secondary" id="lockBtn">Lock</button></div>
-    <div class="list-card">
-      <h3>🏪 Hotel Profile</h3>
-      <label style="display:block;font-size:10px;font-weight:900;margin-top:10px">Hotel Name<input id="hotelInput" style="width:100%;padding:11px;border:1px solid var(--line);border-radius:12px;margin-top:6px"></label>
-      <label style="display:block;font-size:10px;font-weight:900;margin-top:10px">Logo<input id="logoInput" type="file" accept="image/*" style="width:100%;margin-top:6px"></label>
-      <button class="primary full" id="saveHotel">Save Hotel</button>
-    </div>
-    <div class="list-card">
-      <div class="section-head" style="margin:0 0 8px"><h3>🍽️ Menu</h3><button class="primary" id="addItem">＋ Add</button></div>
-      <div id="ownerMenu"></div>
-    </div>
-    <div class="list-card">
-      <h3>💾 Backup</h3>
-      <p class="muted">Backup your current data and restore it anytime.</p>
-      <div class="two"><button class="secondary" id="backupBtn">📤 Backup</button><button class="secondary" id="restoreBtn">📥 Restore</button></div>
-      <input id="restoreFile" type="file" accept=".json,application/json" hidden>
-    </div>
-    <div class="list-card">
-      <h3>🔊 Voice</h3>
-      <p class="muted">Phone voice can announce food name, quantity and total.</p>
-      <button class="secondary full" id="testVoice">🔊 Test Voice</button>
-    </div>
-    <div class="list-card">
-      <h3>🗑 Danger</h3><button class="danger full" id="clearAll">Clear All Data</button>
-    </div>
-  </div>
-</section>
+<section id="sales" class="panel"><div class="section-title"><h2>📊 Sales</h2></div><div class="hero"><div class="today">Today <b id="salesToday">₹0</b></div></div><div id="history"></div></section>
+<section id="owner" class="panel"><div class="hero"><small>OWNER</small><h1>Owner Settings</h1><p>Menu and settings can be managed here. Normal selling never asks for a PIN.</p></div></section>
 </main>
 
-<nav class="bottom-nav">
-  <button class="nav-btn active" data-page="homePage">🏠<span>HOME</span></button>
-  <button class="nav-btn" data-page="billPage">🧾<span>BILL</span></button>
-  <button class="nav-btn" data-page="salesPage">📊<span>SALES</span></button>
-  <button class="nav-btn" data-page="ownerPage">🔐<span>OWNER</span></button>
-</nav>
-
-<div class="modal-bg" id="itemModal"><div class="modal">
-  <div class="modal-head"><h3 id="itemTitle">Add Food</h3><button class="close" data-close="itemModal">×</button></div>
-  <form id="itemForm">
-    <input type="hidden" id="itemId">
-    <label>Food name<input id="itemName" required maxlength="60"></label>
-    <label>Category<select id="itemCategory"><option>Tiffin</option><option>Dosa</option><option>Vada</option><option>Poori</option><option>Drinks</option><option>Other</option></select></label>
-    <label>Price<input id="itemPrice" type="number" min="0" step="1" required></label>
-    <label>Image<input id="itemImage" type="file" accept="image/*"></label>
-    <button class="primary full" type="submit">Save Food</button>
-  </form>
-</div></div>
-
-<div class="modal-bg" id="paidModal"><div class="modal">
-  <div class="modal-head"><h3>✅ PAID</h3><button class="close" data-close="paidModal">×</button></div>
-  <div id="paidDetails"></div>
-  <button class="big-action cash" style="width:100%;margin-top:10px" id="donePaid">DONE</button>
-</div></div>
-
-<div class="modal-bg" id="pinModal"><div class="modal">
-  <div class="modal-head"><h3>🔐 Owner PIN</h3><button class="close" data-close="pinModal">×</button></div>
-  <p class="muted">Default PIN: 1234. You can change it in Owner Mode.</p>
-  <input id="pinInput" type="password" inputmode="numeric" maxlength="8" placeholder="PIN">
-  <button class="primary full" id="pinSubmit">OPEN OWNER</button>
-</div></div>
-
-<div class="toast" id="toast"></div>
+<div id="billbar" class="billbar" onclick="go('bill')">VIEW BILL · ₹<span id="barTotal">0</span></div>
+<nav class="bottom"><button class="nav active" onclick="go('home')"><span>🏠</span>HOME</button><button class="nav" onclick="go('bill')"><span>🧾</span>BILL</button><button class="nav" onclick="go('sales')"><span>📊</span>SALES</button><button class="nav" onclick="go('owner')"><span>🔑</span>OWNER</button></nav>
 
 <script>
-const KEY="mithraHotelPOS_v2";
-const DEFAULT_PIN="1234";
-function svgFood(emoji, label, a, b){
-  const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 640">
-  <defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient></defs>
-  <rect width="800" height="640" rx="60" fill="url(#g)"/><circle cx="400" cy="285" r="150" fill="#ffffff18"/>
-  <text x="400" y="335" text-anchor="middle" font-size="150">${emoji}</text>
-  <text x="400" y="545" text-anchor="middle" font-family="Arial" font-size="42" font-weight="800" fill="white">${label}</text></svg>`;
-  return "data:image/svg+xml;charset=UTF-8,"+encodeURIComponent(svg);
-}
-const logo=svgFood("M","MITHRA","#6366f1","#111827");
-const defaults=[
-{id:"i1",name:"Idly",category:"Tiffin",price:30,image:svgFood("🍚","IDLY","#64748b","#111827")},
-{id:"i2",name:"Dosa",category:"Dosa",price:50,image:svgFood("🥞","DOSA","#b45309","#111827")},
-{id:"i3",name:"Vada",category:"Vada",price:20,image:svgFood("🟠","VADA","#92400e","#111827")},
-{id:"i4",name:"Poori",category:"Poori",price:45,image:svgFood("🫓","POORI","#a16207","#111827")},
-{id:"i5",name:"Masala Dosa",category:"Dosa",price:70,image:svgFood("🥞","MASALA DOSA","#c2410c","#111827")},
-{id:"i6",name:"Tea",category:"Drinks",price:15,image:svgFood("☕","TEA","#065f46","#111827")},
-{id:"i7",name:"Coffee",category:"Drinks",price:20,image:svgFood("☕","COFFEE","#78350f","#111827")}
-];
-function clone(x){return JSON.parse(JSON.stringify(x))}
-function load(){
-  try{
-    const old=JSON.parse(localStorage.getItem(KEY)||"null");
-    if(old) return {...clone(base),...old};
-    const legacy=JSON.parse(localStorage.getItem("mithraHotelPOS_v1")||"null");
-    if(legacy) return {...clone(base),...legacy,ownerPin:DEFAULT_PIN};
-  }catch(e){}
-  return clone(base);
-}
-const base={hotel:{name:"Mithra Hotel",logo},items:defaults,sales:[],cart:[],currentPage:"homePage",ownerPin:DEFAULT_PIN};
-let state=load(), category="All", owner=false;
-const $=id=>document.getElementById(id);
-function save(){localStorage.setItem(KEY,JSON.stringify(state))}
-function money(n){return "₹"+Number(n||0).toLocaleString("en-IN",{maximumFractionDigits:2})}
-function today(){const d=new Date();return d.toISOString().slice(0,10)}
-function uid(){return "S"+Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
-function escape(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
-function speak(text){if(!("speechSynthesis" in window)){toast("Voice not supported");return} speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang="en-IN";u.rate=.9;speechSynthesis.speak(u)}
-function toast(t){$("toast").textContent=t;$("toast").classList.add("show");clearTimeout(window.__t);window.__t=setTimeout(()=>$("toast").classList.remove("show"),2200)}
-function cats(){return ["All",...new Set(state.items.map(x=>x.category))]}
+const defaultFoods=[
+{id:1,name:'Idly',price:5,cat:'Tiffin',emoji:'🍚'},
+{id:2,name:'Dosa',price:20,cat:'Dosa',emoji:'🥞'},
+{id:3,name:'Vada',price:10,cat:'Vada',emoji:'🍩'},
+{id:4,name:'Poori',price:25,cat:'Poori',emoji:'🫓'},
+{id:5,name:'Masala Dosa',price:35,cat:'Dosa',emoji:'🥞'},
+{id:6,name:'Tea',price:10,cat:'Drinks',emoji:'☕'},
+{id:7,name:'Coffee',price:15,cat:'Drinks',emoji:'☕'}];
+let foods=JSON.parse(localStorage.getItem('foodieFoods')||'null')||defaultFoods;
+let cart=JSON.parse(localStorage.getItem('foodieCart')||'{}');
+let sales=JSON.parse(localStorage.getItem('foodieSales')||'[]');
+let category='All';
+
+function save(){localStorage.setItem('foodieFoods',JSON.stringify(foods));localStorage.setItem('foodieCart',JSON.stringify(cart));localStorage.setItem('foodieSales',JSON.stringify(sales))}
+function qty(id){return cart[id]||0}
+function change(id,delta){cart[id]=Math.max(0,qty(id)+delta);if(!cart[id])delete cart[id];save();render();renderBill()}
+function renderCats(){document.getElementById('cats').innerHTML=['All','Tiffin','Dosa','Vada','Poori','Drinks'].map(c=>`<button class="cat ${category===c?'active':''}" onclick="category='${c}';render()">${c}</button>`).join('')}
 function render(){
-  $("hotelName").textContent=state.hotel.name;$("hotelLogo").src=state.hotel.logo;
-  const d=today();const td=state.sales.filter(s=>s.date===d);
-  $("todaySales").textContent=money(td.reduce((a,s)=>a+s.total,0));
-  renderChips();renderFoods();renderBill();renderSales();renderOwner();
-  $("cartCount").textContent=state.cart.reduce((a,x)=>a+x.qty,0);
-  $("hotelInput").value=state.hotel.name;
+renderCats();let q=(document.getElementById('search').value||'').toLowerCase();
+let list=foods.filter(f=>(category==='All'||f.cat===category)&&f.name.toLowerCase().includes(q));
+document.getElementById('grid').innerHTML=list.map(f=>`<article class="card">
+<div class="foodimg"><div class="emoji">${f.emoji}</div></div>
+<div class="info"><h3>${f.name}</h3><div class="price">₹${f.price}</div><div class="sub">${f.cat}</div>
+<div class="qty ${qty(f.id)?'':'zero'}"><button class="qbtn minus" onclick="change(${f.id},-1)">−</button><span class="qnum">${qty(f.id)}</span><button class="qbtn" onclick="change(${f.id},1)">+</button></div></div></article>`).join('');
+updateTotals()
 }
-function renderChips(){
-  $("chips").innerHTML=cats().map(c=>`<button class="chip ${category===c?"active":""}" data-cat="${escape(c)}">${escape(c)}</button>`).join("");
-  $("chips").querySelectorAll("[data-cat]").forEach(b=>b.onclick=()=>{category=b.dataset.cat;render()});
-}
-function renderFoods(){
-  const q=$("search").value.toLowerCase().trim();
-  const arr=state.items.filter(x=>(category==="All"||x.category===category)&&(!q||x.name.toLowerCase().includes(q)));
-  $("foodGrid").innerHTML=arr.map(x=>`
-  <article class="food-card">
-    <img class="food-img" src="${x.image}" alt="${escape(x.name)}">
-    <div class="food-info"><strong>${escape(x.name)}</strong><div class="price">${money(x.price)}</div><div class="meta">${escape(x.category)}</div>
-    <div class="food-actions">${(()=>{const q=(state.cart.find(c=>c.itemId===x.id)||{}).qty||0; return `<div class="main-qty"><button class="minus" aria-label="Remove one" data-main-q="${x.id}" data-d="-1">−</button><b>${q}</b><button class="plus" aria-label="Add one" data-main-q="${x.id}" data-d="1">+</button></div>`})()}</div></div>
-  </article>`).join("")||`<div class="touch-card" style="grid-column:1/-1">No food found</div>`;
-  $("foodGrid").querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>add(b.dataset.add));
-  $("foodGrid").querySelectorAll("[data-main-q]").forEach(b=>b.onclick=()=>change(b.dataset.mainQ,Number(b.dataset.d)));
-}
-function add(id){
-  const i=state.items.find(x=>x.id===id);if(!i)return;
-  const l=state.cart.find(x=>x.itemId===id);if(l)l.qty++;else state.cart.push({itemId:id,name:i.name,price:Number(i.price),qty:1});
-  save();render();speak(i.name+" added");
-}
-function total(){return state.cart.reduce((a,x)=>a+x.price*x.qty,0)}
-function renderQuickBill(){
-  const e=$("quickBill");
-  e.innerHTML=state.cart.length?state.cart.map(x=>`<div class="bill-line"><span>${escape(x.name)} × ${x.qty}</span><strong>${money(x.price*x.qty)}</strong></div>`).join("")+`<div class="bill-total"><span>Total</span><strong>${money(total())}</strong></div>`:`<p class="muted">Bill is empty — tap a food item.</p>`;
+function updateTotals(){
+let total=0,count=0;foods.forEach(f=>{count+=qty(f.id);total+=qty(f.id)*f.price});
+document.getElementById('headCount').textContent=count;document.getElementById('barTotal').textContent=total;document.getElementById('billbar').classList.toggle('show',count>0);
+document.getElementById('todayTotal').textContent='₹'+todaySales();
 }
 function renderBill(){
-  renderQuickBill();
-  $("billItems").innerHTML=state.cart.length?state.cart.map(x=>`
-  <div class="bill-line"><div><strong>${escape(x.name)}</strong><div class="muted">${money(x.price)} each</div></div>
-  <div class="qty"><button data-q="${x.itemId}" data-d="-1">−</button><b>${x.qty}</b><button data-q="${x.itemId}" data-d="1">+</button><strong>${money(x.price*x.qty)}</strong></div></div>`).join(""):`<p class="muted">No food added.</p>`;
-  $("billItems").querySelectorAll("[data-q]").forEach(b=>b.onclick=()=>change(b.dataset.q,Number(b.dataset.d)));
-  $("billTotal").textContent=money(total());
+let rows=foods.filter(f=>qty(f.id));let total=0;
+document.getElementById('billList').innerHTML=rows.length?rows.map(f=>{let t=qty(f.id)*f.price;total+=t;return `<div class="billrow"><b>${f.name} × ${qty(f.id)}</b><strong>₹${t}</strong></div>`}).join(''):'<div class="empty">No items in bill</div>';
+document.querySelector('#billTotal b').textContent='₹'+total;updateTotals()
 }
-function change(id,d){
-  const l=state.cart.find(x=>x.itemId===id);if(!l)return;l.qty+=d;if(l.qty<=0)state.cart=state.cart.filter(x=>x.itemId!==id);save();render();
-}
-function clearCart(){
-  if(!state.cart.length)return;
-  if(confirm("Clear current bill?")){state.cart=[];save();render();toast("Bill cleared")}
-}
-function pay(method){
-  if(!state.cart.length){toast("Add food first.");return}
-  const now=new Date();
-  const sale={id:uid(),billNo:"B"+Date.now().toString().slice(-6),createdAt:now.toISOString(),date:today(),payment:method,total:total(),items:state.cart.map(x=>({...x}))};
-  state.sales.push(sale);state.cart=[];save();render();
-  $("paidDetails").innerHTML=`<div style="text-align:center;padding:12px"><div style="font-size:48px">✅</div><h2 style="margin:5px 0">PAID</h2><div style="font-size:30px;font-weight:950">${money(sale.total)}</div><p class="muted">${escape(method)} · ${escape(sale.billNo)}</p></div>`;
-  $("paidModal").classList.add("open");
-  speak("Sale complete. Total "+sale.total+" rupees. "+method);
-}
-function renderSales(){
-  const d=today(), td=state.sales.filter(s=>s.date===d);
-  const sum=k=>td.filter(s=>s.payment===k).reduce((a,s)=>a+s.total,0);
-  $("sToday").textContent=money(td.reduce((a,s)=>a+s.total,0));$("sBills").textContent=td.length;$("sCash").textContent=money(sum("Cash"));$("sUpi").textContent=money(sum("UPI"));
-  $("recentSales").innerHTML=td.slice(-8).reverse().map(s=>`<div class="list-row"><span><strong>${escape(s.billNo)}</strong><br><small>${s.items.map(i=>escape(i.name)+" × "+i.qty).join(", ")}</small></span><strong>${money(s.total)}</strong></div>`).join("")||`<p class="muted">No sales today.</p>`;
-  renderHistory();
-}
-function renderHistory(){
-  const date=$("historyDate").value,q=$("historySearch").value.toLowerCase().trim();
-  let a=[...state.sales].sort((x,y)=>y.createdAt.localeCompare(x.createdAt));
-  if(date)a=a.filter(s=>s.date===date);if(q)a=a.filter(s=>s.billNo.toLowerCase().includes(q)||s.items.some(i=>i.name.toLowerCase().includes(q)));
-  $("history").innerHTML=a.map(s=>`<div class="list-row"><span>${escape(s.billNo)} · ${escape(s.payment)}<br><small>${new Date(s.createdAt).toLocaleString("en-IN")}</small></span><strong>${money(s.total)}</strong></div>`).join("")||`<p class="muted">No history.</p>`;
-}
-function renderOwner(){
-  $("ownerPanel").classList.toggle("unlocked",owner);$("ownerLock").style.display=owner?"none":"block";
-  $("ownerSalesTools").classList.toggle("unlocked",owner);
-  $("ownerMenu").innerHTML=state.items.map(x=>`<div class="list-row"><span><strong>${escape(x.name)}</strong><br><small>${escape(x.category)}</small></span><span><strong>${money(x.price)}</strong> <button class="small-btn" data-edit="${x.id}">Edit</button></span></div>`).join("");
-  $("ownerMenu").querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>editItem(b.dataset.edit));
-}
-function openPage(id){
-  document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));$(id).classList.add("active");
-  document.querySelectorAll(".nav-btn").forEach(x=>x.classList.toggle("active",x.dataset.page===id));
-  state.currentPage=id;save();scrollTo(0,0);render();
-}
-function openModal(id){$(id).classList.add("open")}function closeModal(id){$(id).classList.remove("open")}
-function openItem(id=""){
-  $("itemId").value=id;$("itemTitle").textContent=id?"Edit Food":"Add Food";
-  const x=state.items.find(i=>i.id===id);
-  $("itemName").value=x?.name||"";$("itemCategory").value=x?.category||"Tiffin";$("itemPrice").value=x?.price||"";$("itemImage").value="";openModal("itemModal");
-}
-function editItem(id){if(!owner)return;openItem(id)}
-$("itemForm").onsubmit=e=>{
-  e.preventDefault();const id=$("itemId").value,name=$("itemName").value.trim(),cat=$("itemCategory").value,price=Number($("itemPrice").value),file=$("itemImage").files[0];
-  const old=state.items.find(i=>i.id===id);
-  const finish=image=>{
-    const obj={id:id||"i_"+Date.now(),name,category:cat,price,image:image||old?.image||svgFood("🍽️",name.toUpperCase(),"#475569","#111827")};
-    if(id)state.items=state.items.map(x=>x.id===id?obj:x);else state.items.push(obj);
-    save();closeModal("itemModal");render();toast(id?"Food updated":"Food added");
-  };
-  if(file){const r=new FileReader();r.onload=()=>finish(r.result);r.readAsDataURL(file)}else finish();
-};
-function saveHotel(){
-  const name=$("hotelInput").value.trim()||"Mithra Hotel",file=$("logoInput").files[0];
-  const done=img=>{state.hotel.name=name;if(img)state.hotel.logo=img;save();render();toast("Hotel saved")};
-  if(file){const r=new FileReader();r.onload=()=>done(r.result);r.readAsDataURL(file)}else done();
-}
-function backup(){
-  const blob=new Blob([JSON.stringify({app:"Mithra Hotel POS",version:2,exportedAt:new Date().toISOString(),state},null,2)],{type:"application/json"});
-  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="hotel-backup-"+today()+".json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500);toast("Backup ready");
-}
-let restoreData=null;
-$("restoreFile").onchange=e=>{
-  const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{
-    try{const d=JSON.parse(r.result);if(!d.state?.items||!d.state?.sales)throw 0;
-      restoreData=d.state;if(confirm("Restore this backup? Current data will be kept only if you have a backup.")){state={...clone(base),...restoreData};save();render();toast("Restored")}}
-    catch(err){toast("Invalid backup")}
-    e.target.value="";
-  };r.readAsText(f)
-};
-function unlock(){openModal("pinModal");setTimeout(()=>$("pinInput").focus(),100)}
-function doUnlock(){if($("pinInput").value===state.ownerPin){owner=true;closeModal("pinModal");render();toast("Owner mode open")}else{toast("Wrong PIN");$("pinInput").value=""}}
-function clearAll(){if(confirm("Delete ALL data?")){if(confirm("Final confirmation")){localStorage.removeItem(KEY);location.reload()}}}
-document.querySelectorAll(".nav-btn").forEach(b=>b.onclick=()=>openPage(b.dataset.page));
-$("search").oninput=renderFoods;$("cartBtn").onclick=()=>openPage("billPage");$("openBillBtn").onclick=()=>openPage("billPage");$("clearCartBtn").onclick=clearCart;
-$("quickCashBtn").onclick=()=>pay("Cash");$("cashBtn").onclick=()=>pay("Cash");$("upiBtn").onclick=()=>pay("UPI");$("otherBtn").onclick=()=>pay("Other");
-$("donePaid").onclick=()=>closeModal("paidModal");$("voiceBtn").onclick=()=>speak("Mithra Hotel. Touch a food to add. Bill button to check total.");
-$("speakFoodBtn").onclick=()=>speak(state.cart.length?state.cart.map(x=>x.name+" "+x.qty).join(", "):"Food menu");
-$("speakSalesBtn").onclick=()=>{const td=state.sales.filter(s=>s.date===today());const n=td.reduce((a,s)=>a+s.total,0);speak("Today sales "+n+" rupees. "+td.length+" bills.")};
-$("ownerUnlockFromSales").onclick=unlock;$("unlockBtn").onclick=unlock;$("pinSubmit").onclick=doUnlock;$("lockBtn").onclick=()=>{owner=false;render();toast("Owner locked")};
-$("addItem").onclick=()=>openItem();$("saveHotel").onclick=saveHotel;$("backupBtn").onclick=backup;$("restoreBtn").onclick=()=>$("restoreFile").click();$("testVoice").onclick=()=>speak("Dosa. Fifty rupees. Added one.");
-$("clearAll").onclick=clearAll;$("historyDate").onchange=renderHistory;$("historySearch").oninput=renderHistory;
-document.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>closeModal(b.dataset.close));
-window.addEventListener("popstate",()=>openPage(state.currentPage||"homePage"));
-window.addEventListener("load",()=>{render();openPage(state.currentPage||"homePage")});
+function todaySales(){let d=new Date().toISOString().slice(0,10);return sales.filter(s=>s.date===d).reduce((a,s)=>a+s.total,0)}
+function pay(method){let rows=foods.filter(f=>qty(f.id));if(!rows.length)return alert('Bill is empty');let items=rows.map(f=>({name:f.name,qty:qty(f.id),price:f.price}));let total=items.reduce((a,i)=>a+i.qty*i.price,0);sales.unshift({id:Date.now(),date:new Date().toISOString().slice(0,10),time:new Date().toLocaleTimeString(),items,total,method});cart={};save();render();renderBill();renderSales();alert('Payment saved successfully');go('home')}
+function renderSales(){document.getElementById('salesToday').textContent='₹'+todaySales();document.getElementById('history').innerHTML=sales.slice(0,30).map(s=>`<div class="billrow"><div><b>${s.time}</b><br><small>${s.items.map(i=>i.name+' × '+i.qty).join(', ')}</small></div><strong>₹${s.total}<br><small>${s.method}</small></strong></div>`).join('')||'<div class="empty">No sales yet</div>'}
+function go(id){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav').forEach((n,i)=>n.classList.toggle('active',['home','bill','sales','owner'][i]===id));history.replaceState(null,'','#'+id);if(id==='bill')renderBill();if(id==='sales')renderSales()}
+function speak(t){if('speechSynthesis'in window)speechSynthesis.speak(new SpeechSynthesisUtterance(t))}
+window.onpopstate=()=>go(location.hash.slice(1)||'home');
+render();renderBill();renderSales();
 </script>
-</body>
-</html>
+</body></html>
