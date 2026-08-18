@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#14213d">
-<title>FOODIE - Simple Shop POS</title>
+<title>FOODIE • Branding Fixed - Simple Shop POS</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{margin:0;font-family:Arial,sans-serif;background:#f6f7fb;color:#182033}
@@ -1096,127 +1096,184 @@ if(initialPage && initialPage!=='home') go(initialPage);
 
 <script id="foodie-branding-script">
 (function(){
-  function initBranding(){
-    const modal=document.getElementById('brandingModal');
-    const card=document.getElementById('brandingCard');
-    const openBtn=document.getElementById('brandingOpen');
-    const nameInput=document.getElementById('brandNameInput');
-    const tagInput=document.getElementById('brandTagInput');
-    const logoInput=document.getElementById('brandLogoInput');
-    const logoPreview=document.getElementById('brandingLogoPreview');
-    const namePreview=document.getElementById('brandingPreviewName');
-    const tagPreview=document.getElementById('brandingPreviewTag');
-    if(!modal||!card||!openBtn||!nameInput||!tagInput)return;
+'use strict';
 
-    const DEFAULT={name:'FOODIE',tag:'Simple Shop POS',logo:''};
-    let brand=typeof read==='function'?read('foodieBrand',DEFAULT):DEFAULT;
-    let pendingLogo=brand.logo||'';
+const BRAND_DEFAULT={name:'FOODIE',tag:'Simple Shop POS',logo:''};
+let foodieBrand={...BRAND_DEFAULT};
 
-    function applyBrand(){
-      brand=Object.assign({},DEFAULT,brand||{});
-      const b=document.querySelector('.brand b'), s=document.querySelector('.brand small'), logo=document.querySelector('.header .logo');
-      if(b)b.textContent=brand.name;
-      if(s)s.textContent=brand.tag;
-      if(logo){
-        if(brand.logo){
-          logo.innerHTML='<img src="'+brand.logo+'" alt="Shop logo">';
-          logo.style.overflow='hidden';
-        }else{
-          logo.innerHTML='';
-          logo.textContent=(brand.name.trim().charAt(0)||'F').toUpperCase();
-        }
-      }
+function brandRead(){
+  try{
+    const raw=localStorage.getItem('foodieBrand');
+    if(!raw)return {...BRAND_DEFAULT};
+    const x=JSON.parse(raw);
+    return {...BRAND_DEFAULT,...x};
+  }catch(e){return {...BRAND_DEFAULT}}
+}
+
+function brandApply(){
+  foodieBrand={...BRAND_DEFAULT,...foodieBrand};
+  const nameEl=document.querySelector('.brand b');
+  const tagEl=document.querySelector('.brand small');
+  const logoEl=document.querySelector('.header .logo');
+  if(nameEl)nameEl.textContent=foodieBrand.name;
+  if(tagEl)tagEl.textContent=foodieBrand.tag;
+  if(logoEl){
+    if(foodieBrand.logo){
+      logoEl.innerHTML='';
+      const img=document.createElement('img');
+      img.src=foodieBrand.logo;
+      img.alt='Shop logo';
+      img.style.cssText='width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block';
+      logoEl.appendChild(img);
+      logoEl.style.overflow='hidden';
+    }else{
+      logoEl.innerHTML='';
+      logoEl.textContent=(foodieBrand.name||'F').trim().charAt(0).toUpperCase()||'F';
     }
+  }
+}
 
-    function preview(){
-      namePreview.textContent=nameInput.value.trim()||'FOODIE';
-      tagPreview.textContent=tagInput.value.trim()||'Simple Shop POS';
-      if(pendingLogo) logoPreview.innerHTML='<img src="'+pendingLogo+'" alt="Logo preview">';
-      else if(brand.logo) logoPreview.innerHTML='<img src="'+brand.logo+'" alt="Logo preview">';
-      else logoPreview.textContent=(nameInput.value.trim().charAt(0)||'F').toUpperCase();
-    }
+function openBranding(){
+  const modal=document.getElementById('brandingModal');
+  if(!modal)return;
+  document.getElementById('brandNameInput').value=foodieBrand.name;
+  document.getElementById('brandTagInput').value=foodieBrand.tag;
+  const preview=document.getElementById('brandingLogoPreview');
+  if(foodieBrand.logo){
+    preview.innerHTML='<img src="'+foodieBrand.logo+'" alt="Logo">';
+  }else{
+    preview.textContent=foodieBrand.name.charAt(0).toUpperCase()||'F';
+  }
+  modal.classList.add('show');
+  modal.setAttribute('aria-hidden','false');
+}
 
-    function openBranding(e){
-      if(e)e.preventDefault();
-      nameInput.value=brand.name||DEFAULT.name;
-      tagInput.value=brand.tag||DEFAULT.tag;
-      pendingLogo=brand.logo||'';
-      preview();
-      modal.classList.add('show');
-      modal.setAttribute('aria-hidden','false');
-      document.body.classList.add('modal-open');
-    }
+function closeBranding(){
+  const modal=document.getElementById('brandingModal');
+  if(!modal)return;
+  modal.classList.remove('show');
+  modal.setAttribute('aria-hidden','true');
+}
 
-    function closeBranding(){
-      modal.classList.remove('show');
-      modal.setAttribute('aria-hidden','true');
-      document.body.classList.remove('modal-open');
-      if(logoInput)logoInput.value='';
-    }
+function updatePreview(){
+  const n=document.getElementById('brandNameInput').value.trim()||'FOODIE';
+  const t=document.getElementById('brandTagInput').value.trim()||'Simple Shop POS';
+  document.getElementById('brandingPreviewName').textContent=n;
+  document.getElementById('brandingPreviewTag').textContent=t;
+}
 
-    openBtn.addEventListener('click',openBranding);
-    card.addEventListener('click',function(e){
-      if(e.target.closest('button'))return;
-      openBranding(e);
-    });
-    card.addEventListener('keydown',function(e){
-      if(e.key==='Enter'||e.key===' '){e.preventDefault();openBranding(e)}
-    });
-    document.getElementById('brandingClose').addEventListener('click',closeBranding);
-    document.getElementById('brandingCancel').addEventListener('click',closeBranding);
-    modal.addEventListener('click',e=>{if(e.target===modal)closeBranding()});
+function initBranding(){
+  foodieBrand=brandRead();
+  brandApply();
 
-    [nameInput,tagInput].forEach(x=>x.addEventListener('input',preview));
+  const open=document.getElementById('brandingOpen');
+  const card=document.getElementById('brandingCard');
+  const close=document.getElementById('brandingClose');
+  const cancel=document.getElementById('brandingCancel');
+  const save=document.getElementById('brandingSave');
+  const modal=document.getElementById('brandingModal');
+  const logoInput=document.getElementById('brandLogoInput');
+  const logoClear=document.getElementById('brandLogoClear');
 
-    logoInput.addEventListener('change',()=>{
+  if(!open||!save||!modal)return;
+
+  open.onclick=function(e){e.preventDefault();openBranding()};
+  if(card)card.onclick=function(e){if(!e.target.closest('button'))openBranding()};
+  if(close)close.onclick=closeBranding;
+  if(cancel)cancel.onclick=closeBranding;
+  modal.onclick=function(e){if(e.target===modal)closeBranding()};
+
+  document.getElementById('brandNameInput').oninput=updatePreview;
+  document.getElementById('brandTagInput').oninput=updatePreview;
+
+  if(logoInput){
+    logoInput.onchange=function(){
       const file=logoInput.files&&logoInput.files[0];
       if(!file)return;
-      if(!file.type.startsWith('image/')){alert('Please choose an image file');logoInput.value='';return}
-      const r=new FileReader();
-      r.onload=()=>{
+      const reader=new FileReader();
+      reader.onload=function(){
         const img=new Image();
-        img.onload=()=>{
-          const max=500,scale=Math.min(1,max/Math.max(img.width,img.height));
+        img.onload=function(){
+          const max=500, scale=Math.min(1,max/Math.max(img.width,img.height));
           const c=document.createElement('canvas');
           c.width=Math.max(1,Math.round(img.width*scale));
           c.height=Math.max(1,Math.round(img.height*scale));
           c.getContext('2d').drawImage(img,0,0,c.width,c.height);
-          pendingLogo=c.toDataURL('image/jpeg',.86);
-          preview();
+          foodieBrand.logo=c.toDataURL('image/jpeg',.86);
+          const p=document.getElementById('brandingLogoPreview');
+          p.innerHTML='<img src="'+foodieBrand.logo+'" alt="Logo preview" style="width:100%;height:100%;object-fit:cover;border-radius:inherit">';
         };
-        img.src=r.result;
+        img.src=reader.result;
       };
-      r.readAsDataURL(file);
-    });
-
-    document.getElementById('brandLogoClear').addEventListener('click',()=>{
-      pendingLogo='';logoInput.value='';preview();
-    });
-
-    document.getElementById('brandingSave').addEventListener('click',()=>{
-      brand={
-        name:nameInput.value.trim()||DEFAULT.name,
-        tag:tagInput.value.trim()||DEFAULT.tag,
-        logo:pendingLogo
-      };
-      if(typeof write==='function')write('foodieBrand',brand);
-      applyBrand();
-      closeBranding();
-      alert('Shop branding saved successfully');
-    });
-
-    document.getElementById('quickBackup').addEventListener('click',()=>window.makeBackup&&makeBackup());
-    document.getElementById('quickImport').addEventListener('click',()=>document.getElementById('backupFile').click());
-
-    // Prevent accidental Android text selection on the action card.
-    card.style.webkitUserSelect='none';
-    card.style.userSelect='none';
-    card.style.touchAction='manipulation';
-    applyBrand();
+      reader.readAsDataURL(file);
+    };
   }
 
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initBranding);
-  else initBranding();
+  if(logoClear)logoClear.onclick=function(){
+    foodieBrand.logo='';
+    if(logoInput)logoInput.value='';
+    const p=document.getElementById('brandingLogoPreview');
+    p.textContent=(document.getElementById('brandNameInput').value.trim().charAt(0)||'F').toUpperCase();
+  };
+
+  save.onclick=function(){
+    const name=document.getElementById('brandNameInput').value.trim()||'FOODIE';
+    const tag=document.getElementById('brandTagInput').value.trim()||'Simple Shop POS';
+    const data={name:name,tag:tag,logo:foodieBrand.logo||''};
+
+    try{
+      localStorage.setItem('foodieBrand',JSON.stringify(data));
+      // Verify immediately that the browser actually saved it.
+      const check=JSON.parse(localStorage.getItem('foodieBrand')||'{}');
+      if(check.name!==name||check.tag!==tag)throw new Error('save failed');
+      foodieBrand=data;
+      brandApply();
+      closeBranding();
+      alert('Branding saved successfully');
+    }catch(err){
+      alert('Save failed. Please allow browser storage for this site.');
+    }
+  };
+
+  const qb=document.getElementById('quickBackup');
+  const qi=document.getElementById('quickImport');
+  if(qb)qb.onclick=function(){if(typeof makeBackup==='function')makeBackup()};
+  if(qi)qi.onclick=function(){const f=document.getElementById('backupFile');if(f)f.click()};
+}
+
+window.addEventListener('pageshow',function(){
+  foodieBrand=brandRead();
+  brandApply();
+});
+
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initBranding);
+else initBranding();
+
+})();
+</script>
+
+
+<script id="branding-backup-hook">
+(function(){
+const input=document.getElementById('backupFile');
+if(!input)return;
+input.addEventListener('change',function(){
+  const file=input.files&&input.files[0];
+  if(!file)return;
+  const r=new FileReader();
+  r.onload=function(){
+    try{
+      const d=JSON.parse(r.result);
+      if(d.foodieBrand){
+        localStorage.setItem('foodieBrand',JSON.stringify(d.foodieBrand));
+      }
+      setTimeout(function(){
+        location.reload();
+      },300);
+    }catch(e){}
+  };
+  r.readAsText(file);
+});
 })();
 </script>
 
