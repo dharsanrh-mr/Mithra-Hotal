@@ -28,6 +28,11 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 .billrow{background:#fff;border-radius:18px;padding:15px;margin:10px 0;display:flex;justify-content:space-between;align-items:center}.pay{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}.pay button{border:0;border-radius:18px;padding:18px;font-size:18px;font-weight:900}.cash{background:#1b8b59;color:#fff}.upi{background:#5134d6;color:#fff}.empty{text-align:center;padding:40px;color:#888}
 @media(max-width:600px){.header{padding:13px 18px}.logo{width:52px;height:52px}.brand b{font-size:21px}.topbill{font-size:22px}.wrap{padding:20px 22px 125px}.hero h1{font-size:33px}.grid{gap:14px}.foodimg{height:180px}.qbtn{width:52px;height:52px}.billbar{bottom:84px}}
 .sales-tabs{display:flex;gap:10px;margin:14px 0;position:sticky;top:78px;z-index:5;background:#f6f7fb;padding:4px 0}.stab{flex:1;border:0;border-radius:16px;padding:14px 8px;background:#fff;color:#687080;font-weight:900;box-shadow:0 4px 14px #1820330b}.stab.active{background:#17213b;color:#fff}.sales-summary{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0 16px}.sum-card{background:#fff;border-radius:20px;padding:17px;box-shadow:0 5px 20px #18203310}.sum-card small{display:block;color:#7d8492;font-weight:700;margin-bottom:5px}.sum-card b{font-size:24px}.date-head{margin:18px 0 8px;font-size:18px;font-weight:900}.settings-list{display:grid;gap:12px;margin-top:16px}.setting-card{background:#fff;border-radius:20px;padding:15px;display:flex;align-items:center;gap:12px;box-shadow:0 5px 20px #18203310}.setting-card>span{font-size:28px}.setting-card div{flex:1}.setting-card b,.setting-card small{display:block}.setting-card small{color:#7d8492;margin-top:4px}.setting-card button{border:0;background:#17213b;color:#fff;border-radius:12px;padding:10px 13px;font-weight:900}.backup-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}.backup-btn{border:0;border-radius:18px;padding:17px 12px;font-weight:900;background:#17213b;color:#fff;box-shadow:0 8px 20px #18203318}.backup-btn.import{background:#6842ee}.backup-note{background:#fff;border-radius:18px;padding:15px;color:#697184;font-size:14px;line-height:1.45;box-shadow:0 5px 20px #18203310;margin-top:14px}.modal{position:fixed;inset:0;background:#10182acc;backdrop-filter:blur(8px);display:none;align-items:flex-end;justify-content:center;z-index:100}.modal.show{display:flex}.modal-card{width:min(560px,100%);background:#f7f8fc;border-radius:30px 30px 0 0;padding:22px;box-shadow:0 -15px 50px #0005}.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.modal-head h3{margin:0;font-size:24px}.close{border:0;background:#e9ebf3;border-radius:14px;width:44px;height:44px;font-size:22px}.modal-card p{color:#687080;line-height:1.45}.modal-actions{display:grid;gap:10px;margin-top:16px}.modal-actions button{border:0;border-radius:17px;padding:16px;font-weight:900}.modal-ok{background:#6842ee;color:#fff}.modal-cancel{background:#e9ebf3;color:#17213b}.file-input{display:none}</style>
+
+<style>
+.image-upload{display:flex;align-items:center;justify-content:center;min-height:52px;padding:10px 14px;border-radius:16px;border:1px dashed rgba(75,82,120,.35);background:rgba(245,246,252,.9);font-weight:700;cursor:pointer;color:#30384f}
+.image-upload:active{transform:scale(.99)}
+</style>
 </head>
 <body>
 <header class="header">
@@ -55,8 +60,39 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 <div class="section-title"><h2>📊 Sales History</h2></div>
 <div class="sales-tabs"><button class="stab active" data-period="daily">DAILY SALES</button><button class="stab" data-period="monthly">MONTHLY SALES</button></div>
 <div id="salesSummary" class="sales-summary"></div><div id="history"></div></section>
-<section id="owner" class="panel"><div class="hero"><small>SETTINGS</small><h1>⚙️ Settings</h1><p>App settings and shop options.</p></div><div class="settings-list"><div class="setting-card"><span>🧾</span><div><b>Sales History</b><small>View daily and monthly sales</small></div><button onclick="go('sales')">OPEN</button></div><div class="setting-card"><span>🔊</span><div><b>Voice</b><small>Use simple voice guidance</small></div><button id="settingsSpeak">TEST</button></div><div class="setting-card"><span>💾</span><div><b>Backup & Restore</b><small>Keep your shop data safe</small></div><button id="backupOpen">OPEN</button></div></div></section>
+<section id="owner" class="panel"><div class="hero"><small>SETTINGS</small><h1>⚙️ Settings</h1><p>App settings and shop options.</p></div><div class="settings-list"><div class="setting-card"><span>🍽️</span><div><b>Add Item</b><small>Add a new food item to the menu</small></div><button id="addItemOpen">ADD</button></div>
+<div class="setting-card"><span>🧾</span><div><b>Sales History</b><small>View daily and monthly sales</small></div><button onclick="go('sales')">OPEN</button></div><div class="setting-card"><span>🔊</span><div><b>Voice</b><small>Use simple voice guidance</small></div><button id="settingsSpeak">TEST</button></div><div class="setting-card"><span>💾</span><div><b>Backup & Restore</b><small>Keep your shop data safe</small></div><button id="backupOpen">OPEN</button></div></div></section>
 </main>
+
+
+<div id="addItemModal" class="modal" aria-hidden="true">
+  <div class="modal-card">
+    <div class="modal-head"><h3>🍽️ Add New Item</h3><button class="close" id="addItemClose">×</button></div>
+    <p>Add a food item. It will immediately appear on the main Food menu.</p>
+    <div style="display:grid;gap:10px">
+      <input id="itemName" class="search" placeholder="Item name (e.g. Pongal)" autocomplete="off">
+      <input id="itemPrice" class="search" type="number" min="0" step="0.01" placeholder="Price (₹)">
+      <select id="itemCat" class="search" style="appearance:auto">
+        <option value="Tiffin">Tiffin</option>
+        <option value="Dosa">Dosa</option>
+        <option value="Vada">Vada</option>
+        <option value="Poori">Poori</option>
+        <option value="Drinks">Drinks</option>
+        <option value="Other">Other</option>
+      </select>
+      <input id="itemEmoji" class="search" placeholder="Emoji (optional) e.g. 🍛" maxlength="4" autocomplete="off">
+      <label class="image-upload" for="itemImage">
+        <span>🖼️ Choose Food Image</span>
+        <input id="itemImage" type="file" accept="image/*" style="display:none">
+      </label>
+      <img id="itemImagePreview" alt="Food preview" style="display:none;width:100%;height:150px;object-fit:cover;border-radius:18px;border:1px solid rgba(0,0,0,.08)">
+    </div>
+    <div class="modal-actions">
+      <button class="modal-ok" id="addItemSave">➕ ADD ITEM</button>
+      <button class="modal-cancel" id="addItemCancel">CANCEL</button>
+    </div>
+  </div>
+</div>
 
 <div id="backupModal" class="modal" aria-hidden="true">
   <div class="modal-card">
@@ -144,6 +180,10 @@ function renderCats(){
   ).join('');
 }
 
+function foodVisual(f){
+  if(f.image) return '<img src="'+f.image+'" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:inherit">';
+  return '<span style="font-size:56px">'+(f.emoji||'🍽️')+'</span>';
+}
 function render(){
   renderCats();
   const q=(document.getElementById('search').value||'').trim().toLowerCase();
@@ -257,6 +297,63 @@ document.querySelectorAll('.stab').forEach(b=>b.addEventListener('click',()=>{sa
 document.getElementById('search').addEventListener('input',render);
 document.getElementById('billbar').addEventListener('click',()=>go('bill'));
 document.querySelectorAll('.nav').forEach(n=>n.addEventListener('click',()=>go(n.dataset.page)));
+
+
+const addItemModal=document.getElementById('addItemModal');
+const itemName=document.getElementById('itemName');
+const itemPrice=document.getElementById('itemPrice');
+const itemCat=document.getElementById('itemCat');
+const itemEmoji=document.getElementById('itemEmoji');
+const itemImage=document.getElementById('itemImage');
+const itemImagePreview=document.getElementById('itemImagePreview');
+let newItemImage='';
+itemImage.addEventListener('change',()=>{
+  const file=itemImage.files && itemImage.files[0];
+  if(!file){newItemImage=''; itemImagePreview.style.display='none'; return;}
+  if(!file.type.startsWith('image/')){alert('Please choose an image file'); itemImage.value=''; return;}
+  const reader=new FileReader();
+  reader.onload=()=>{
+    newItemImage=reader.result;
+    itemImagePreview.src=newItemImage;
+    itemImagePreview.style.display='block';
+  };
+  reader.readAsDataURL(file);
+});
+
+function openAddItem(){
+  itemName.value=''; itemPrice.value=''; itemCat.value='Tiffin'; itemEmoji.value='';
+  itemImage.value=''; newItemImage=''; itemImagePreview.src=''; itemImagePreview.style.display='none';
+  addItemModal.classList.add('show');
+  addItemModal.setAttribute('aria-hidden','false');
+  setTimeout(()=>itemName.focus(),120);
+}
+function closeAddItem(){
+  addItemModal.classList.remove('show');
+  addItemModal.setAttribute('aria-hidden','true');
+}
+function addNewItem(){
+  const name=itemName.value.trim();
+  const price=Number(itemPrice.value);
+  const cat=itemCat.value;
+  const emoji=itemEmoji.value.trim() || '🍽️';
+  if(!name){alert('Please enter item name'); itemName.focus(); return;}
+  if(!Number.isFinite(price) || price<0){alert('Please enter a valid price'); itemPrice.focus(); return;}
+  const duplicate=foods.some(f=>String(f.name).trim().toLowerCase()===name.toLowerCase());
+  if(duplicate){alert('This item already exists'); itemName.focus(); return;}
+  const nextId=foods.reduce((m,f)=>Math.max(m,Number(f.id)||0),0)+1;
+  foods.push({id:nextId,name,price,cat,emoji,image:newItemImage});
+  saveAll();
+  closeAddItem();
+  category='All';
+  render();
+  alert(name+' added successfully');
+}
+document.getElementById('addItemOpen').addEventListener('click',openAddItem);
+document.getElementById('addItemClose').addEventListener('click',closeAddItem);
+document.getElementById('addItemCancel').addEventListener('click',closeAddItem);
+addItemModal.addEventListener('click',e=>{if(e.target===addItemModal)closeAddItem()});
+document.getElementById('addItemSave').addEventListener('click',addNewItem);
+[itemName,itemPrice,itemEmoji].forEach(el=>el.addEventListener('keydown',e=>{if(e.key==='Enter')addNewItem()}));
 
 const backupModal=document.getElementById('backupModal');
 const backupFile=document.getElementById('backupFile');
