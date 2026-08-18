@@ -1,5 +1,4 @@
-FOODIE POS V11
-- Added + Add Item button directly beside Food on the main menu.
-- It opens the same Add Item popup with image upload, name, price and category.
-- Existing Settings > Add Item remains available.
-- Existing cart, sales history and backup/restore are preserved.
+V13 POPUP UI MATCH
+All existing modal/popup surfaces are styled to match the Shop Counter UI.
+No core functionality was intentionally changed.
+Replace only index.html.
