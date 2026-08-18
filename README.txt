@@ -1,5 +1,24 @@
-MITHRA HOTEL POS - SINGLE FILE
-Upload ONLY index.html to the GitHub repository root.
-No css/, js/, or images/ folders are required.
-All CSS, JavaScript and sample SVG images are embedded inside index.html.
-After commit, wait for GitHub Pages deployment, then open the site in a new/incognito tab if the old page is cached.
+Mithra Hotel POS - Street Shop Mode
+
+UPLOAD:
+1. Replace your GitHub repository's index.html with this index.html.
+2. Commit changes.
+3. Wait for GitHub Pages deployment.
+4. Open the live site and refresh.
+
+DEFAULT OWNER PIN: 1234
+
+SHOP MODE:
+- Large food buttons
+- One touch adds one quantity
+- BILL screen
+- CASH / UPI / OTHER payment
+- Voice guidance
+- Today sales
+
+OWNER MODE:
+- PIN protected
+- Add/edit food and prices
+- Hotel name/logo
+- Backup/restore
+- Clear data

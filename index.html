@@ -2,325 +2,352 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#111827">
-<meta name="description" content="Mithra Hotel POS - offline local storage hotel billing app">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101827">
 <title>Mithra Hotel POS</title>
 <style>
-500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap');
-
 :root{
-  --bg:#f5f7fb;--card:#ffffff;--ink:#111827;--muted:#7b8496;--line:#e7eaf0;
-  --accent:#5b4cf0;--accent2:#7c3aed;--green:#16a34a;--red:#dc2626;
-  --shadow:0 12px 35px rgba(15,23,42,.08);--shadow2:0 20px 55px rgba(15,23,42,.13);
+  --bg:#f5f7fb;--card:#fff;--ink:#101827;--muted:#7b8496;--line:#e6eaf0;
+  --navy:#111827;--purple:#5b4cf0;--green:#16a34a;--red:#dc2626;--yellow:#f59e0b;
+  --shadow:0 10px 30px rgba(15,23,42,.08);--shadow2:0 18px 50px rgba(15,23,42,.14)
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;min-height:100%;font-family:"DM Sans",system-ui,sans-serif;background:var(--bg);color:var(--ink);padding-bottom:92px}
-button,input,select{font:inherit}button{cursor:pointer;border:0}
-.topbar{
-  height:76px;position:sticky;top:0;z-index:20;padding:12px 16px;
-  display:flex;align-items:center;justify-content:space-between;color:#fff;
-  background:linear-gradient(135deg,#111827 0%,#202a44 55%,#3b2f87 100%);
-  box-shadow:0 8px 30px rgba(17,24,39,.18)
-}
-.brand{display:flex;align-items:center;gap:11px}.brand img{width:48px;height:48px;border-radius:16px;box-shadow:0 7px 20px #0005}
-.brand h1{font-family:"Manrope";font-size:17px;margin:0;font-weight:800;letter-spacing:-.3px}
-.brand span{font-size:10px;color:#cbd5e1}.icon-btn{position:relative;width:46px;height:46px;border-radius:15px;background:#ffffff16;color:#fff;font-size:20px;border:1px solid #ffffff1f;backdrop-filter:blur(10px)}
-.icon-btn b{position:absolute;right:-4px;top:-5px;background:#ef4444;border:2px solid #111827;border-radius:20px;font-size:10px;padding:2px 6px}
-
-main{min-height:calc(100vh - 76px)}
-.page{display:none;max-width:1120px;margin:auto;padding:18px 16px 110px}.page.active{display:block}
-.hero{
-  position:relative;overflow:hidden;color:#fff;border-radius:28px;padding:22px;
-  background:linear-gradient(135deg,#171d2f,#303b60 58%,#5948d8);
-  box-shadow:var(--shadow2)
-}
-.hero:after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;right:-65px;top:-70px;background:#fff12;box-shadow:0 0 90px #fff2}
-.hero>*{position:relative;z-index:1}.hero h2,.page-title h2{font-family:"Manrope";letter-spacing:-1px;margin:4px 0;font-size:25px}
-.hero p{margin:6px 0 0;color:#dbe2f0;font-size:12px;max-width:440px}.eyebrow{font-size:9px;letter-spacing:1.7px;font-weight:800;color:#9aa5b8}
-.today-card{margin-top:18px;display:inline-flex;flex-direction:column;background:#ffffff12;border:1px solid #ffffff24;border-radius:17px;padding:12px 15px;backdrop-filter:blur(12px)}
-.today-card span{font-size:10px;color:#dbe2f0}.today-card strong{font-family:"Manrope";font-size:22px;margin-top:2px}
-
-.section-head,.page-title{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:23px 0 12px}.section-head h3{margin:0;font-family:"Manrope";font-size:15px}.text-btn{background:transparent;color:var(--accent);font-size:11px;font-weight:800}
-.page-title{margin-top:4px}.page-title h2{font-size:24px}
-.chips{display:flex;gap:8px;overflow:auto;padding:2px 1px 5px;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
-.chip{padding:9px 14px;border-radius:999px;background:#fff;border:1px solid var(--line);white-space:nowrap;color:#697286;font-size:11px;font-weight:800;box-shadow:0 3px 12px #11182708}
-.chip.active{color:#fff;border-color:transparent;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 8px 20px #5b4cf033}
-
-.food-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.food-card{background:var(--card);border:1px solid #e9ecf2;border-radius:21px;overflow:hidden;box-shadow:var(--shadow);transition:transform .18s,box-shadow .18s}
-.food-card:active{transform:scale(.985)}.food-img{display:block;width:100%;aspect-ratio:1.22;object-fit:cover;background:#e9edf5}
-.food-info{padding:11px 11px 12px}.food-info h4{margin:0 0 5px;font-family:"Manrope";font-size:13px}.food-meta{display:flex;justify-content:space-between;align-items:center;gap:6px}
-.price{font-family:"Manrope";font-weight:800;font-size:15px}.category{font-size:9px;color:var(--muted);margin-top:1px}
-.add-btn{width:34px;height:34px;border-radius:12px;color:#fff;background:linear-gradient(135deg,#111827,#303b60);font-size:19px;font-weight:800;box-shadow:0 7px 16px #11182724}
-.edit-btn{background:#eef0ff;color:#5145cd;border-radius:9px;padding:6px 8px;font-size:10px;font-weight:800}
-
-.primary-btn,.secondary-btn,.danger-btn{border-radius:13px;padding:11px 14px;font-weight:800;font-size:11px;transition:.15s}
-.primary-btn{color:#fff;background:linear-gradient(135deg,#111827,#343e5d);box-shadow:0 8px 18px #11182718}.secondary-btn{background:#eef1f6;color:#263044}.danger-btn{background:#fee2e2;color:#b91c1c}.full{width:100%;margin-top:10px}
-.search-box{display:flex;align-items:center;background:#fff;border:1px solid var(--line);border-radius:16px;padding:0 13px;box-shadow:0 5px 18px #11182707}
-.search-box span{font-size:22px;color:#8b93a3}.search-box input{border:0;outline:0;padding:13px 8px;width:100%;background:transparent;font-size:12px}
-
-.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat,.report-card,.settings-card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:15px;box-shadow:var(--shadow)}
-.stat{position:relative;overflow:hidden}.stat:after{content:"";position:absolute;width:70px;height:70px;border-radius:50%;right:-35px;bottom:-35px;background:#5b4cf012}
-.stat span{font-size:10px;color:var(--muted)}.stat strong{display:block;font-family:"Manrope";font-size:20px;margin-top:5px}
-.report-card,.settings-card{margin-top:12px}.split-row,.best-row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid #edf0f4;font-size:11px}.split-row:last-child,.best-row:last-child{border-bottom:0}
-.history-tools{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}.history-tools input{width:100%;border:1px solid var(--line);border-radius:11px;padding:9px;background:#fafbfc;font-size:11px;outline:0}
-.sale-row{padding:13px 0;border-bottom:1px solid #edf0f4}.sale-top{display:flex;justify-content:space-between;gap:8px}.sale-top strong{font-size:12px}.sale-row small{display:block;color:var(--muted);margin-top:3px;font-size:9px}
-
-.profile-preview{display:flex;align-items:center;gap:12px;margin-bottom:18px}.profile-preview img{width:58px;height:58px;border-radius:18px;box-shadow:var(--shadow)}
-.profile-preview strong,.profile-preview span{display:block}.profile-preview strong{font-family:"Manrope"}.profile-preview span{font-size:10px;color:var(--muted);margin-top:3px}
-.settings-card label,.modal label{display:block;font-size:10px;font-weight:800;margin:12px 0}.settings-card input,.modal input,.modal select{display:block;width:100%;margin-top:6px;border:1px solid #dfe4ec;border-radius:12px;padding:11px;background:#fff;outline:0;font-size:12px}.muted{color:var(--muted);font-size:11px;line-height:1.55}.two-btn{display:grid;grid-template-columns:1fr 1fr;gap:8px}.danger-card{border-color:#fee2e2}
-
-.bottom-nav{
-  position:fixed;bottom:0;left:0;right:0;height:76px;z-index:30;
-  background:#ffffffec;border-top:1px solid #e7eaf0;backdrop-filter:blur(18px);
-  display:grid;grid-template-columns:repeat(4,1fr);padding-bottom:env(safe-area-inset-bottom)
-}
-.nav-btn{position:relative;background:transparent;color:#8b93a3;font-size:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
-.nav-btn span{font-size:9px;font-weight:800}.nav-btn.active{color:#111827}.nav-btn.active:before{content:"";position:absolute;top:8px;width:30px;height:3px;border-radius:8px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
-
-.modal-backdrop{display:none;position:fixed;inset:0;background:#0f172a99;z-index:50;align-items:flex-end;justify-content:center;padding:12px;backdrop-filter:blur(4px)}
-.modal-backdrop.open{display:flex}.modal{background:#fff;width:min(520px,100%);max-height:92vh;overflow:auto;border-radius:26px 26px 16px 16px;padding:18px;box-shadow:0 30px 90px #0004}
-.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}.modal-head h3{margin:0;font-family:"Manrope";font-size:17px}.close-btn{width:34px;height:34px;border-radius:11px;background:#eef1f6;font-size:21px;color:#4b5563}
-.image-preview{margin-top:8px}.image-preview img{width:80px;height:80px;object-fit:cover;border-radius:13px}
-.cart-line{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid #edf0f4;gap:8px}.cart-line-info{flex:1}.cart-line-info strong{display:block;font-size:12px}.cart-line-info small{color:var(--muted);font-size:10px}
-.qty{display:flex;align-items:center;gap:8px}.qty button{width:27px;height:27px;border-radius:9px;background:#eef1f6}.bill-total{display:flex;justify-content:space-between;font-size:13px;padding:17px 0}.bill-total strong{font-family:"Manrope";font-size:22px}
-.bill-line{display:flex;justify-content:space-between;padding:7px 0;font-size:11px}.bill-head{background:#f6f7fa;border-radius:14px;padding:12px;margin-bottom:10px}.restore-preview{background:#f6f7fa;border-radius:13px;padding:12px;font-size:11px;line-height:1.7}
-.toast{position:fixed;left:50%;bottom:91px;transform:translateX(-50%) translateY(20px);background:#111827;color:#fff;padding:10px 15px;border-radius:12px;font-size:11px;opacity:0;pointer-events:none;transition:.25s;z-index:100;box-shadow:0 12px 35px #0004}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-@media(min-width:700px){
- .food-grid{grid-template-columns:repeat(3,1fr)}.stats-grid{grid-template-columns:repeat(4,1fr)}
- .bottom-nav{left:50%;right:auto;transform:translateX(-50%);width:min(620px,100%);border-radius:22px 22px 0 0}
- .modal-backdrop{align-items:center}.modal{border-radius:26px}.page{padding-left:24px;padding-right:24px}
-}
-@media(max-width:380px){.hero{padding:19px}.food-grid{gap:9px}.food-info{padding:9px}.page-title h2{font-size:21px}}
-
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;padding-bottom:92px}
+button,input,select{font:inherit}button{border:0;cursor:pointer}
+.topbar{height:76px;position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:10px 14px;color:#fff;background:linear-gradient(135deg,#101827,#273454 60%,#5140b8);box-shadow:0 8px 28px #11182730}
+.brand{display:flex;align-items:center;gap:10px}.brand img{width:50px;height:50px;border-radius:16px;box-shadow:0 8px 22px #0005}.brand strong{display:block;font-size:17px}.brand small{display:block;color:#d8def0;font-size:10px;margin-top:2px}
+.header-actions{display:flex;gap:7px}.head-btn{position:relative;width:47px;height:47px;border-radius:15px;color:#fff;background:#ffffff16;border:1px solid #ffffff22;font-size:21px}.badge{position:absolute;right:-4px;top:-5px;background:#ef4444;border:2px solid #182238;color:#fff;border-radius:20px;padding:2px 6px;font-size:10px;font-weight:900}
+.page{display:none;max-width:1120px;margin:auto;padding:18px 14px 105px}.page.active{display:block}
+.hero{color:#fff;border-radius:26px;padding:20px;background:linear-gradient(135deg,#151d30,#34405f 58%,#5948d8);box-shadow:var(--shadow2);position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;right:-70px;top:-75px;background:#ffffff14}.hero>*{position:relative;z-index:1}
+.eyebrow{font-size:9px;letter-spacing:1.7px;font-weight:900;color:#aab5c8}.hero h2{font-size:25px;margin:5px 0;letter-spacing:-1px}.hero p{font-size:12px;color:#dce2ef;margin:0;max-width:450px}
+.big-sale{display:flex;align-items:center;justify-content:space-between;margin-top:17px;padding:13px 15px;border-radius:17px;background:#ffffff12;border:1px solid #ffffff22}.big-sale span{font-size:10px;color:#dce2ef}.big-sale strong{font-size:23px}
+.section-head,.page-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:22px 0 12px}.section-head h3,.page-title h2{margin:0}.page-title h2{font-size:24px;letter-spacing:-1px}.text-btn{background:transparent;color:var(--purple);font-weight:900;font-size:11px}
+.search{display:flex;align-items:center;background:#fff;border:1px solid var(--line);border-radius:17px;padding:0 13px;box-shadow:0 5px 18px #11182708}.search span{font-size:22px;color:#8c95a6}.search input{border:0;outline:0;background:transparent;width:100%;padding:13px 8px;font-size:12px}
+.chips{display:flex;gap:8px;overflow:auto;scrollbar-width:none;padding:2px 1px 7px}.chips::-webkit-scrollbar{display:none}.chip{white-space:nowrap;padding:10px 15px;border-radius:999px;background:#fff;border:1px solid var(--line);color:#687286;font-size:11px;font-weight:900;box-shadow:0 4px 13px #11182708}.chip.active{background:linear-gradient(135deg,var(--purple),#7c3aed);color:#fff;border-color:transparent}
+.food-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.food-card{background:#fff;border:1px solid #e7eaf0;border-radius:21px;overflow:hidden;box-shadow:var(--shadow)}.food-img{display:block;width:100%;aspect-ratio:1.12;object-fit:cover}.food-info{padding:10px 11px 12px}.food-info strong{display:block;font-size:14px}.price{font-size:17px;font-weight:950;margin-top:4px}.meta{font-size:9px;color:var(--muted);margin-top:2px}.food-actions{display:flex;justify-content:flex-end;align-items:center;gap:7px;margin-top:8px}.add-btn{width:42px;height:42px;border-radius:14px;color:#fff;background:linear-gradient(135deg,#101827,#34405f);font-size:23px;font-weight:900;box-shadow:0 8px 18px #11182725}.edit-btn{padding:8px 10px;border-radius:11px;background:#eef0ff;color:#5145cd;font-size:10px;font-weight:900}
+.touch-card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:14px;box-shadow:var(--shadow);margin-top:12px}.touch-card h3{margin:0 0 8px;font-size:14px}.touch-row{display:grid;grid-template-columns:1fr 1fr;gap:9px}.big-action{min-height:72px;border-radius:17px;font-size:16px;font-weight:950;display:flex;align-items:center;justify-content:center;gap:8px}.cash{background:#dcfce7;color:#166534}.upi{background:#dbeafe;color:#1d4ed8}.yellow{background:#fef3c7;color:#92400e}.red{background:#fee2e2;color:#b91c1c}
+.bill-box{background:#fff;border:1px solid var(--line);border-radius:22px;padding:15px;box-shadow:var(--shadow)}.bill-line{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #edf0f4;font-size:13px}.bill-line:last-child{border-bottom:0}.bill-total{display:flex;justify-content:space-between;align-items:center;padding:16px 0 5px}.bill-total strong{font-size:27px}
+.qty{display:flex;align-items:center;gap:7px}.qty button{width:31px;height:31px;border-radius:10px;background:#eef1f6;font-weight:900}.small-btn{padding:8px 10px;border-radius:10px;font-size:10px;font-weight:900;background:#eef1f6}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat{background:#fff;border:1px solid var(--line);border-radius:20px;padding:15px;box-shadow:var(--shadow)}.stat span{font-size:10px;color:var(--muted)}.stat strong{display:block;font-size:21px;margin-top:5px}
+.list-card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:14px;margin-top:12px;box-shadow:var(--shadow)}.list-row{display:flex;justify-content:space-between;gap:8px;padding:11px 0;border-bottom:1px solid #edf0f4;font-size:11px}.list-row:last-child{border-bottom:0}
+.primary{background:linear-gradient(135deg,#101827,#34405f);color:#fff;border-radius:14px;padding:12px 14px;font-size:11px;font-weight:950;box-shadow:0 8px 18px #11182718}.secondary{background:#eef1f6;color:#273044;border-radius:14px;padding:12px 14px;font-size:11px;font-weight:900}.danger{background:#fee2e2;color:#b91c1c;border-radius:14px;padding:12px 14px;font-size:11px;font-weight:900}.full{width:100%;margin-top:9px}
+.bottom-nav{position:fixed;left:0;right:0;bottom:0;height:78px;z-index:40;background:#ffffffef;border-top:1px solid var(--line);backdrop-filter:blur(18px);display:grid;grid-template-columns:repeat(4,1fr);padding-bottom:env(safe-area-inset-bottom)}.nav-btn{background:transparent;color:#8a93a4;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:21px}.nav-btn span{font-size:9px;font-weight:900}.nav-btn.active{color:#111827}
+.modal-bg{display:none;position:fixed;inset:0;background:#0f172a99;z-index:80;align-items:flex-end;justify-content:center;padding:10px;backdrop-filter:blur(4px)}.modal-bg.open{display:flex}.modal{width:min(520px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:25px;padding:17px;box-shadow:0 30px 90px #0005}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.modal-head h3{margin:0;font-size:17px}.close{width:35px;height:35px;border-radius:11px;background:#eef1f6;font-size:21px}.modal label{display:block;font-size:10px;font-weight:900;margin-top:12px}.modal input,.modal select{width:100%;margin-top:6px;border:1px solid #dfe4ec;border-radius:12px;padding:11px;outline:0;font-size:12px;background:#fff}.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}.muted{font-size:11px;color:var(--muted);line-height:1.55}.toast{position:fixed;left:50%;bottom:91px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#101827;color:#fff;border-radius:13px;padding:11px 15px;font-size:11px;font-weight:800;z-index:100;transition:.22s}.toast.show{opacity:1;transform:translate(-50%,0)}
+.locked{background:linear-gradient(135deg,#101827,#293552);color:#fff;border-radius:22px;padding:18px;box-shadow:var(--shadow2)}.locked h2{margin:0 0 5px;font-size:20px}.locked p{margin:0;color:#cdd5e3;font-size:11px}.owner-tools{display:none}.owner-tools.unlocked{display:block}
+@media(min-width:700px){.food-grid{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:repeat(4,1fr)}.page{padding-left:24px;padding-right:24px}.modal-bg{align-items:center}.modal{border-radius:25px}.bottom-nav{left:50%;right:auto;transform:translateX(-50%);width:min(620px,100%);border-radius:22px 22px 0 0}}
 </style>
 </head>
 <body>
+<header class="topbar">
+  <div class="brand"><img id="hotelLogo" alt="Hotel"><div><strong id="hotelName">Mithra Hotel</strong><small>Simple Shop POS</small></div></div>
+  <div class="header-actions">
+    <button class="head-btn" id="voiceBtn" title="Voice">🔊</button>
+    <button class="head-btn" id="cartBtn" title="Bill">🧾<b class="badge" id="cartCount">0</b></button>
+  </div>
+</header>
 
-  <div id="app">
-    <header class="topbar">
-      <div class="brand">
-        <img id="hotelLogo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTYgMjU2Ij48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB4Mj0iMSIgeTE9IjAiIHkyPSIxIj48c3RvcCBzdG9wLWNvbG9yPSIjNjM2NmYxIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMTExODI3Ii8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3QgeD0iMTAiIHk9IjEwIiB3aWR0aD0iMjM2IiBoZWlnaHQ9IjIzNiIgcng9IjU4IiBmaWxsPSJ1cmwoI2cpIi8+PHBhdGggZD0iTTY0IDE3MFY4MmgyNWwzOSA1MCAzOS01MGgyNXY4OGgtMjh2LTQ2bC0zNiA0NS0zNi00NXY0NnoiIGZpbGw9IndoaXRlIi8+PGNpcmNsZSBjeD0iMTkwIiBjeT0iNjUiIHI9IjI0IiBmaWxsPSIjZmJiZjI0Ii8+PHRleHQgeD0iMTkwIiB5PSI3MyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIyMiIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXdlaWdodD0iOTAwIiBmaWxsPSIjMTExODI3Ij7igrk8L3RleHQ+PC9zdmc+" alt="Hotel logo">
-        <div>
-          <h1 id="hotelName">Mithra Hotel</h1>
-          <span>Smart Hotel POS</span>
-        </div>
-      </div>
-      <button class="icon-btn" id="cartTopBtn" aria-label="Open cart">🛒<b id="cartCount">0</b></button>
-    </header>
-
-    <main id="main">
-      <section id="homePage" class="page active">
-        <div class="hero">
-          <div>
-            <span class="eyebrow">TODAY</span>
-            <h2>Welcome back 👋</h2>
-            <p>Quickly add food, create a bill and collect payment.</p>
-          </div>
-          <div class="today-card">
-            <span>Today's Sales</span>
-            <strong id="homeTodaySales">₹0</strong>
-          </div>
-        </div>
-        <div class="section-head"><h3>Categories</h3><button class="text-btn" data-page="menuPage">View menu</button></div>
-        <div id="categoryChips" class="chips"></div>
-        <div class="section-head"><h3>Popular Items</h3></div>
-        <div id="homeItems" class="food-grid"></div>
-      </section>
-
-      <section id="menuPage" class="page">
-        <div class="page-title">
-          <div><span class="eyebrow">MENU</span><h2>Food & Drinks</h2></div>
-          <button class="primary-btn" id="addItemBtn">＋ Add Item</button>
-        </div>
-        <div class="search-box"><span>⌕</span><input id="foodSearch" placeholder="Search food..."></div>
-        <div id="menuCategories" class="chips"></div>
-        <div id="menuGrid" class="food-grid"></div>
-      </section>
-
-      <section id="ordersPage" class="page">
-        <div class="page-title"><div><span class="eyebrow">ORDERS</span><h2>Sales & Reports</h2></div></div>
-        <div class="stats-grid">
-          <div class="stat"><span>Today</span><strong id="statToday">₹0</strong></div>
-          <div class="stat"><span>This Week</span><strong id="statWeek">₹0</strong></div>
-          <div class="stat"><span>This Month</span><strong id="statMonth">₹0</strong></div>
-          <div class="stat"><span>Total Orders</span><strong id="statOrders">0</strong></div>
-        </div>
-        <div class="report-card">
-          <div class="section-head"><h3>Payment Split</h3></div>
-          <div id="paymentSplit" class="split-list"></div>
-        </div>
-        <div class="report-card">
-          <div class="section-head"><h3>Best Selling</h3></div>
-          <div id="bestSelling" class="best-list"></div>
-        </div>
-        <div class="report-card">
-          <div class="section-head"><h3>Sales History</h3><button class="text-btn" id="clearSalesBtn">Clear sales</button></div>
-          <div class="history-tools">
-            <input type="date" id="historyDate">
-            <input id="historySearch" placeholder="Search bill / item...">
-          </div>
-          <div id="salesHistory"></div>
-        </div>
-      </section>
-
-      <section id="settingsPage" class="page">
-        <div class="page-title"><div><span class="eyebrow">SETTINGS</span><h2>Hotel Settings</h2></div></div>
-        <div class="settings-card">
-          <div class="profile-preview">
-            <img id="settingsLogo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTYgMjU2Ij48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB4Mj0iMSIgeTE9IjAiIHkyPSIxIj48c3RvcCBzdG9wLWNvbG9yPSIjNjM2NmYxIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMTExODI3Ii8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3QgeD0iMTAiIHk9IjEwIiB3aWR0aD0iMjM2IiBoZWlnaHQ9IjIzNiIgcng9IjU4IiBmaWxsPSJ1cmwoI2cpIi8+PHBhdGggZD0iTTY0IDE3MFY4MmgyNWwzOSA1MCAzOS01MGgyNXY4OGgtMjh2LTQ2bC0zNiA0NS0zNi00NXY0NnoiIGZpbGw9IndoaXRlIi8+PGNpcmNsZSBjeD0iMTkwIiBjeT0iNjUiIHI9IjI0IiBmaWxsPSIjZmJiZjI0Ii8+PHRleHQgeD0iMTkwIiB5PSI3MyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIyMiIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXdlaWdodD0iOTAwIiBmaWxsPSIjMTExODI3Ij7igrk8L3RleHQ+PC9zdmc+" alt="">
-            <div><strong id="settingsHotelName">Mithra Hotel</strong><span>Hotel Profile</span></div>
-          </div>
-          <label>Hotel Name<input id="settingsName" maxlength="60"></label>
-          <label>Hotel Logo<input id="settingsLogoInput" type="file" accept="image/*"></label>
-          <button class="primary-btn full" id="saveHotelBtn">Save Hotel Profile</button>
-        </div>
-        <div class="settings-card">
-          <h3>Backup & Restore</h3>
-          <p class="muted">Export all menu, sales, cart and hotel settings into one JSON backup.</p>
-          <div class="two-btn">
-            <button class="secondary-btn" id="exportBtn">📤 Backup Data</button>
-            <button class="secondary-btn" id="importBtn">📥 Import</button>
-          </div>
-          <input id="importFile" type="file" accept=".json,application/json" hidden>
-        </div>
-        <div class="settings-card danger-card">
-          <h3>Danger Zone</h3>
-          <p class="muted">This removes all app data from this browser. A confirmation is required.</p>
-          <button class="danger-btn" id="clearAllBtn">🗑 Clear All Data</button>
-        </div>
-      </section>
-    </main>
-
-    <nav class="bottom-nav">
-      <button class="nav-btn active" data-page="homePage">🏠<span>Home</span></button>
-      <button class="nav-btn" data-page="menuPage">🍴<span>Menu</span></button>
-      <button class="nav-btn" data-page="ordersPage">🧾<span>Orders</span></button>
-      <button class="nav-btn" data-page="settingsPage">⚙️<span>Settings</span></button>
-    </nav>
+<main>
+<section id="homePage" class="page active">
+  <div class="hero">
+    <span class="eyebrow">SHOP MODE</span>
+    <h2>Touch → Bill → Paid</h2>
+    <p>Food button-ஐ touch பண்ணுங்க. Quantity automatic-ஆ சேரும்.</p>
+    <div class="big-sale"><span>இன்றைய விற்பனை</span><strong id="todaySales">₹0</strong></div>
   </div>
 
-  <div class="modal-backdrop" id="itemModal">
-    <div class="modal">
-      <div class="modal-head"><h3 id="itemModalTitle">Add Item</h3><button class="close-btn" data-close="itemModal">×</button></div>
-      <form id="itemForm">
-        <input type="hidden" id="editItemId">
-        <label>Item Name<input id="itemName" required maxlength="60"></label>
-        <label>Category<select id="itemCategory"><option>Tiffin</option><option>Dosa</option><option>Vada</option><option>Poori</option><option>Drinks</option><option>Other</option></select></label>
-        <label>Price (₹)<input id="itemPrice" type="number" min="0" step="0.01" required></label>
-        <label>Image<input id="itemImage" type="file" accept="image/*"></label>
-        <div id="itemImagePreview" class="image-preview"></div>
-        <button class="primary-btn full" type="submit">Save Item</button>
-      </form>
+  <div class="section-head"><h3>🍽️ Food</h3><button class="text-btn" id="speakFoodBtn">🔊 சொல்லு</button></div>
+  <div class="search"><span>⌕</span><input id="search" placeholder="Food தேட..."></div>
+  <div id="chips" class="chips" style="margin-top:8px"></div>
+  <div id="foodGrid" class="food-grid"></div>
+
+  <div class="touch-card">
+    <h3>🧾 Bill</h3>
+    <div id="quickBill">Bill காலி</div>
+    <div class="touch-row" style="margin-top:10px">
+      <button class="big-action yellow" id="openBillBtn">🧾 BILL</button>
+      <button class="big-action cash" id="quickCashBtn">💵 CASH</button>
     </div>
   </div>
+</section>
 
-  <div class="modal-backdrop" id="cartModal">
-    <div class="modal">
-      <div class="modal-head"><h3>Current Bill</h3><button class="close-btn" data-close="cartModal">×</button></div>
-      <div id="cartItems"></div>
-      <div class="bill-total"><span>Total</span><strong id="cartTotal">₹0</strong></div>
-      <label>Payment Method<select id="paymentMethod"><option>Cash</option><option>UPI</option><option>Other</option></select></label>
-      <button class="primary-btn full" id="paidBtn">✅ PAID & SAVE SALE</button>
-      <button class="secondary-btn full" id="clearCartBtn">Clear Cart</button>
+<section id="billPage" class="page">
+  <div class="page-title"><div><span class="eyebrow">BILL</span><h2>Current Bill</h2></div><button class="secondary" id="clearCartBtn">Clear</button></div>
+  <div class="bill-box">
+    <div id="billItems"></div>
+    <div class="bill-total"><span>TOTAL</span><strong id="billTotal">₹0</strong></div>
+  </div>
+  <div class="touch-card">
+    <h3>Payment</h3>
+    <div class="touch-row">
+      <button class="big-action cash" id="cashBtn">💵 CASH</button>
+      <button class="big-action upi" id="upiBtn">📱 UPI</button>
+    </div>
+    <button class="big-action yellow" style="width:100%;margin-top:9px" id="otherBtn">💳 OTHER</button>
+  </div>
+</section>
+
+<section id="salesPage" class="page">
+  <div class="page-title"><div><span class="eyebrow">TODAY</span><h2>Sales</h2></div><button class="text-btn" id="speakSalesBtn">🔊 சொல்லு</button></div>
+  <div class="stats">
+    <div class="stat"><span>Today</span><strong id="sToday">₹0</strong></div>
+    <div class="stat"><span>Bills</span><strong id="sBills">0</strong></div>
+    <div class="stat"><span>Cash</span><strong id="sCash">₹0</strong></div>
+    <div class="stat"><span>UPI</span><strong id="sUpi">₹0</strong></div>
+  </div>
+  <div class="list-card"><div class="section-head" style="margin:0 0 5px"><h3>Recent Bills</h3><button class="text-btn" id="ownerUnlockFromSales">Owner</button></div><div id="recentSales"></div></div>
+  <div id="ownerSalesTools" class="owner-tools">
+    <div class="list-card">
+      <h3>Sales History</h3>
+      <input id="historyDate" type="date" style="width:100%;padding:10px;border:1px solid var(--line);border-radius:11px;margin:7px 0">
+      <input id="historySearch" placeholder="Bill / food search" style="width:100%;padding:10px;border:1px solid var(--line);border-radius:11px">
+      <div id="history"></div>
     </div>
   </div>
+</section>
 
-  <div class="modal-backdrop" id="saleModal">
-    <div class="modal bill-modal">
-      <div class="modal-head"><h3>Bill Preview</h3><button class="close-btn" data-close="saleModal">×</button></div>
-      <div id="saleDetails"></div>
-      <button class="primary-btn full" id="doneSaleBtn">Done</button>
+<section id="ownerPage" class="page">
+  <div id="ownerLock" class="locked">
+    <h2>🔐 Owner Mode</h2><p>Price, menu, backup and settings are protected.</p>
+    <button class="big-action yellow" style="width:100%;margin-top:12px" id="unlockBtn">🔑 OPEN OWNER</button>
+  </div>
+  <div id="ownerPanel" class="owner-tools">
+    <div class="page-title"><div><span class="eyebrow">OWNER</span><h2>Management</h2></div><button class="secondary" id="lockBtn">Lock</button></div>
+    <div class="list-card">
+      <h3>🏪 Hotel Profile</h3>
+      <label style="display:block;font-size:10px;font-weight:900;margin-top:10px">Hotel Name<input id="hotelInput" style="width:100%;padding:11px;border:1px solid var(--line);border-radius:12px;margin-top:6px"></label>
+      <label style="display:block;font-size:10px;font-weight:900;margin-top:10px">Logo<input id="logoInput" type="file" accept="image/*" style="width:100%;margin-top:6px"></label>
+      <button class="primary full" id="saveHotel">Save Hotel</button>
+    </div>
+    <div class="list-card">
+      <div class="section-head" style="margin:0 0 8px"><h3>🍽️ Menu</h3><button class="primary" id="addItem">＋ Add</button></div>
+      <div id="ownerMenu"></div>
+    </div>
+    <div class="list-card">
+      <h3>💾 Backup</h3>
+      <p class="muted">Current data-க்கு backup எடுத்து பிறகு restore செய்யலாம்.</p>
+      <div class="two"><button class="secondary" id="backupBtn">📤 Backup</button><button class="secondary" id="restoreBtn">📥 Restore</button></div>
+      <input id="restoreFile" type="file" accept=".json,application/json" hidden>
+    </div>
+    <div class="list-card">
+      <h3>🔊 Voice</h3>
+      <p class="muted">Food name, quantity, total ஆகியவற்றை phone voice-ஆ சொல்லும்.</p>
+      <button class="secondary full" id="testVoice">🔊 Test Voice</button>
+    </div>
+    <div class="list-card">
+      <h3>🗑 Danger</h3><button class="danger full" id="clearAll">Clear All Data</button>
     </div>
   </div>
+</section>
+</main>
 
-  <div class="modal-backdrop" id="restoreModal">
-    <div class="modal">
-      <div class="modal-head"><h3>Restore Backup?</h3><button class="close-btn" data-close="restoreModal">×</button></div>
-      <div id="restorePreview" class="restore-preview"></div>
-      <p class="muted">Your current data will be backed up automatically before restore.</p>
-      <div class="two-btn"><button class="secondary-btn" data-close="restoreModal">Cancel</button><button class="primary-btn" id="confirmRestoreBtn">Restore</button></div>
-    </div>
-  </div>
+<nav class="bottom-nav">
+  <button class="nav-btn active" data-page="homePage">🏠<span>HOME</span></button>
+  <button class="nav-btn" data-page="billPage">🧾<span>BILL</span></button>
+  <button class="nav-btn" data-page="salesPage">📊<span>SALES</span></button>
+  <button class="nav-btn" data-page="ownerPage">🔐<span>OWNER</span></button>
+</nav>
 
-  <div id="toast" class="toast"></div>
+<div class="modal-bg" id="itemModal"><div class="modal">
+  <div class="modal-head"><h3 id="itemTitle">Add Food</h3><button class="close" data-close="itemModal">×</button></div>
+  <form id="itemForm">
+    <input type="hidden" id="itemId">
+    <label>Food name<input id="itemName" required maxlength="60"></label>
+    <label>Category<select id="itemCategory"><option>Tiffin</option><option>Dosa</option><option>Vada</option><option>Poori</option><option>Drinks</option><option>Other</option></select></label>
+    <label>Price<input id="itemPrice" type="number" min="0" step="1" required></label>
+    <label>Image<input id="itemImage" type="file" accept="image/*"></label>
+    <button class="primary full" type="submit">Save Food</button>
+  </form>
+</div></div>
+
+<div class="modal-bg" id="paidModal"><div class="modal">
+  <div class="modal-head"><h3>✅ PAID</h3><button class="close" data-close="paidModal">×</button></div>
+  <div id="paidDetails"></div>
+  <button class="big-action cash" style="width:100%;margin-top:10px" id="donePaid">DONE</button>
+</div></div>
+
+<div class="modal-bg" id="pinModal"><div class="modal">
+  <div class="modal-head"><h3>🔐 Owner PIN</h3><button class="close" data-close="pinModal">×</button></div>
+  <p class="muted">Default PIN: 1234. Owner mode-ல் மாற்றலாம்.</p>
+  <input id="pinInput" type="password" inputmode="numeric" maxlength="8" placeholder="PIN">
+  <button class="primary full" id="pinSubmit">OPEN OWNER</button>
+</div></div>
+
+<div class="toast" id="toast"></div>
 
 <script>
-const DB_KEY="mithraHotelPOS_v1";
-const defaultItems=[
-{id:"i1",name:"Idly",category:"Tiffin",price:30,image:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgNjQwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB4Mj0iMSIgeTE9IjAiIHkyPSIxIj48c3RvcCBzdG9wLWNvbG9yPSIjNjQ3NDhiIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMTExODI3Ii8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjgwMCIgaGVpZ2h0PSI2NDAiIHJ4PSI2MCIgZmlsbD0idXJsKCNnKSIvPjxjaXJjbGUgY3g9IjQwMCIgY3k9IjI4NSIgcj0iMTUwIiBmaWxsPSIjZmZmZmZmMjAiLz48dGV4dCB4PSI0MDAiIHk9IjMzNSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxNTAiPvCfjZo8L3RleHQ+PHRleHQgeD0iNDAwIiB5PSI1NDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI0MiIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0id2hpdGUiPklkbHk8L3RleHQ+PC9zdmc+"},
-{id:"i2",name:"Dosa",category:"Dosa",price:50,image:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgNjQwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB4Mj0iMSIgeTE9IjAiIHkyPSIxIj48c3RvcCBzdG9wLWNvbG9yPSIjYjQ1MzA5Ii8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMTExODI3Ii8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjgwMCIgaGVpZ2h0PSI2NDAiIHJ4PSI2MCIgZmlsbD0idXJsKCNnKSIvPjxjaXJjbGUgY3g9IjQwMCIgY3k9IjI4NSIgcj0iMTUwIiBmaWxsPSIjZmZmZmZmMjAiLz48dGV4dCB4PSI0MDAiIHk9IjMzNSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxNTAiPvCfpZ48L3RleHQ+PHRleHQgeD0iNDAwIiB5PSI1NDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI0MiIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0id2hpdGUiPkRvc2E8L3RleHQ+PC9zdmc+"},
-{id:"i3",name:"Vada",category:"Vada",price:20,image:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgNjQwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB4Mj0iMSIgeTE9IjAiIHkyPSIxIj48c3RvcCBzdG9wLWNvbG9yPSIjOTI0MDBlIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMTExODI3Ii8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjgwMCIgaGVpZ2h0PSI2NDAiIHJ4PSI2MCIgZmlsbD0idXJsKCNnKSIvPjxjaXJjbGUgY3g9IjQwMCIgY3k9IjI4NSIgcj0iMTUwIiBmaWxsPSIjZmZmZmZmMjAiLz48dGV4dCB4PSI0MDAiIHk9IjMzNSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxNTAiPvCfn6Q8L3RleHQ+PHRleHQgeD0iNDAwIiB5PSI1NDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI0MiIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0id2hpdGUiPlZhZGE8L3RleHQ+PC9zdmc+"},
-{id:"i4",name:"Poori",category:"Poori",price:45,image:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgNjQwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB4Mj0iMSIgeTE9IjAiIHkyPSIxIj48c3RvcCBzdG9wLWNvbG9yPSIjYTE2MjA3Ii8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMTExODI3Ii8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjgwMCIgaGVpZ2h0PSI2NDAiIHJ4PSI2MCIgZmlsbD0idXJsKCNnKSIvPjxjaXJjbGUgY3g9IjQwMCIgY3k9IjI4NSIgcj0iMTUwIiBmaWxsPSIjZmZmZmZmMjAiLz48dGV4dCB4PSI0MDAiIHk9IjMzNSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxNTAiPvCfq5M8L3RleHQ+PHRleHQgeD0iNDAwIiB5PSI1NDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI0MiIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0id2hpdGUiPlBvb3JpPC90ZXh0Pjwvc3ZnPg=="},
-{id:"i5",name:"Masala Dosa",category:"Dosa",price:70,image:"masala-data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgNjQwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB4Mj0iMSIgeTE9IjAiIHkyPSIxIj48c3RvcCBzdG9wLWNvbG9yPSIjYjQ1MzA5Ii8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMTExODI3Ii8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjgwMCIgaGVpZ2h0PSI2NDAiIHJ4PSI2MCIgZmlsbD0idXJsKCNnKSIvPjxjaXJjbGUgY3g9IjQwMCIgY3k9IjI4NSIgcj0iMTUwIiBmaWxsPSIjZmZmZmZmMjAiLz48dGV4dCB4PSI0MDAiIHk9IjMzNSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxNTAiPvCfpZ48L3RleHQ+PHRleHQgeD0iNDAwIiB5PSI1NDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI0MiIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0id2hpdGUiPkRvc2E8L3RleHQ+PC9zdmc+"},
-{id:"i6",name:"Tea",category:"Drinks",price:15,image:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgNjQwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB4Mj0iMSIgeTE9IjAiIHkyPSIxIj48c3RvcCBzdG9wLWNvbG9yPSIjMDY1ZjQ2Ii8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMTExODI3Ii8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjgwMCIgaGVpZ2h0PSI2NDAiIHJ4PSI2MCIgZmlsbD0idXJsKCNnKSIvPjxjaXJjbGUgY3g9IjQwMCIgY3k9IjI4NSIgcj0iMTUwIiBmaWxsPSIjZmZmZmZmMjAiLz48dGV4dCB4PSI0MDAiIHk9IjMzNSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxNTAiPvCfjbU8L3RleHQ+PHRleHQgeD0iNDAwIiB5PSI1NDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI0MiIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0id2hpdGUiPlRlYTwvdGV4dD48L3N2Zz4="},
-{id:"i7",name:"Coffee",category:"Drinks",price:20,image:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgNjQwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB4Mj0iMSIgeTE9IjAiIHkyPSIxIj48c3RvcCBzdG9wLWNvbG9yPSIjNzgzNTBmIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMTExODI3Ii8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjgwMCIgaGVpZ2h0PSI2NDAiIHJ4PSI2MCIgZmlsbD0idXJsKCNnKSIvPjxjaXJjbGUgY3g9IjQwMCIgY3k9IjI4NSIgcj0iMTUwIiBmaWxsPSIjZmZmZmZmMjAiLz48dGV4dCB4PSI0MDAiIHk9IjMzNSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxNTAiPuKYlTwvdGV4dD48dGV4dCB4PSI0MDAiIHk9IjU0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjQyIiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSJ3aGl0ZSI+Q29mZmVlPC90ZXh0Pjwvc3ZnPg=="}];
-const defaultState={hotel:{name:"Mithra Hotel",logo:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTYgMjU2Ij48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB4Mj0iMSIgeTE9IjAiIHkyPSIxIj48c3RvcCBzdG9wLWNvbG9yPSIjNjM2NmYxIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMTExODI3Ii8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3QgeD0iMTAiIHk9IjEwIiB3aWR0aD0iMjM2IiBoZWlnaHQ9IjIzNiIgcng9IjU4IiBmaWxsPSJ1cmwoI2cpIi8+PHBhdGggZD0iTTY0IDE3MFY4MmgyNWwzOSA1MCAzOS01MGgyNXY4OGgtMjh2LTQ2bC0zNiA0NS0zNi00NXY0NnoiIGZpbGw9IndoaXRlIi8+PGNpcmNsZSBjeD0iMTkwIiBjeT0iNjUiIHI9IjI0IiBmaWxsPSIjZmJiZjI0Ii8+PHRleHQgeD0iMTkwIiB5PSI3MyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIyMiIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXdlaWdodD0iOTAwIiBmaWxsPSIjMTExODI3Ij7igrk8L3RleHQ+PC9zdmc+"},items:defaultItems,sales:[],cart:[],currentPage:"homePage"};
-function loadState(){try{const raw=localStorage.getItem(DB_KEY);if(!raw)return structuredClone(defaultState);return {...structuredClone(defaultState),...JSON.parse(raw)};}catch(e){return structuredClone(defaultState)}}
-let state=loadState();
-function saveState(){localStorage.setItem(DB_KEY,JSON.stringify(state))}
-function uid(prefix="id"){return prefix+"_"+Date.now().toString(36)+"_"+Math.random().toString(36).slice(2,8)}
-function money(n){return "₹"+Number(n||0).toLocaleString("en-IN",{maximumFractionDigits:2})}
-function dateKey(d=new Date()){const x=new Date(d);return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,"0")}-${String(x.getDate()).padStart(2,"0")}`}
-function downloadJSON(filename,data){const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
-
-;
-let activeCategory="All";
-function categories(){return ["All",...new Set(state.items.map(i=>i.category))]}
-function renderCategories(targetId){const el=document.getElementById(targetId);el.innerHTML=categories().map(c=>`<button class="chip ${activeCategory===c?"active":""}" data-category="${escapeHtml(c)}">${escapeHtml(c)}</button>`).join("");el.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{activeCategory=b.dataset.category;renderAll()})}
-function filteredItems(){const q=(document.getElementById("foodSearch")?.value||"").toLowerCase().trim();return state.items.filter(i=>(activeCategory==="All"||i.category===activeCategory)&&(!q||i.name.toLowerCase().includes(q)||i.category.toLowerCase().includes(q)))}
-function itemCard(item){return `<article class="food-card"><img class="food-img" src="${item.image||"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgNjQwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB4Mj0iMSIgeTE9IjAiIHkyPSIxIj48c3RvcCBzdG9wLWNvbG9yPSIjNDc1NTY5Ii8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMTExODI3Ii8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjgwMCIgaGVpZ2h0PSI2NDAiIHJ4PSI2MCIgZmlsbD0idXJsKCNnKSIvPjxjaXJjbGUgY3g9IjQwMCIgY3k9IjI4NSIgcj0iMTUwIiBmaWxsPSIjZmZmZmZmMjAiLz48dGV4dCB4PSI0MDAiIHk9IjMzNSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxNTAiPvCfjb3vuI88L3RleHQ+PHRleHQgeD0iNDAwIiB5PSI1NDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI0MiIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0id2hpdGUiPkZvb2Q8L3RleHQ+PC9zdmc+"}" alt="${escapeHtml(item.name)}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgNjQwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB4Mj0iMSIgeTE9IjAiIHkyPSIxIj48c3RvcCBzdG9wLWNvbG9yPSIjNDc1NTY5Ii8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMTExODI3Ii8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjgwMCIgaGVpZ2h0PSI2NDAiIHJ4PSI2MCIgZmlsbD0idXJsKCNnKSIvPjxjaXJjbGUgY3g9IjQwMCIgY3k9IjI4NSIgcj0iMTUwIiBmaWxsPSIjZmZmZmZmMjAiLz48dGV4dCB4PSI0MDAiIHk9IjMzNSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxNTAiPvCfjb3vuI88L3RleHQ+PHRleHQgeD0iNDAwIiB5PSI1NDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI0MiIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0id2hpdGUiPkZvb2Q8L3RleHQ+PC9zdmc+'"><div class="food-info"><h4>${escapeHtml(item.name)}</h4><div class="food-meta"><div><div class="price">${money(item.price)}</div><div class="category">${escapeHtml(item.category)}</div></div><div style="display:flex;gap:5px"><button class="edit-btn" data-edit="${item.id}">Edit</button><button class="add-btn" data-add="${item.id}">+</button></div></div></div></article>`}
-function renderMenu(){const grid=document.getElementById("menuGrid");grid.innerHTML=filteredItems().map(itemCard).join("")||`<div class="muted">No food items found.</div>`;grid.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>addToCart(b.dataset.add));grid.querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>openItemModal(b.dataset.edit))}
-function renderHome(){document.getElementById("homeItems").innerHTML=state.items.slice(0,6).map(itemCard).join("");document.querySelectorAll("#homeItems [data-add]").forEach(b=>b.onclick=()=>addToCart(b.dataset.add));document.querySelectorAll("#homeItems [data-edit]").forEach(b=>b.onclick=()=>openItemModal(b.dataset.edit))}
-function openItemModal(id=null){const modal=document.getElementById("itemModal");document.getElementById("itemForm").reset();document.getElementById("editItemId").value=id||"";document.getElementById("itemModalTitle").textContent=id?"Edit Item":"Add Item";document.getElementById("itemImagePreview").innerHTML="";if(id){const x=state.items.find(i=>i.id===id);if(x){itemName.value=x.name;itemCategory.value=x.category;itemPrice.value=x.price;document.getElementById("itemImagePreview").innerHTML=`<img src="${x.image}" alt="">`}}modal.classList.add("open")}
-function saveItem(e){e.preventDefault();const id=document.getElementById("editItemId").value;const old=id?state.items.find(i=>i.id===id):null;const file=document.getElementById("itemImage").files[0];const finish=(image)=>{const obj={id:id||uid("item"),name:itemName.value.trim(),category:itemCategory.value,price:Number(itemPrice.value),image:image||old?.image||"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgNjQwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB4Mj0iMSIgeTE9IjAiIHkyPSIxIj48c3RvcCBzdG9wLWNvbG9yPSIjNDc1NTY5Ii8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMTExODI3Ii8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjgwMCIgaGVpZ2h0PSI2NDAiIHJ4PSI2MCIgZmlsbD0idXJsKCNnKSIvPjxjaXJjbGUgY3g9IjQwMCIgY3k9IjI4NSIgcj0iMTUwIiBmaWxsPSIjZmZmZmZmMjAiLz48dGV4dCB4PSI0MDAiIHk9IjMzNSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxNTAiPvCfjb3vuI88L3RleHQ+PHRleHQgeD0iNDAwIiB5PSI1NDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI0MiIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0id2hpdGUiPkZvb2Q8L3RleHQ+PC9zdmc+"};if(id){state.items=state.items.map(i=>i.id===id?obj:i)}else state.items.push(obj);saveState();closeModal("itemModal");renderAll();toast(id?"Item updated":"Item added")};if(file){const r=new FileReader();r.onload=()=>finish(r.result);r.readAsDataURL(file)}else finish()}
-function escapeHtml(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
-
-;
-function addToCart(id){const item=state.items.find(i=>i.id===id);if(!item)return;const line=state.cart.find(x=>x.itemId===id);if(line)line.qty++;else state.cart.push({itemId:id,name:item.name,price:Number(item.price),qty:1});saveState();renderCart();updateCartCount();toast(item.name+" added")}
-function changeQty(id,delta){const line=state.cart.find(x=>x.itemId===id);if(!line)return;line.qty+=delta;if(line.qty<=0)state.cart=state.cart.filter(x=>x.itemId!==id);saveState();renderCart();updateCartCount()}
-function cartTotal(){return state.cart.reduce((s,x)=>s+x.price*x.qty,0)}
-function renderCart(){const el=document.getElementById("cartItems");if(!state.cart.length){el.innerHTML=`<p class="muted">Cart is empty. Add food from Menu.</p>`}else el.innerHTML=state.cart.map(x=>`<div class="cart-line"><div class="cart-line-info"><strong>${escapeHtml(x.name)}</strong><small>${money(x.price)} × ${x.qty}</small></div><div class="qty"><button data-minus="${x.itemId}">−</button><b>${x.qty}</b><button data-plus="${x.itemId}">+</button></div><strong>${money(x.price*x.qty)}</strong></div>`).join("");el.querySelectorAll("[data-minus]").forEach(b=>b.onclick=()=>changeQty(b.dataset.minus,-1));el.querySelectorAll("[data-plus]").forEach(b=>b.onclick=()=>changeQty(b.dataset.plus,1));document.getElementById("cartTotal").textContent=money(cartTotal())}
-function updateCartCount(){document.getElementById("cartCount").textContent=state.cart.reduce((s,x)=>s+x.qty,0)}
-function openCart(){renderCart();document.getElementById("cartModal").classList.add("open")}
-function completeSale(){if(!state.cart.length){toast("Cart is empty");return}const now=new Date();const sale={id:uid("sale"),billNo:"B"+Date.now().toString().slice(-6),createdAt:now.toISOString(),date:dateKey(now),items:state.cart.map(x=>({...x})),total:cartTotal(),payment:document.getElementById("paymentMethod").value};state.sales.push(sale);state.cart=[];saveState();closeModal("cartModal");showSale(sale);renderAll();toast("Paid sale saved")}
-function showSale(sale){document.getElementById("saleDetails").innerHTML=`<div class="bill-head"><strong>${escapeHtml(state.hotel.name)}</strong><small>${escapeHtml(sale.billNo)} · ${new Date(sale.createdAt).toLocaleString("en-IN")}</small></div>${sale.items.map(x=>`<div class="bill-line"><span>${escapeHtml(x.name)} × ${x.qty}</span><strong>${money(x.price*x.qty)}</strong></div>`).join("")}<div class="bill-total"><span>Total</span><strong>${money(sale.total)}</strong></div><div class="bill-line"><span>Payment</span><strong>${escapeHtml(sale.payment)}</strong></div><div style="text-align:center;margin-top:14px;font-weight:900">PAID</div>`;document.getElementById("saleModal").classList.add("open")}
-
-;
-const $=id=>document.getElementById(id);
-document.addEventListener("DOMContentLoaded",()=>{bindEvents();applyHotel();renderAll();showPage(state.currentPage||"homePage",false);history.replaceState({page:state.currentPage||"homePage"},"")});
-function bindEvents(){
-document.querySelectorAll(".nav-btn,[data-page]").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
-$("cartTopBtn").onclick=openCart;$("addItemBtn").onclick=()=>openItemModal();$("itemForm").onsubmit=saveItem;$("foodSearch").oninput=renderMenu;
-$("paidBtn").onclick=completeSale;$("clearCartBtn").onclick=()=>{if(confirm("Clear current cart?")){state.cart=[];saveState();renderCart();updateCartCount()}};
-$("doneSaleBtn").onclick=()=>closeModal("saleModal");
-document.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>closeModal(b.dataset.close));
-$("saveHotelBtn").onclick=saveHotel;$("exportBtn").onclick=exportBackup;$("importBtn").onclick=()=>$("importFile").click();$("importFile").onchange=readImport;
-$("confirmRestoreBtn").onclick=confirmRestore;$("clearAllBtn").onclick=clearAll;
-$("historyDate").onchange=renderReports;$("historySearch").oninput=renderReports;$("clearSalesBtn").onclick=clearSales;
-window.addEventListener("popstate",e=>{const p=e.state?.page||"homePage";showPage(p,false)});
+const KEY="mithraHotelPOS_v2";
+const DEFAULT_PIN="1234";
+function svgFood(emoji, label, a, b){
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 640">
+  <defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient></defs>
+  <rect width="800" height="640" rx="60" fill="url(#g)"/><circle cx="400" cy="285" r="150" fill="#ffffff18"/>
+  <text x="400" y="335" text-anchor="middle" font-size="150">${emoji}</text>
+  <text x="400" y="545" text-anchor="middle" font-family="Arial" font-size="42" font-weight="800" fill="white">${label}</text></svg>`;
+  return "data:image/svg+xml;charset=UTF-8,"+encodeURIComponent(svg);
 }
-function showPage(id,push=true){document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));$(id)?.classList.add("active");document.querySelectorAll(".nav-btn").forEach(b=>b.classList.toggle("active",b.dataset.page===id));state.currentPage=id;saveState();if(push)history.pushState({page:id},"");window.scrollTo(0,0);renderAll()}
-function renderAll(){renderCategories("categoryChips");renderCategories("menuCategories");renderHome();renderMenu();renderCart();updateCartCount();renderReports();applyHotel()}
-function applyHotel(){$("hotelName").textContent=state.hotel.name;$("settingsHotelName").textContent=state.hotel.name;$("settingsName").value=state.hotel.name;$("hotelLogo").src=state.hotel.logo;$("settingsLogo").src=state.hotel.logo;$("homeTodaySales").textContent=money(sumSalesBy(s=>s.date===dateKey()))}
-function sumSalesBy(fn){return state.sales.filter(fn).reduce((s,x)=>s+x.total,0)}
-function renderReports(){const now=new Date(),today=dateKey(now);const weekStart=new Date(now);weekStart.setDate(now.getDate()-now.getDay());const month=now.getMonth(),year=now.getFullYear();$("statToday").textContent=money(sumSalesBy(s=>s.date===today));$("statWeek").textContent=money(state.sales.filter(s=>new Date(s.createdAt)>=weekStart).reduce((a,s)=>a+s.total,0));$("statMonth").textContent=money(state.sales.filter(s=>{const d=new Date(s.createdAt);return d.getMonth()===month&&d.getFullYear()===year}).reduce((a,s)=>a+s.total,0));$("statOrders").textContent=state.sales.length;
-const pays={Cash:0,UPI:0,Other:0};state.sales.forEach(s=>pays[s.payment]=(pays[s.payment]||0)+s.total);$("paymentSplit").innerHTML=Object.entries(pays).map(([k,v])=>`<div class="split-row"><span>${k}</span><strong>${money(v)}</strong></div>`).join("");
-const best={};state.sales.forEach(s=>s.items.forEach(i=>best[i.name]=(best[i.name]||0)+i.qty));const arr=Object.entries(best).sort((a,b)=>b[1]-a[1]).slice(0,7);$("bestSelling").innerHTML=arr.length?arr.map(([k,v],n)=>`<div class="best-row"><span>${n+1}. ${escapeHtml(k)}</span><strong>${v} sold</strong></div>`).join(""):`<p class="muted">No sales yet.</p>`;
-const date=$("historyDate").value, q=$("historySearch").value.toLowerCase();let sales=[...state.sales].sort((a,b)=>b.createdAt.localeCompare(a.createdAt));if(date)sales=sales.filter(s=>s.date===date);if(q)sales=sales.filter(s=>s.billNo.toLowerCase().includes(q)||s.items.some(i=>i.name.toLowerCase().includes(q)));$("salesHistory").innerHTML=sales.length?sales.map(s=>`<div class="sale-row"><div class="sale-top"><strong>${escapeHtml(s.billNo)} · ${money(s.total)}</strong><span>${escapeHtml(s.payment)}</span></div><small>${new Date(s.createdAt).toLocaleString("en-IN")}</small><small>${s.items.map(i=>escapeHtml(i.name)+" × "+i.qty).join(", ")}</small></div>`).join(""):`<p class="muted">No sales found.</p>`}
-function saveHotel(){const name=$("settingsName").value.trim()||"Mithra Hotel";const file=$("settingsLogoInput").files[0];const done=logo=>{state.hotel={name,logo:logo||state.hotel.logo};saveState();applyHotel();toast("Hotel profile saved")};if(file){const r=new FileReader();r.onload=()=>done(r.result);r.readAsDataURL(file)}else done()}
-function exportBackup(){const backup={app:"Mithra Hotel POS",version:1,exportedAt:new Date().toISOString(),state};downloadJSON(`hotel-backup-${dateKey()}.json`,backup);toast("Backup exported")}
-let pendingImport=null;
-function readImport(e){const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const data=JSON.parse(reader.result);if(!data.state||!Array.isArray(data.state.items)||!Array.isArray(data.state.sales))throw Error();pendingImport=data.state;$("restorePreview").innerHTML=`Hotel: <strong>${escapeHtml(data.state.hotel?.name||"Unknown")}</strong><br>Menu items: ${data.state.items.length}<br>Sales: ${data.state.sales.length}<br>Backup date: ${data.exportedAt?new Date(data.exportedAt).toLocaleString("en-IN"):"Unknown"}`;$("restoreModal").classList.add("open")}catch(err){toast("Invalid backup file")}e.target.value=""};reader.readAsText(file)}
-function confirmRestore(){if(!pendingImport)return;const current={app:"Mithra Hotel POS Auto Backup",version:1,exportedAt:new Date().toISOString(),state};downloadJSON(`auto-backup-before-restore-${Date.now()}.json`,current);state={...structuredClone(defaultState),...pendingImport};state.currentPage="settingsPage";saveState();pendingImport=null;closeModal("restoreModal");renderAll();showPage("settingsPage",false);toast("Backup restored")}
-function clearSales(){if(!state.sales.length)return;if(confirm("Delete ALL sales history? This cannot be undone unless you have a backup.")){state.sales=[];saveState();renderAll();toast("Sales cleared")}}
-function clearAll(){if(confirm("Clear ALL hotel data, menu, cart, sales and settings?")){if(confirm("Final confirmation: permanently remove all app data?")){localStorage.removeItem(DB_KEY);location.reload()}}}
-function closeModal(id){$(id).classList.remove("open")}
-function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(window.__toast);window.__toast=setTimeout(()=>t.classList.remove("show"),2200)}
-
+const logo=svgFood("M","MITHRA","#6366f1","#111827");
+const defaults=[
+{id:"i1",name:"Idly",category:"Tiffin",price:30,image:svgFood("🍚","IDLY","#64748b","#111827")},
+{id:"i2",name:"Dosa",category:"Dosa",price:50,image:svgFood("🥞","DOSA","#b45309","#111827")},
+{id:"i3",name:"Vada",category:"Vada",price:20,image:svgFood("🟠","VADA","#92400e","#111827")},
+{id:"i4",name:"Poori",category:"Poori",price:45,image:svgFood("🫓","POORI","#a16207","#111827")},
+{id:"i5",name:"Masala Dosa",category:"Dosa",price:70,image:svgFood("🥞","MASALA DOSA","#c2410c","#111827")},
+{id:"i6",name:"Tea",category:"Drinks",price:15,image:svgFood("☕","TEA","#065f46","#111827")},
+{id:"i7",name:"Coffee",category:"Drinks",price:20,image:svgFood("☕","COFFEE","#78350f","#111827")}
+];
+function clone(x){return JSON.parse(JSON.stringify(x))}
+function load(){
+  try{
+    const old=JSON.parse(localStorage.getItem(KEY)||"null");
+    if(old) return {...clone(base),...old};
+    const legacy=JSON.parse(localStorage.getItem("mithraHotelPOS_v1")||"null");
+    if(legacy) return {...clone(base),...legacy,ownerPin:DEFAULT_PIN};
+  }catch(e){}
+  return clone(base);
+}
+const base={hotel:{name:"Mithra Hotel",logo},items:defaults,sales:[],cart:[],currentPage:"homePage",ownerPin:DEFAULT_PIN};
+let state=load(), category="All", owner=false;
+const $=id=>document.getElementById(id);
+function save(){localStorage.setItem(KEY,JSON.stringify(state))}
+function money(n){return "₹"+Number(n||0).toLocaleString("en-IN",{maximumFractionDigits:2})}
+function today(){const d=new Date();return d.toISOString().slice(0,10)}
+function uid(){return "S"+Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
+function escape(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function speak(text){if(!("speechSynthesis" in window)){toast("Voice not supported");return} speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang="en-IN";u.rate=.9;speechSynthesis.speak(u)}
+function toast(t){$("toast").textContent=t;$("toast").classList.add("show");clearTimeout(window.__t);window.__t=setTimeout(()=>$("toast").classList.remove("show"),2200)}
+function cats(){return ["All",...new Set(state.items.map(x=>x.category))]}
+function render(){
+  $("hotelName").textContent=state.hotel.name;$("hotelLogo").src=state.hotel.logo;
+  const d=today();const td=state.sales.filter(s=>s.date===d);
+  $("todaySales").textContent=money(td.reduce((a,s)=>a+s.total,0));
+  renderChips();renderFoods();renderBill();renderSales();renderOwner();
+  $("cartCount").textContent=state.cart.reduce((a,x)=>a+x.qty,0);
+  $("hotelInput").value=state.hotel.name;
+}
+function renderChips(){
+  $("chips").innerHTML=cats().map(c=>`<button class="chip ${category===c?"active":""}" data-cat="${escape(c)}">${escape(c)}</button>`).join("");
+  $("chips").querySelectorAll("[data-cat]").forEach(b=>b.onclick=()=>{category=b.dataset.cat;render()});
+}
+function renderFoods(){
+  const q=$("search").value.toLowerCase().trim();
+  const arr=state.items.filter(x=>(category==="All"||x.category===category)&&(!q||x.name.toLowerCase().includes(q)));
+  $("foodGrid").innerHTML=arr.map(x=>`
+  <article class="food-card">
+    <img class="food-img" src="${x.image}" alt="${escape(x.name)}">
+    <div class="food-info"><strong>${escape(x.name)}</strong><div class="price">${money(x.price)}</div><div class="meta">${escape(x.category)}</div>
+    <div class="food-actions"><button class="add-btn" data-add="${x.id}">+</button></div></div>
+  </article>`).join("")||`<div class="touch-card" style="grid-column:1/-1">Food இல்லை</div>`;
+  $("foodGrid").querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>add(b.dataset.add));
+}
+function add(id){
+  const i=state.items.find(x=>x.id===id);if(!i)return;
+  const l=state.cart.find(x=>x.itemId===id);if(l)l.qty++;else state.cart.push({itemId:id,name:i.name,price:Number(i.price),qty:1});
+  save();render();speak(i.name+" added");
+}
+function total(){return state.cart.reduce((a,x)=>a+x.price*x.qty,0)}
+function renderQuickBill(){
+  const e=$("quickBill");
+  e.innerHTML=state.cart.length?state.cart.map(x=>`<div class="bill-line"><span>${escape(x.name)} × ${x.qty}</span><strong>${money(x.price*x.qty)}</strong></div>`).join("")+`<div class="bill-total"><span>Total</span><strong>${money(total())}</strong></div>`:`<p class="muted">Bill காலி — food touch பண்ணுங்க.</p>`;
+}
+function renderBill(){
+  renderQuickBill();
+  $("billItems").innerHTML=state.cart.length?state.cart.map(x=>`
+  <div class="bill-line"><div><strong>${escape(x.name)}</strong><div class="muted">${money(x.price)} each</div></div>
+  <div class="qty"><button data-q="${x.itemId}" data-d="-1">−</button><b>${x.qty}</b><button data-q="${x.itemId}" data-d="1">+</button><strong>${money(x.price*x.qty)}</strong></div></div>`).join(""):`<p class="muted">No food added.</p>`;
+  $("billItems").querySelectorAll("[data-q]").forEach(b=>b.onclick=()=>change(b.dataset.q,Number(b.dataset.d)));
+  $("billTotal").textContent=money(total());
+}
+function change(id,d){
+  const l=state.cart.find(x=>x.itemId===id);if(!l)return;l.qty+=d;if(l.qty<=0)state.cart=state.cart.filter(x=>x.itemId!==id);save();render();
+}
+function clearCart(){
+  if(!state.cart.length)return;
+  if(confirm("Current bill clear பண்ணலாமா?")){state.cart=[];save();render();toast("Bill cleared")}
+}
+function pay(method){
+  if(!state.cart.length){toast("முதலில் food add பண்ணுங்க");return}
+  const now=new Date();
+  const sale={id:uid(),billNo:"B"+Date.now().toString().slice(-6),createdAt:now.toISOString(),date:today(),payment:method,total:total(),items:state.cart.map(x=>({...x}))};
+  state.sales.push(sale);state.cart=[];save();render();
+  $("paidDetails").innerHTML=`<div style="text-align:center;padding:12px"><div style="font-size:48px">✅</div><h2 style="margin:5px 0">PAID</h2><div style="font-size:30px;font-weight:950">${money(sale.total)}</div><p class="muted">${escape(method)} · ${escape(sale.billNo)}</p></div>`;
+  $("paidModal").classList.add("open");
+  speak("Sale complete. Total "+sale.total+" rupees. "+method);
+}
+function renderSales(){
+  const d=today(), td=state.sales.filter(s=>s.date===d);
+  const sum=k=>td.filter(s=>s.payment===k).reduce((a,s)=>a+s.total,0);
+  $("sToday").textContent=money(td.reduce((a,s)=>a+s.total,0));$("sBills").textContent=td.length;$("sCash").textContent=money(sum("Cash"));$("sUpi").textContent=money(sum("UPI"));
+  $("recentSales").innerHTML=td.slice(-8).reverse().map(s=>`<div class="list-row"><span><strong>${escape(s.billNo)}</strong><br><small>${s.items.map(i=>escape(i.name)+" × "+i.qty).join(", ")}</small></span><strong>${money(s.total)}</strong></div>`).join("")||`<p class="muted">இன்று sales இல்லை.</p>`;
+  renderHistory();
+}
+function renderHistory(){
+  const date=$("historyDate").value,q=$("historySearch").value.toLowerCase().trim();
+  let a=[...state.sales].sort((x,y)=>y.createdAt.localeCompare(x.createdAt));
+  if(date)a=a.filter(s=>s.date===date);if(q)a=a.filter(s=>s.billNo.toLowerCase().includes(q)||s.items.some(i=>i.name.toLowerCase().includes(q)));
+  $("history").innerHTML=a.map(s=>`<div class="list-row"><span>${escape(s.billNo)} · ${escape(s.payment)}<br><small>${new Date(s.createdAt).toLocaleString("en-IN")}</small></span><strong>${money(s.total)}</strong></div>`).join("")||`<p class="muted">No history.</p>`;
+}
+function renderOwner(){
+  $("ownerPanel").classList.toggle("unlocked",owner);$("ownerLock").style.display=owner?"none":"block";
+  $("ownerSalesTools").classList.toggle("unlocked",owner);
+  $("ownerMenu").innerHTML=state.items.map(x=>`<div class="list-row"><span><strong>${escape(x.name)}</strong><br><small>${escape(x.category)}</small></span><span><strong>${money(x.price)}</strong> <button class="small-btn" data-edit="${x.id}">Edit</button></span></div>`).join("");
+  $("ownerMenu").querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>editItem(b.dataset.edit));
+}
+function openPage(id){
+  document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));$(id).classList.add("active");
+  document.querySelectorAll(".nav-btn").forEach(x=>x.classList.toggle("active",x.dataset.page===id));
+  state.currentPage=id;save();scrollTo(0,0);render();
+}
+function openModal(id){$(id).classList.add("open")}function closeModal(id){$(id).classList.remove("open")}
+function openItem(id=""){
+  $("itemId").value=id;$("itemTitle").textContent=id?"Edit Food":"Add Food";
+  const x=state.items.find(i=>i.id===id);
+  $("itemName").value=x?.name||"";$("itemCategory").value=x?.category||"Tiffin";$("itemPrice").value=x?.price||"";$("itemImage").value="";openModal("itemModal");
+}
+function editItem(id){if(!owner)return;openItem(id)}
+$("itemForm").onsubmit=e=>{
+  e.preventDefault();const id=$("itemId").value,name=$("itemName").value.trim(),cat=$("itemCategory").value,price=Number($("itemPrice").value),file=$("itemImage").files[0];
+  const old=state.items.find(i=>i.id===id);
+  const finish=image=>{
+    const obj={id:id||"i_"+Date.now(),name,category:cat,price,image:image||old?.image||svgFood("🍽️",name.toUpperCase(),"#475569","#111827")};
+    if(id)state.items=state.items.map(x=>x.id===id?obj:x);else state.items.push(obj);
+    save();closeModal("itemModal");render();toast(id?"Food updated":"Food added");
+  };
+  if(file){const r=new FileReader();r.onload=()=>finish(r.result);r.readAsDataURL(file)}else finish();
+};
+function saveHotel(){
+  const name=$("hotelInput").value.trim()||"Mithra Hotel",file=$("logoInput").files[0];
+  const done=img=>{state.hotel.name=name;if(img)state.hotel.logo=img;save();render();toast("Hotel saved")};
+  if(file){const r=new FileReader();r.onload=()=>done(r.result);r.readAsDataURL(file)}else done();
+}
+function backup(){
+  const blob=new Blob([JSON.stringify({app:"Mithra Hotel POS",version:2,exportedAt:new Date().toISOString(),state},null,2)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="hotel-backup-"+today()+".json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500);toast("Backup ready");
+}
+let restoreData=null;
+$("restoreFile").onchange=e=>{
+  const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{
+    try{const d=JSON.parse(r.result);if(!d.state?.items||!d.state?.sales)throw 0;
+      restoreData=d.state;if(confirm("Restore this backup? Current data will be kept only if you have a backup.")){state={...clone(base),...restoreData};save();render();toast("Restored")}}
+    catch(err){toast("Invalid backup")}
+    e.target.value="";
+  };r.readAsText(f)
+};
+function unlock(){openModal("pinModal");setTimeout(()=>$("pinInput").focus(),100)}
+function doUnlock(){if($("pinInput").value===state.ownerPin){owner=true;closeModal("pinModal");render();toast("Owner mode open")}else{toast("Wrong PIN");$("pinInput").value=""}}
+function clearAll(){if(confirm("ALL data delete பண்ணலாமா?")){if(confirm("Final confirmation")){localStorage.removeItem(KEY);location.reload()}}}
+document.querySelectorAll(".nav-btn").forEach(b=>b.onclick=()=>openPage(b.dataset.page));
+$("search").oninput=renderFoods;$("cartBtn").onclick=()=>openPage("billPage");$("openBillBtn").onclick=()=>openPage("billPage");$("clearCartBtn").onclick=clearCart;
+$("quickCashBtn").onclick=()=>pay("Cash");$("cashBtn").onclick=()=>pay("Cash");$("upiBtn").onclick=()=>pay("UPI");$("otherBtn").onclick=()=>pay("Other");
+$("donePaid").onclick=()=>closeModal("paidModal");$("voiceBtn").onclick=()=>speak("Mithra Hotel. Touch a food to add. Bill button to check total.");
+$("speakFoodBtn").onclick=()=>speak(state.cart.length?state.cart.map(x=>x.name+" "+x.qty).join(", "):"Food menu");
+$("speakSalesBtn").onclick=()=>{const td=state.sales.filter(s=>s.date===today());const n=td.reduce((a,s)=>a+s.total,0);speak("Today sales "+n+" rupees. "+td.length+" bills.")};
+$("ownerUnlockFromSales").onclick=unlock;$("unlockBtn").onclick=unlock;$("pinSubmit").onclick=doUnlock;$("lockBtn").onclick=()=>{owner=false;render();toast("Owner locked")};
+$("addItem").onclick=()=>openItem();$("saveHotel").onclick=saveHotel;$("backupBtn").onclick=backup;$("restoreBtn").onclick=()=>$("restoreFile").click();$("testVoice").onclick=()=>speak("Dosa. Fifty rupees. Added one.");
+$("clearAll").onclick=clearAll;$("historyDate").onchange=renderHistory;$("historySearch").oninput=renderHistory;
+document.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>closeModal(b.dataset.close));
+window.addEventListener("popstate",()=>openPage(state.currentPage||"homePage"));
+window.addEventListener("load",()=>{render();openPage(state.currentPage||"homePage")});
 </script>
 </body>
 </html>
