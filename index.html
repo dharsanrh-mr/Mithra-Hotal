@@ -135,6 +135,284 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 @media(max-width:430px){.modal{padding:10px!important}.modal-card{border-radius:24px!important}.modal-actions{grid-template-columns:1fr 1fr!important}}
 </style>
 
+
+<style id="foodie-unified-premium">
+:root{
+  --navy:#0d1b35;
+  --navy2:#14213d;
+  --purple:#4b2ac7;
+  --purple2:#6a42ee;
+  --ink:#111a2e;
+  --muted:#7c8497;
+  --bg:#f4f5fa;
+  --card:#ffffff;
+  --line:#e8eaf0;
+  --green:#078b5b;
+}
+html,body{background:var(--bg);color:var(--ink)}
+body{
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  min-height:100vh;
+}
+button,input,select,textarea{font-family:inherit}
+
+.header{
+  background:linear-gradient(125deg,#0b1932 0%,#121d3a 48%,#261458 100%) !important;
+  min-height:82px;
+  padding:12px 20px !important;
+  box-shadow:0 8px 30px rgba(8,17,38,.18);
+}
+.logo{
+  width:58px !important;height:58px !important;border-radius:18px !important;
+  background:linear-gradient(145deg,#5d48e9,#2b1a93) !important;
+  box-shadow:inset 0 1px rgba(255,255,255,.22),0 10px 24px rgba(52,38,160,.3);
+}
+.brand{gap:13px !important}
+.brand b{font-size:24px !important;letter-spacing:-.4px}
+.brand small{font-size:14px !important}
+.topbill{
+  border:1px solid rgba(255,255,255,.08) !important;
+  background:rgba(255,255,255,.07) !important;
+  border-radius:19px !important;
+  box-shadow:inset 0 1px rgba(255,255,255,.05);
+}
+
+.wrap{max-width:920px !important;padding:24px 20px 135px !important}
+
+.panel.active{animation:foodieFade .18s ease}
+@keyframes foodieFade{from{opacity:.72;transform:translateY(3px)}to{opacity:1;transform:none}}
+
+.hero{
+  background:linear-gradient(125deg,#101f3c 0%,#27376a 52%,#5430d2 100%) !important;
+  border-radius:28px !important;
+  padding:25px !important;
+  box-shadow:0 18px 45px rgba(23,31,66,.17) !important;
+  border:1px solid rgba(255,255,255,.08);
+}
+.hero small{letter-spacing:2.5px !important}
+.hero h1{font-size:34px !important;letter-spacing:-1px}
+.today{
+  background:rgba(255,255,255,.09) !important;
+  border:1px solid rgba(255,255,255,.12) !important;
+  border-radius:19px !important;
+  box-shadow:inset 0 1px rgba(255,255,255,.06);
+}
+.today b{font-size:27px !important}
+
+.section-title{margin:20px 2px 13px !important}
+.section-title h2{font-size:29px !important;letter-spacing:-.6px}
+.speak{color:#5434d2 !important}
+
+.search{
+  background:#fff !important;
+  border:1px solid #eceef4 !important;
+  border-radius:19px !important;
+  padding:16px 18px !important;
+  box-shadow:0 7px 22px rgba(25,31,53,.07) !important;
+}
+.search:focus{
+  border-color:#7b66e8 !important;
+  box-shadow:0 0 0 4px rgba(106,66,238,.09),0 7px 22px rgba(25,31,53,.07) !important;
+}
+
+.cats{gap:9px !important}
+.cat{
+  border:1px solid #e7e8ef !important;
+  background:#fff !important;
+  border-radius:17px !important;
+  padding:11px 17px !important;
+}
+.cat.active{
+  background:linear-gradient(135deg,#5c3be0,#4122b2) !important;
+  border-color:#5430d2 !important;
+  box-shadow:0 7px 17px rgba(75,42,199,.2);
+}
+
+.grid{gap:15px !important}
+.card{
+  border-radius:23px !important;
+  border:1px solid #e9eaf0 !important;
+  box-shadow:0 9px 28px rgba(22,30,53,.075) !important;
+  transition:transform .16s ease,box-shadow .16s ease;
+}
+.card:active{transform:scale(.985)}
+.foodimg{
+  height:178px !important;
+  background:linear-gradient(145deg,#263755,#111d35) !important;
+}
+.foodimg img{transition:transform .2s ease}
+.card:hover .foodimg img{transform:scale(1.03)}
+.info{padding:15px 15px 16px !important}
+.info h3{font-size:20px !important}
+.price{font-size:20px !important;color:#151e31}
+.sub{font-weight:650 !important}
+
+.qbtn{
+  width:48px !important;height:48px !important;border-radius:15px !important;
+  background:linear-gradient(145deg,#172541,#0d1930) !important;
+  box-shadow:0 7px 15px rgba(13,25,48,.18) !important;
+}
+.qbtn.minus{
+  background:#fff0f0 !important;color:#c51f3a !important;
+  box-shadow:none !important;
+}
+.qnum{font-size:20px !important}
+
+.add-menu-btn{
+  background:linear-gradient(135deg,#14233f,#5632d7) !important;
+  border-radius:15px !important;
+  box-shadow:0 8px 20px rgba(43,31,119,.2) !important;
+}
+
+.billrow,.sum-card,.setting-card,.manager-card,.sales-day,.sales-stat,.sales-pay,.sales-best-item{
+  border:1px solid #eaebf1 !important;
+  box-shadow:0 8px 25px rgba(22,30,53,.065) !important;
+}
+.billrow{
+  border-radius:19px !important;
+  padding:16px !important;
+}
+.billrow strong{font-size:18px}
+.pay button{
+  min-height:62px !important;
+  border-radius:18px !important;
+  box-shadow:0 9px 22px rgba(20,27,50,.12);
+}
+.cash{background:linear-gradient(135deg,#078b5b,#006d47) !important}
+.upi{background:linear-gradient(135deg,#5734dc,#351eaa) !important}
+
+.billbar{
+  background:linear-gradient(135deg,#101d36,#202e4f) !important;
+  border:1px solid rgba(255,255,255,.08) !important;
+  border-radius:18px !important;
+  box-shadow:0 12px 32px rgba(8,16,35,.3) !important;
+}
+
+.bottom{
+  background:rgba(255,255,255,.94) !important;
+  border-top:1px solid #e5e7ee !important;
+  box-shadow:0 -8px 30px rgba(15,24,44,.08);
+  backdrop-filter:blur(18px) !important;
+  padding-top:9px !important;
+}
+.nav{
+  color:#8a91a2 !important;
+  border-radius:16px !important;
+  padding:4px 5px !important;
+}
+.nav.active{color:#17213b !important}
+.nav span{font-size:25px !important}
+
+.sales-premium{
+  background:transparent !important;
+  padding:0 0 120px !important;
+}
+.sales-hero{
+  border-radius:28px !important;
+  background:linear-gradient(125deg,#0e1d38,#27376a 52%,#5631d4) !important;
+  box-shadow:0 18px 42px rgba(22,29,60,.17) !important;
+}
+.sales-tabs{gap:10px !important}
+.sales-tab{
+  border-radius:17px !important;
+  border:1px solid #e9eaf0 !important;
+}
+.sales-tab.active{
+  background:linear-gradient(135deg,#17233f,#4c2bd0) !important;
+}
+.sales-stat{border-radius:20px !important}
+.sales-pay{border-radius:19px !important}
+.sales-bars,.sales-best-item{border-radius:20px !important}
+
+.settings-list{gap:12px !important}
+.setting-card{border-radius:20px !important}
+.setting-card>span{width:43px;height:43px;display:grid;place-items:center;border-radius:14px;background:#f0efff}
+.setting-card button{
+  background:linear-gradient(135deg,#17233f,#4e2bcb) !important;
+  border-radius:13px !important;
+}
+
+.manager-card{border-radius:21px !important}
+.manager-thumb{border-radius:16px !important}
+.manager-actions button{border-radius:11px !important}
+
+.modal{
+  background:rgba(7,14,29,.68) !important;
+  backdrop-filter:blur(11px) !important;
+  align-items:flex-end !important;
+}
+.modal-card{
+  background:#f7f8fc !important;
+  border-radius:29px 29px 0 0 !important;
+  border:1px solid rgba(255,255,255,.45) !important;
+  box-shadow:0 -18px 65px rgba(0,0,0,.28) !important;
+  padding:0 20px 22px !important;
+  overflow:hidden !important;
+}
+.modal-head{
+  margin:0 -20px 15px !important;
+  padding:17px 20px !important;
+  background:linear-gradient(125deg,#101f3c,#2a3a68 55%,#4d2ac6) !important;
+}
+.modal-head .close{
+  background:rgba(255,255,255,.14) !important;
+}
+.modal-card>p{padding:0 2px}
+.modal input,.modal select,.modal textarea{
+  border-radius:15px !important;
+  background:#fff !important;
+}
+.modal-ok{
+  background:linear-gradient(135deg,#17233f,#4d2ac6) !important;
+}
+.image-upload{border-radius:16px !important}
+
+.foodie-toast{
+  position:fixed;left:50%;bottom:92px;transform:translate(-50%,18px);
+  width:min(420px,calc(100% - 32px));padding:14px 16px;
+  border-radius:18px;background:linear-gradient(135deg,#111f3a,#2d2468);
+  color:#fff;display:flex;align-items:center;gap:11px;
+  box-shadow:0 18px 45px rgba(5,12,28,.28);
+  opacity:0;pointer-events:none;z-index:300;
+  border:1px solid rgba(255,255,255,.1);
+  transition:opacity .2s ease,transform .2s ease;
+  font-weight:800;
+}
+.foodie-toast.show{opacity:1;transform:translate(-50%,0)}
+.foodie-toast .toast-icon{
+  width:34px;height:34px;border-radius:11px;display:grid;place-items:center;
+  background:#0a8a59;font-size:18px;flex:none;
+}
+.foodie-toast .toast-text{font-size:14px;line-height:1.3}
+.foodie-toast .toast-title{display:block;font-size:15px;margin-bottom:2px}
+
+@media(max-width:600px){
+  .header{min-height:78px !important;padding:11px 16px !important}
+  .brand b{font-size:21px !important}
+  .brand small{font-size:13px !important}
+  .wrap{padding:19px 17px 132px !important}
+  .hero{padding:22px !important;border-radius:25px !important}
+  .hero h1{font-size:31px !important}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:12px !important}
+  .foodimg{height:145px !important}
+  .info{padding:13px !important}
+  .info h3{font-size:18px !important}
+  .price{font-size:19px !important}
+  .qbtn{width:44px !important;height:44px !important}
+  .qty{gap:7px !important}
+  .bottom{padding-left:4px !important;padding-right:4px !important}
+  .nav{min-width:58px !important;font-size:12px !important}
+  .nav span{font-size:23px !important}
+  .billbar{bottom:88px !important}
+}
+@media(max-width:370px){
+  .grid{grid-template-columns:1fr !important}
+  .foodimg{height:170px !important}
+  .menu-actions{gap:4px !important}
+  .add-menu-btn{font-size:13px !important}
+}
+</style>
+
 </head>
 <body>
 <header class="header">
@@ -734,6 +1012,33 @@ if(initialPage && initialPage!=='home') go(initialPage);
    window.go=function(p){const r=old.apply(this,arguments);setTimeout(()=>{if(p==='sales'||document.getElementById('salesPage'))window.renderPremiumSales&&window.renderPremiumSales()},30);return r}
  }
  document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>window.renderPremiumSales&&window.renderPremiumSales(),100));
+})();
+</script>
+
+
+<script id="foodie-toast-system">
+(function(){
+  const oldAlert = window.alert;
+  let timer = null;
+  function showToast(message){
+    let el=document.getElementById('foodieToast');
+    if(!el){
+      el=document.createElement('div');
+      el.id='foodieToast';
+      el.className='foodie-toast';
+      el.innerHTML='<span class="toast-icon">✓</span><span class="toast-text"><span class="toast-title">FOODIE</span><span class="toast-message"></span></span>';
+      document.body.appendChild(el);
+    }
+    const msg=String(message||'');
+    el.querySelector('.toast-title').textContent =
+      /success|saved|updated|added|imported|created/i.test(msg) ? 'Success' :
+      /failed|invalid|empty|valid/i.test(msg) ? 'Notice' : 'FOODIE';
+    el.querySelector('.toast-message').textContent=msg;
+    el.classList.add('show');
+    clearTimeout(timer);
+    timer=setTimeout(()=>el.classList.remove('show'),2600);
+  }
+  window.alert=showToast;
 })();
 </script>
 
